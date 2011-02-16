@@ -51,7 +51,8 @@ class HinemosTrac
     
     MUST_WRITE_CONF.each do |conf_field|
 
-      if @@conf[conf_field] == nil || @@conf[conf_field].blank?
+      if @@conf[conf_field] == nil || 
+         @@conf[conf_field].blank?
         $hinemosTracLog.puts_message "Caution. You must write configuration about #{conf_field}."
         return
       end
@@ -60,10 +61,12 @@ class HinemosTrac
     @mail_duplicate_checker = MailDuplicateChecker.new 
     return if @mail_duplicate_checker.unique_id_list == nil # not found the file
 
-    pop = Net::POP3.new(@@conf[:mail_server_address], @@conf[:mail_server_port])
+    pop = Net::POP3.new(@@conf[:mail_server_address], 
+                        @@conf[:mail_server_port])
 
     begin
-      pop.start(@@conf[:login_user], @@conf[:login_password])
+      pop.start(@@conf[:login_user], 
+                @@conf[:login_password])
     rescue
       $hinemosTracLog.puts_message "Failure to access the pop server. Please check pop server configuration. "
       return
@@ -86,7 +89,7 @@ class HinemosTrac
         option_field_list = @@conf[:option_fields_fix] == nil ? Hash.new :
                                                                 @@conf[:option_fields_fix]
 
-        mail_parser = HinemosMailParser.new(t_mail.body.to_s)
+        mail_parser = HinemosMailParser.new(t_mail.body.to_s, t_mail.date)
         
         get_mapping_field_list(@@conf.keys).each do |mapping_field|
 
@@ -302,9 +305,10 @@ class HinemosMailParser
 
   attr_accessor :body_hash
 
-  def initialize(body)
+  def initialize(body, date)
     @body_hash = Hash.new
     parse(body)
+    @body_hash.store('original_mail_date', date)
   end
   
   def parse(body)
