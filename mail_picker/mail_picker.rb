@@ -57,11 +57,8 @@ class HinemosTrac
       end
     end
 
-#    unless @@conf[:mail_delete_enable]
-#      is_need_duplicate_check = true
-      @mail_duplicate_checker = MailDuplicateChecker.new 
-      return if @mail_duplicate_checker.unique_id_list == nil # not found the file
-#    end
+    @mail_duplicate_checker = MailDuplicateChecker.new 
+    return if @mail_duplicate_checker.unique_id_list == nil # not found the file
 
     pop = Net::POP3.new(@@conf[:mail_server_address], @@conf[:mail_server_port])
 
@@ -80,9 +77,7 @@ class HinemosTrac
     
       if target_mail?(t_mail)
 
-#        if is_need_duplicate_check
-          next if @mail_duplicate_checker.has_created_ticket?(mail.unique_id)
-#        end
+        next if @mail_duplicate_checker.has_created_ticket?(mail.unique_id)
 
         $hinemosTracLog.puts_message "The Mail (#{t_mail.subject}) is target for creating ticket."
 
@@ -115,7 +110,6 @@ class HinemosTrac
           $hinemosTracLog.puts_message "Success to create ticket ( id = #{t_id} )"
         end
 
-#        if is_need_duplicate_check
         if @@conf[:mail_delete_enable]
           mail.delete
           $hinemosTracLog.puts_message "The mail was deleted in pop server."
@@ -128,7 +122,7 @@ class HinemosTrac
             $hinemosTracLog.puts_message "Failure to write the mail id to the file."
             break
           end
-       end
+        end
       end
     end
 
@@ -343,18 +337,15 @@ class HinemosMailParser
       else
         return "" if raw_value.empty?
 
-        #parse_pattern = parse_option.sub(/\$\{year\}/,'%Y').sub(/\$\{month\}/, '%m').sub(/\$\{day\}/, '%d')
-	REG_SIGN.keys.each do |sign|
-	  parse_option = parse_option.sub(/\$\{#{sign.to_s}\}/,REG_SIGN[sign])
-	end
-
+	      REG_SIGN.keys.each do |sign|
+	        parse_option = parse_option.sub(/\$\{#{sign.to_s}\}/,REG_SIGN[sign])
+	      end
         begin
           parsed = DateTime.parse(raw_value)
         rescue
-          
           $hinemosTracLog.puts_message("Failure to parse about #{raw_value}.Please check this date format.")
-          return nil
-        end
+        return nil
+      end
 	#return parsed.strftime(parse_pattern) 
 	return parsed.strftime(parse_option)
       end
