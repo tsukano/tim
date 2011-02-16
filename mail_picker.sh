@@ -1,0 +1,16 @@
+#!/bin/sh
+
+sem="ln_`basename $0`"
+dir=`dirname $0`
+ln -s /dummy $sem || exit
+trap "rm $sem; exit" 2 3 15
+
+
+
+ruby $dir"/mail_picker/mail_picker.rb"
+
+
+
+rm "$sem"
+
+exit
