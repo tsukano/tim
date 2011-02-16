@@ -10,8 +10,9 @@ CONF_FILE = File.expand_path(File.dirname(__FILE__)) + '/mail_picker.conf'
 IDS_FILE  = File.expand_path(File.dirname(__FILE__)) + '/mail_picker.dat'
 LOG_FILE  = File.expand_path(File.dirname(__FILE__)) + '/mail_picker.log'
 
+ORIGINAL_MAIL_DATE = "original_mail_date"
 
-IS_NEED_LOG_FILE = false
+IS_NEED_LOG_FILE = true 
 
 CONF_MAPPING_HEADER = "mapping_"
 
@@ -89,7 +90,7 @@ class HinemosTrac
         option_field_list = @@conf[:option_fields_fix] == nil ? Hash.new :
                                                                 @@conf[:option_fields_fix]
 
-        mail_parser = HinemosMailParser.new(t_mail.body.to_s, t_mail.date)
+        mail_parser = HinemosMailParser.new(t_mail.body.to_s, t_mail.date.to_s)
         
         get_mapping_field_list(@@conf.keys).each do |mapping_field|
 
@@ -308,7 +309,7 @@ class HinemosMailParser
   def initialize(body, date)
     @body_hash = Hash.new
     parse(body)
-    @body_hash.store('original_mail_date', date)
+    @body_hash.store(ORIGINAL_MAIL_DATE, date)
   end
   
   def parse(body)
