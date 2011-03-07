@@ -4,6 +4,8 @@ class ConfUtil
 #
   def self.read_conf
 
+		conf = Hash.new
+
     begin
     file = open(CONF_FILE)
     rescue
@@ -22,18 +24,21 @@ class ConfUtil
         parent_key = line_key.sub(/\..+$/,'')
         child_key = line_key.sub(/^[^\.]+\./,'')
 
-        parent_value = @@conf[parent_key.to_sym] == nil ?
+        parent_value = conf[parent_key.to_sym] == nil ?
                         { child_key => line_value } :
-                        @@conf[parent_key.to_sym].merge({ child_key => line_value})
+                        conf[parent_key.to_sym].merge({ child_key => line_value})
 
-        @@conf.store parent_key.to_sym, parent_value
+        conf.store parent_key.to_sym, parent_value
 
       else
 
-        @@conf.store line_key.to_sym, line_value
+        conf.store line_key.to_sym, line_value
       end
     end
     file.close
+    
+    return conf
+    
   end
 
 #
@@ -55,6 +60,16 @@ class ConfUtil
 
     end
 
+  end
+
+  def self.get_mapping_field_list(conf_keys)
+    mapping_keys = Array.new
+    conf_keys.each do |key|
+      if key.to_s =~ /^#{CONF_MAPPING_HEADER}[^_]+$/
+        mapping_keys.push(key.to_s.sub(/^#{CONF_MAPPING_HEADER}/, "").to_sym)
+      end
+    end
+    return mapping_keys
   end
 
 

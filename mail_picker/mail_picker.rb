@@ -8,14 +8,16 @@ require 'tmail'
 require 'nkf'
 require 'yaml'
 
-require 'lib/batch_log'
-require 'lib/mail_duplicate_checker'
-require 'lib/mail_parser'
-require 'lib/conf_util'
+ex_path = File.expand_path(File.dirname(__FILE__))
 
-CONF_FILE = File.expand_path(File.dirname(__FILE__)) + '/mail_picker.conf'
-IDS_FILE  = File.expand_path(File.dirname(__FILE__)) + '/mail_picker.dat'
-LOG_FILE  = File.expand_path(File.dirname(__FILE__)) + '/mail_picker.log'
+require ex_path + '/lib/batch_log'
+require ex_path + '/mail/mail_duplicate_checker'
+require ex_path + '/mail/mail_parser'
+require ex_path + '/lib/conf_util'
+
+CONF_FILE = ex_path + '/mail_picker.conf'
+IDS_FILE  = ex_path + '/mail_picker.dat'
+LOG_FILE  = ex_path + '/mail_picker.log'
 
 ORIGINAL_MAIL_DATE = "original_mail_date"
 
@@ -43,18 +45,18 @@ MUST_WRITE_CONF = [ :mail_server_address,
                     :target_mail_from ]
 
 
-class HinemosTrac
+#class HinemosTrac
 
-  @@conf = Hash.new
+module MailPicker
 
 #
 # main procedure
 #
-  def self.main
+  def main
 
     $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
-    ConfUtil.read_conf
+    @@conf = ConfUtil.read_conf
     return if @@conf.empty? == true
     
     MUST_WRITE_CONF.each do |conf_field|
@@ -92,14 +94,17 @@ class HinemosTrac
 
         $hinemosTracLog.puts_message "The Mail (#{t_mail.subject}) is target for creating ticket."
 
-        trac = Trac.new(@@conf[:trac_url] + TRAC_URL_SUFFIX, @@conf[:trac_user_id], @@conf[:trac_user_password])
+        trac = Trac.new(@@conf[:trac_url] + TRAC_URL_SUFFIX,
+        				@@conf[:trac_user_id], 
+        				@@conf[:trac_user_password])
 
         option_field_list = @@conf[:option_fields_fix] == nil ? Hash.new :
                                                                 @@conf[:option_fields_fix]
 
-        mail_parser = MailParser.new(t_mail.body.to_s, t_mail.date.to_s)
+        mail_parser = MailParser.new(t_mail.body.to_s,
+        							 t_mail.date.to_s)
         
-        get_mapping_field_list(@@conf.keys).each do |mapping_field|
+        ConfUtil.get_mapping_field_list(@@conf.keys).each do |mapping_field|
 
           mapping_value =  mail_parser.get_trac_value(@@conf, mapping_field)
 
@@ -113,7 +118,9 @@ class HinemosTrac
         mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
 
         begin
-          t_id = trac.tickets.create(mail_subject, mail_body, option_field_list)
+          t_id = trac.tickets.create(mail_subject, 
+          							 mail_body, 
+          							 option_field_list)
         rescue
           $hinemosTracLog.puts_message "Failure to create ticket to the trac server.Please Check trac server configuration."
           break
@@ -147,7 +154,7 @@ class HinemosTrac
 #
 # check the mail if it's target
 #
-  def self.target_mail?(t_mail)
+  def target_mail?(t_mail)
 
     mail_from_regular_expression = @@conf[:target_mail_from].gsub(/\s/,'\\s').gsub(/\,/, '|')
     if t_mail.from.to_s =~ /#{mail_from_regular_expression}/
@@ -156,9 +163,12 @@ class HinemosTrac
      
         subject_regular_expression = @@conf[:target_mail_subject].empty? ? 
                                        '.+' : 
-              			       @@conf[:target_mail_subject]
+              			       		 @@conf[:target_mail_subject]
 
-        subject_regular_expression = subject_regular_expression.gsub(/\$\{[^}]+\}/,'.*').gsub(/\s/,'\\s').gsub(/\,/, '|')
+        subject_regular_expression = subject_regular_expression.
+        								gsub(/\$\{[^}]+\}/,'.*').
+        								gsub(/\s/,'\\s').
+        								gsub(/\,/, '|')
         if t_mail.subject.to_s =~ /^#{subject_regular_expression}$/
           return true
         end
@@ -167,21 +177,9 @@ class HinemosTrac
     return false
   end
 
-  def self.get_mapping_field_list(conf_keys)
-    mapping_keys = Array.new
-    conf_keys.each do |key|
-      if key.to_s =~ /^#{CONF_MAPPING_HEADER}[^_]+$/
-        mapping_keys.push(key.to_s.sub(/^#{CONF_MAPPING_HEADER}/, "").to_sym)
-      end
-    end
-    return mapping_keys
-  end
-
+  module_function :main
 
 end
 
 
-
-
-
-HinemosTrac.main
+MailPicker.main
