@@ -8,6 +8,8 @@ require 'tmail'
 require 'nkf'
 require 'yaml'
 require 'rexchange'
+require 'savon'
+
 
 ex_path = File.expand_path(File.dirname(__FILE__))
 
@@ -62,15 +64,14 @@ module MailPicker
     return if conf.empty?
     
     MUST_WRITE_CONF.each do |conf_field|
-      if conf[conf_field] == nil || 
-         conf[conf_field].blank?
+      if conf[conf_field] == nil || conf[conf_field].blank?
         $hinemosTracLog.puts_message "Caution. You must write configuration about #{conf_field}."
         return
       end
     end
 
-    @mail_duplicate_checker = MailDuplicateChecker.new 
-    return if @mail_duplicate_checker.unique_id_list == nil # not found the file
+    mail_duplicate_checker = MailDuplicateChecker.new 
+    return if mail_duplicate_checker.message_id_list == nil # not found the file
 
 	  begin
 	  	mail_session = MailSession.new(conf)
@@ -81,10 +82,9 @@ module MailPicker
 	    $hinemosTracLog.puts_message "Success to access the mail server."
 	  end
 
-    mail_session.tmail_list.each do |t_mail|
+    mail_session.tmail_list.each_with_index do |t_mail, i|
       if MailPicker.target_mail?(t_mail, conf)
-
-        next if @mail_duplicate_checker.has_created_ticket?(mail.unique_id)
+        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
 
         $hinemosTracLog.puts_message "The Mail (#{t_mail.subject}) is target for creating ticket."
 
@@ -92,7 +92,7 @@ module MailPicker
         								conf[:trac_user_id], 
         								conf[:trac_user_password])
 
-        option_field_list = conf[:option_fields_fix] == nil ? 
+        option_field_list = conf[:option_fields_fix] == nil ?
                               Hash.new                      :
                               conf[:option_fields_fix]
 
@@ -124,12 +124,12 @@ module MailPicker
           $hinemosTracLog.puts_message "Success to create ticket ( id = #{t_id} )"
         end
 
-        if conf[:mail_delete_enable]
-          mail.delete
+        if conf[:pop_mail_delete_enable] && mail_session.pop?
+          mail_session.delete_pop_mail(i)
           $hinemosTracLog.puts_message "The mail was deleted in mail server."
 
         else
-          writted_success = @mail_duplicate_checker.write_id(mail.unique_id)
+          writted_success = mail_duplicate_checker.write_id(t_mail.message_id)
           if writted_success
             $hinemosTracLog.puts_message "Success to write the mail id to the file."
           else

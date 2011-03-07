@@ -3,7 +3,7 @@
 #
 class MailDuplicateChecker
 
-  attr_accessor :unique_id_list
+  attr_accessor :message_id_list
 
   def initialize
     begin
@@ -15,9 +15,9 @@ class MailDuplicateChecker
       $hinemosTracLog.puts_message("Success to open the mail id file (#{IDS_FILE}).")
     end
 
-    @unique_id_list = Array.new
+    @message_id_list = Array.new
     while line = ids_file.gets do
-      @unique_id_list.push(line.chomp) unless line.empty?
+      @message_id_list.push(line.chomp) unless line.empty?
     end
     ids_file.close
   end
@@ -25,23 +25,23 @@ class MailDuplicateChecker
 #
 # check if ticket has created
 #
-  def has_created_ticket?(unique_id)
-    unique_id_list.include?(unique_id)
+  def has_created_ticket?(message_id)
+    message_id_list.include?(message_id)
   end
 
 
 #
 # write the unique id of the mail that has created ticket in the file
 #
-  def write_id(unique_id)
+  def write_id(message_id)
     begin
       ids_file = open(IDS_FILE, "a")
-      ids_file.puts(unique_id)
+      ids_file.puts(message_id)
       ids_file.close
     rescue
       return false
     end
-    unique_id_list.push(unique_id)
+    message_id_list.push(message_id)
     return true
   end
 

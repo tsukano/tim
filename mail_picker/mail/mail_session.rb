@@ -24,31 +24,15 @@ class MailSession
 		change_to_tmail
 	end
 
+
+	def delete_pop_mail(index)
+		count_has_deleted = tmail_list.size - @pop.size
+		@pop.mails[index - count_has_deleted].delete
+	end
+
 	def finalize
 		@pop.finish if pop?
 	end
-
-
-	private
-
-	def change_to_tmail
-		if pop?
-			@pop.mails.each do |mail|
-        self.tmail_list.push TMail::Mail.parse(mail.pop)
-      end
-		elsif exchange?
-			@rexchange.folders.values[0].each do |message|
-				tmail = TMail::Mail.new
-				tmail.from = message.from
-				tmail.to   = message.to
-				tmail.subject = message.subject
-				tmail.body = message.body
-				tmail.date = message.attributes["urn:schemas:httpmail:date"]
-				self.tmail_list.push tmail
-			end
-		end
-	end
-
 
 	def pop?
 		self.mail_method != nil && self.mail_method == METHOD_POP
@@ -57,4 +41,35 @@ class MailSession
 	def exchange?
 		self.mail_method != nil && self.mail_method == METHOD_EXCHANGE
 	end
+
+
+	private
+
+	def change_to_tmail
+		if pop?
+			@pop.mails.each do |mail|
+				tmail = TMail::Mail.parse(mail.pop)
+				if tmail.message_id == nil
+					tmail.message_id = tmail.unique_id
+				end
+        self.tmail_list.push tmail
+      end
+		elsif exchange?
+			@rexchange.folders.values[0].each do |message|
+				
+				tmail = TMail::Mail.new
+				tmail.from       = message.from
+				tmail.to         = message.to
+				tmail.subject    = message.subject
+				tmail.body       = message.body
+				tmail.date       = message.attributes["urn:schemas:httpmail:date"]
+				tmail.message_id = message.attributes["urn:schemas:mailheader:message-id"]
+				
+				self.tmail_list.push tmail
+			end
+		end
+	end
+
+
+	
 end
