@@ -52,6 +52,12 @@ MUST_WRITE_CONF = [ :mail_server_address,
                     :trac_url,
                     :target_mail_from ]
 
+RedmineClient::Base.configure do
+  self.site = 'http://172.17.1.206:3000/'# 定数ファイルで宣言する
+  self.user = 'admin'# 定数ファイルで宣言する
+  self.password = 'admin'# 定数ファイルで宣言する
+end
+    
 #class HinemosTrac
 
 module MailPicker
@@ -116,11 +122,6 @@ module MailPicker
     ]
 
 # Issue model on the client side
-    RedmineClient::Base.configure do
-      self.site = 'http://172.17.1.206:3000/'# 定数ファイルで宣言する
-      self.user = 'admin'# 定数ファイルで宣言する
-      self.password = 'admin'# 定数ファイルで宣言する
-    end
 
     regist_list.each do |regist|
       issue = RedmineClient::Issue.new(
@@ -131,22 +132,23 @@ module MailPicker
         :description => regist[:description], #説明
         :author_to_id => regist[:author_to_id]    # 登録ユーザID
       )
-      
+
+#      puts issue
+#      issue.save
       # カスタムフィールドの入力
-      custom1 = issue.custom_fields[0]
-      custom1.value = regist[:custon1]
-      custom2 = issue.custom_fields[1]
-      custom2.value = regist[:custon2]
-      custom3 = issue.custom_fields[2]
-      custom3.value = regist[:custon3]
-      custom4 = issue.custom_fields[3]
-      custom4.value = regist[:custon4]
-    end
-    
-    if issue.save
-      puts issue.id
-    else
-      puts issue.errors.full_messages
+#      custom1 = issue.custom_fields[0]
+#      custom1.value = regist[:custon1]
+#      custom2 = issue.custom_fields[1]
+#      custom2.value = regist[:custon2]
+#      custom3 = issue.custom_fields[2]
+#      custom3.value = regist[:custon3]
+#      custom4 = issue.custom_fields[3]
+#      custom4.value = regist[:custon4]
+      if issue.save
+        puts issue.id
+      else
+        puts issue.errors.full_messages
+      end
     end
 
 #    mail_session.tmail_list.each_with_index do |t_mail, i|
