@@ -5,8 +5,9 @@
 require 'rubygems'
 #require 'trac4r'
 require 'redmine_client'
+require 'zbxapi'
 #require 'json'
-#require 'zabbixapi'
+require 'zabbixapi'
 
 # for windows.Because it's difficult for installing tmail in windows.
 #require 'action_mailer' unless ( RUBY_PLATFORM =~ /linux$/ )
@@ -67,11 +68,15 @@ module MailPicker
       self.user = 'admin'# 定数ファイルで宣言する
       self.password = 'admin'# 定数ファイルで宣言する
     end
+#    zbx = Zabbix::ZbxAPI.new('http://172.17.1.207/zabbix/')
+#    zbx.login('admin','zabbix')
     
-#    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/', 'admin', 'zabbix')
+    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/hosts.php', 'admin', 'zabbix')
+    
 #    hostid = zbx.get_host_id('portal-stg01')
-    
-#    p hostid
+    p zbx
+    return
+
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
 #    conf = ConfUtil.read_conf
@@ -96,9 +101,9 @@ module MailPicker
 #	    $hinemosTracLog.puts_message "Success to access the mail server."
 #	  end
 
-# Redmine対応
-# 登録内容のスタブ
-
+    if MailPicker.update_issue
+      return
+    end
     regist_list = [
       {
         :tracker_id => 1, 
@@ -107,8 +112,8 @@ module MailPicker
         :project_id => 1,
         :description=> 'description1',
         :author_to_id => 1,
-        :custon1 => 'custom_text',
-        :custom2 => 12345,
+        :custom1 => 'custoco',
+        :custom2 => '12345',
         :custom3 => 'Monday',
         :custom4 => '2011-07-25'
       } , 
@@ -119,8 +124,8 @@ module MailPicker
         :project_id => 1,
         :description => 'description2',
         :author_to_id => 1,
-        :custon1 => 'custom_text',
-        :custom2 => 6789,
+        :custom1 => 'custom',
+        :custom2 =>'6789',
         :custom3 => 'Tuesday',
         :custom4 => '2011-07-30'
       }
@@ -129,26 +134,21 @@ module MailPicker
 # Issue model on the client side
     regist_list.each do |regist|
 
+      custom_fields = {'1' => regist[:custom1],
+                       '2' => regist[:custom2],
+                       '3' => regist[:custom3],
+                       '4' => regist[:custom4]}
+
       issue = RedmineClient::Issue.new(
         :tracker_id => regist[:tracker_id],     # トラッカーID
         :subject => regist[:subject],           # 題名
         :status_id => regist[:status_id],      # ステータスID
         :project_id => regist[:project_id],     # プロジェクトID
         :description => regist[:description], #説明
-        :author_to_id => regist[:author_to_id] # 登録ユーザID
+        :author_to_id => regist[:author_to_id], # 登録ユーザID
+        :custom_field_values => custom_fields
       )
 
-#      puts issue
-#      issue.save
-      # カスタムフィールドの入力
-#      custom1 = issue.custom_fields[0]
-#      custom1.value = regist[:custon1]
-#      custom2 = issue.custom_fields[1]
-#      custom2.value = regist[:custon2]
-#      custom3 = issue.custom_fields[2]
-#      custom3.value = regist[:custon3]
-#      custom4 = issue.custom_fields[3]
-#      custom4.value = regist[:custon4]
       if issue.save
         puts issue.id
       else
@@ -221,7 +221,49 @@ module MailPicker
 #    $hinemosTracLog.finalize
   end
 
-
+#
+# update issue
+#
+  def update_issue
+    
+# アップデート用のスタブ
+    regist = 
+    {
+      :tracker_id => 1, 
+      :subject => 'update',
+      :status_id => 2,
+      :project_id => 2,
+      :description=> 'Hello',
+      :custom1 => 'customXXX',
+      :custom2 => '1212',
+      :custom3 => 'Sunday',
+      :custom4 => '2011-11-01'
+    }
+    
+    issue = RedmineClient::Issue.find(1)
+    
+    issue.tracker_id = regist[:tracker_id]
+    issue.subject = regist[:subject]
+    issue.status_id = regist[:status_id]
+    issue.project_id = regist[:project_id]
+    issue.description = regist[:description]
+    
+    set_custom_field(issue, 'custom_text', regist[:custom1])
+    set_custom_field(issue, 'custom_int', regist[:custom2])
+    set_custom_field(issue, 'custom_choice', regist[:custom3])
+    set_custom_field(issue, 'custom_day', regist[:custom4])
+    
+    return issue.save
+  end
+  
+  def set_custom_field(issue, name, value)
+    issue.custom_fields.each do |custom_field|
+      if custom_field.name == name
+        custom_field.value = value
+      end
+    end
+  end
+  
 #
 # check the mail if it's target
 #
@@ -248,7 +290,7 @@ module MailPicker
     return false
   end
 
-  module_function :main, :target_mail?
+  module_function :main, :update_issue, :set_custom_field, :target_mail?
 
 end
 
