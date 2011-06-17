@@ -14,7 +14,7 @@ require 'zabbixapi'
 #require 'nkf'
 #require 'yaml'
 #require 'rexchange'
-require 'savon'
+#require 'savon'
 
 
 ex_path = File.expand_path(File.dirname(__FILE__))
@@ -53,12 +53,6 @@ MUST_WRITE_CONF = [ :mail_server_address,
                     :mail_server_password,
                     :trac_url,
                     :target_mail_from ]
-
-RedmineClient::Base.configure do
-  self.site = 'http://172.17.1.206:3000/'# 定数ファイルで宣言する
-  self.user = 'admin'# 定数ファイルで宣言する
-  self.password = 'admin'# 定数ファイルで宣言する
-end
     
 #class HinemosTrac
 
