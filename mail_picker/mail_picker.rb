@@ -5,8 +5,8 @@
 require 'rubygems'
 #require 'trac4r'
 require 'redmine_client'
-require 'json'
-require 'zabbixapi'
+#require 'json'
+#require 'zabbixapi'
 
 # for windows.Because it's difficult for installing tmail in windows.
 #require 'action_mailer' unless ( RUBY_PLATFORM =~ /linux$/ )
@@ -63,15 +63,15 @@ module MailPicker
 #
   def main
     RedmineClient::Base.configure do
-      self.site = 'http://172.17.1.206:3000/'# 定数ファイルで宣言する
+      self.site = 'http://172.17.1.206/redmine/'# 定数ファイルで宣言する
       self.user = 'admin'# 定数ファイルで宣言する
       self.password = 'admin'# 定数ファイルで宣言する
     end
     
-    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/', 'admin', 'zabbix')
-    hostid = zbx.get_host_id('portal-stg01')
+#    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/', 'admin', 'zabbix')
+#    hostid = zbx.get_host_id('portal-stg01')
     
-    p hostid
+#    p hostid
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
 #    conf = ConfUtil.read_conf
