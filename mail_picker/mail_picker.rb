@@ -5,6 +5,8 @@
 require 'rubygems'
 #require 'trac4r'
 require 'redmine_client'
+require 'json'
+require 'zabbixapi'
 
 # for windows.Because it's difficult for installing tmail in windows.
 #require 'action_mailer' unless ( RUBY_PLATFORM =~ /linux$/ )
@@ -12,7 +14,7 @@ require 'redmine_client'
 #require 'nkf'
 #require 'yaml'
 #require 'rexchange'
-#require 'savon'
+require 'savon'
 
 
 ex_path = File.expand_path(File.dirname(__FILE__))
@@ -66,7 +68,16 @@ module MailPicker
 # main procedure
 #
   def main
-
+    RedmineClient::Base.configure do
+      self.site = 'http://172.17.1.206:3000/'# 定数ファイルで宣言する
+      self.user = 'admin'# 定数ファイルで宣言する
+      self.password = 'admin'# 定数ファイルで宣言する
+    end
+    
+    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/', 'admin', 'zabbix')
+    hostid = zbx.get_host_id('portal-stg01')
+    
+    p hostid
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
 #    conf = ConfUtil.read_conf
@@ -122,15 +133,15 @@ module MailPicker
     ]
 
 # Issue model on the client side
-
     regist_list.each do |regist|
+
       issue = RedmineClient::Issue.new(
         :tracker_id => regist[:tracker_id],     # トラッカーID
         :subject => regist[:subject],           # 題名
         :status_id => regist[:status_id],      # ステータスID
         :project_id => regist[:project_id],     # プロジェクトID
         :description => regist[:description], #説明
-        :author_to_id => regist[:author_to_id]    # 登録ユーザID
+        :author_to_id => regist[:author_to_id] # 登録ユーザID
       )
 
 #      puts issue
