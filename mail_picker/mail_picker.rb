@@ -5,8 +5,7 @@
 require 'rubygems'
 #require 'trac4r'
 require 'redmine_client'
-require 'zbxapi'
-#require 'json'
+require 'json'
 require 'zabbixapi'
 
 # for windows.Because it's difficult for installing tmail in windows.
@@ -68,15 +67,65 @@ module MailPicker
       self.user = 'admin'# 定数ファイルで宣言する
       self.password = 'admin'# 定数ファイルで宣言する
     end
-#    zbx = Zabbix::ZbxAPI.new('http://172.17.1.207/zabbix/')
-#    zbx.login('admin','zabbix')
     
-    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/hosts.php', 'admin', 'zabbix')
-    
-#    hostid = zbx.get_host_id('portal-stg01')
-    p zbx
-    return
+    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/api_jsonrpc.php', 'admin', 'zabbix') 
+    hostid = zbx.get_host_id('s-ibs-portal-stg01')
+#    p zbx
+#    p hostid
 
+    message_get_alert = {
+      :method => 'alert.get',
+      :params => {
+         :output => 'extend',
+      },
+      :auth => zbx.auth
+    }
+    alerts = zbx.do_request(message_get_alert) 
+ #   p alerts
+
+    message_get_event = {
+      :method => 'event.get',
+      :params => {
+#         :limit =>  10,
+         :object => 0,
+         :output => 'extend',
+         :sortfield => 'clock',
+         :sortorder => 'DESC'
+#        :time_from => '1284910040',
+#        :time_till => '1284991200'
+      },
+      :auth => zbx.auth
+    }
+    events = zbx.do_request(message_get_event) 
+#    p events
+    
+    ev = events[1]
+    message_get_host = {
+      :method => 'host.get',
+      :params => {
+        :triggerids =>[ev["objectid"]],
+        :output => 'extend'
+      },
+      :auth => zbx.auth
+    }
+    host = zbx.do_request(message_get_host) 
+#    p host
+    
+    triggers = {}
+    events.each_with_index do |event, idx|
+      message_get_trigger = {
+        :method => 'trigger.get',
+        :params => {
+          :triggerids =>[event["objectid"]],
+          :output => 'extend'
+        },
+        :auth => zbx.auth
+      }
+      triggers[idx] = zbx.do_request(message_get_trigger) 
+#      p ev
+#      p triggers
+   end
+ 
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
 #    conf = ConfUtil.read_conf
@@ -101,9 +150,11 @@ module MailPicker
 #	    $hinemosTracLog.puts_message "Success to access the mail server."
 #	  end
 
-    if MailPicker.update_issue
-      return
-    end
+# アップデート用関数の呼び出しを一時コメントアウト（検証で記述しているので正しい位置に移動する必要あり）
+#    if MailPicker.update_issue
+#      return
+#    end
+
     regist_list = [
       {
         :tracker_id => 1, 
