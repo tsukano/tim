@@ -68,63 +68,79 @@ module MailPicker
       self.password = 'admin'# 定数ファイルで宣言する
     end
     
-    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/api_jsonrpc.php', 'admin', 'zabbix') 
-    hostid = zbx.get_host_id('s-ibs-portal-stg01')
+    event_id = 'EVENT.ID'
+    event_date = 'EVENT.DATE'
+    node_id = 'NODE.ID'
+    node_name = 'NODE.NAME'
+    host_id = 'HOST.ID'
+    hostname = 'HOSTNAME'
+    trigger_id = 'TRIGGER.ID'
+    trigger_name = 'TRIGGER.NAME'
+    trigger_value = '123'
+    trigger_nseverity = 'TRIGGER.NSEVERITY'
+#########################################################################################
+# ↓↓　Zabbixapi関連
+#########################################################################################
+#    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/api_jsonrpc.php', 'admin', 'zabbix') 
+#    hostid = zbx.get_host_id('s-ibs-portal-stg01')
 #    p zbx
 #    p hostid
 
-    message_get_alert = {
-      :method => 'alert.get',
-      :params => {
-         :output => 'extend',
-      },
-      :auth => zbx.auth
-    }
-    alerts = zbx.do_request(message_get_alert) 
- #   p alerts
+#    message_get_alert = {
+#      :method => 'alert.get',
+#      :params => {
+#         :output => 'extend',
+#      },
+#      :auth => zbx.auth
+#    }
+#    alerts = zbx.do_request(message_get_alert) 
+#    p alerts
 
-    message_get_event = {
-      :method => 'event.get',
-      :params => {
+#    message_get_event = {
+#      :method => 'event.get',
+#      :params => {
 #         :limit =>  10,
-         :object => 0,
-         :output => 'extend',
-         :sortfield => 'clock',
-         :sortorder => 'DESC'
+#         :object => 0,
+#         :output => 'extend',
+#         :sortfield => 'clock',
+#         :sortorder => 'DESC'
 #        :time_from => '1284910040',
 #        :time_till => '1284991200'
-      },
-      :auth => zbx.auth
-    }
-    events = zbx.do_request(message_get_event) 
+#      },
+#      :auth => zbx.auth
+#    }
+#    events = zbx.do_request(message_get_event) 
 #    p events
     
-    ev = events[1]
-    message_get_host = {
-      :method => 'host.get',
-      :params => {
-        :triggerids =>[ev["objectid"]],
-        :output => 'extend'
-      },
-      :auth => zbx.auth
-    }
-    host = zbx.do_request(message_get_host) 
+#    ev = events[1]
+#    message_get_host = {
+#      :method => 'host.get',
+#      :params => {
+#        :triggerids =>[ev["objectid"]],
+#        :output => 'extend'
+#      },
+#      :auth => zbx.auth
+#    }
+#    host = zbx.do_request(message_get_host) 
 #    p host
     
-    triggers = {}
-    events.each_with_index do |event, idx|
-      message_get_trigger = {
-        :method => 'trigger.get',
-        :params => {
-          :triggerids =>[event["objectid"]],
-          :output => 'extend'
-        },
-        :auth => zbx.auth
-      }
-      triggers[idx] = zbx.do_request(message_get_trigger) 
+#    triggers = {}
+#    events.each_with_index do |event, idx|
+#      message_get_trigger = {
+#        :method => 'trigger.get',
+#        :params => {
+#          :triggerids =>[event["objectid"]],
+#          :output => 'extend'
+#        },
+#        :auth => zbx.auth
+#      }
+#      triggers[idx] = zbx.do_request(message_get_trigger) 
 #      p ev
 #      p triggers
-   end
+#   end
+###########################################################
+# ↑↑　Zabbixapi関連
+###########################################################
  
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
@@ -155,57 +171,97 @@ module MailPicker
 #      return
 #    end
 
-    regist_list = [
-      {
-        :tracker_id => 1, 
-        :subject => 'subject1',
-        :status_id => 1,
-        :project_id => 1,
-        :description=> 'description1',
-        :author_to_id => 1,
-        :custom1 => 'custoco',
-        :custom2 => '12345',
-        :custom3 => 'Monday',
-        :custom4 => '2011-07-25'
-      } , 
-      {
-        :tracker_id => 1, 
-        :subject => 'subject2',
-        :status_id => 1,
-        :project_id => 1,
-        :description => 'description2',
-        :author_to_id => 1,
-        :custom1 => 'custom',
-        :custom2 =>'6789',
-        :custom3 => 'Tuesday',
-        :custom4 => '2011-07-30'
-      }
-    ]
+#    mail_list = [
+#      {
+#        :tracker_id => 1, 
+#        :subject => 'subject1',
+#        :status_id => 1,
+#        :project_id => 1,
+#        :description=> 'description1',
+#        :author_to_id => 1,
+#        :event_id => 1,
+#        :event_date => 1,
+#        :node_id => 1,
+#        :node_name => 1,
+#        :host_id => 1,
+#        :host_name => 1,
+#        :trigger_id => 1,
+#        :trigger_name => 1,
+#        :trigger_value => 1,
+#        :trigger_nseverity => 1
+#      } , 
+#      {
+#        :tracker_id => 1, 
+#        :subject => 'subject2',
+#        :status_id => 1,
+#        :project_id => 1,
+#        :description => 'description2',
+#        :author_to_id => 1,
+#        :event_id => 1,
+#        :event_date => 1,
+#        :node_id => 1,
+#        :node_name => 1,
+#        :host_id => 1,
+#        :host_name => 1,
+#        :trigger_id => 1,
+#        :trigger_name => 1,
+#        :trigger_value => 1,
+#        :trigger_nseverity => 1
+#      }
+#    ]
 
 # Issue model on the client side
-    regist_list.each do |regist|
+#################################################################
+# ↓↓リストのものをまとめて登録する場合
+#################################################################
+#    mail_list.each do |mail|
+#      custom_fields = {'5' => regist[:event_id],
+#                       '6' => regist[:event_date],
+#                       '7' => regist[:node_id],
+#                       '8' => regist[:node_name],
+#                       '9' => regist[:host_id],
+#                       '10' => regist[:hostname],
+#                       '11' => regist[:trigger_id],
+#                       '12' => regist[:trigger_name],
+#                       '13' => regist[:trigger_value],
+#                       '14' => regist[:trigger_nseverity]
+#                      }
+#
+#      issue = RedmineClient::Issue.new(
+#        :tracker_id => regist[:tracker_id], 
+#        :subject => regist[:subject],
+#        :status_id => regist[:status_id],
+#        :project_id => regist[:project_id],
+#        :description => regist[:description], 
+#        :custom_field_values => custom_fields
+#      )
+      custom_fields = {'5' => event_id,
+                       '6' => event_date,
+                       '7' => node_id,
+                       '8' => node_name,
+                       '9' => host_id,
+                       '10' => hostname,
+                       '11' => trigger_id,
+                       '12' => trigger_name,
+                       '13' => trigger_value,
+                       '14' => trigger_nseverity
+                      }
 
-      custom_fields = {'1' => regist[:custom1],
-                       '2' => regist[:custom2],
-                       '3' => regist[:custom3],
-                       '4' => regist[:custom4]}
-
+      subject = trigger_name + '_' + node_name + '_' + hostname
+      p subject
+      p custom_fields
       issue = RedmineClient::Issue.new(
-        :tracker_id => regist[:tracker_id],     # トラッカーID
-        :subject => regist[:subject],           # 題名
-        :status_id => regist[:status_id],      # ステータスID
-        :project_id => regist[:project_id],     # プロジェクトID
-        :description => regist[:description], #説明
-        :author_to_id => regist[:author_to_id], # 登録ユーザID
+        :subject => subject,
+        :project_id => 1,
         :custom_field_values => custom_fields
       )
-
+      
       if issue.save
         puts issue.id
       else
         puts issue.errors.full_messages
       end
-    end
+#    end
 
 #    mail_session.tmail_list.each_with_index do |t_mail, i|
 #      if MailPicker.target_mail?(t_mail, conf)
