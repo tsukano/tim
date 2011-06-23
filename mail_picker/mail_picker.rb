@@ -63,21 +63,23 @@ module MailPicker
 #
   def main
     RedmineClient::Base.configure do
-      self.site = 'http://172.17.1.206/redmine/'# 定数ファイルで宣言する
-      self.user = 'admin'# 定数ファイルで宣言する
-      self.password = 'admin'# 定数ファイルで宣言する
+      self.site = 'http://172.17.1.206/redmine/'
+      self.user = 'admin'
+      self.password = 'admin'
     end
     
-    event_id = 'EVENT.ID'
-    event_date = 'EVENT.DATE'
-    node_id = 'NODE.ID'
-    node_name = 'NODE.NAME'
-    host_id = 'HOST.ID'
-    hostname = 'HOSTNAME'
-    trigger_id = 'TRIGGER.ID'
-    trigger_name = 'TRIGGER.NAME'
-    trigger_value = '123'
-    trigger_nseverity = 'TRIGGER.NSEVERITY'
+    mail_content = 
+"EVENT.ID = 1234
+EVENT.DATE = 20110622
+NODE.ID = 1111
+NODE.NAME = ibs
+HOST.ID = 2233
+HOSTNAME = ibs-potal
+TRIGGER.ID = 5963
+TRIGGER.NAME = サーバダウン
+TRIGGER.VALUE = 3
+TRIGGER.NSEVERITY = 5"
+
 #########################################################################################
 # ↓↓　Zabbixapi関連
 #########################################################################################
@@ -144,15 +146,15 @@ module MailPicker
  
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
-#    conf = ConfUtil.read_conf
-#    return if conf.empty?
+    conf = ConfUtil.read_conf
+    return if conf.empty?
     
-#    MUST_WRITE_CONF.each do |conf_field|
-#      if conf[conf_field] == nil || conf[conf_field].blank?
+    MUST_WRITE_CONF.each do |conf_field|
+      if conf[conf_field] == nil || conf[conf_field].blank?
 #        $hinemosTracLog.puts_message "Caution. You must write configuration about #{conf_field}."
-#        return
-#      end
-#    end
+        return
+      end
+    end
 
 #    mail_duplicate_checker = MailDuplicateChecker.new 
 #    return if mail_duplicate_checker.message_id_list == nil # not found the file
@@ -166,164 +168,93 @@ module MailPicker
 #	    $hinemosTracLog.puts_message "Success to access the mail server."
 #	  end
 
-# アップデート用関数の呼び出しを一時コメントアウト（検証で記述しているので正しい位置に移動する必要あり）
-#    if MailPicker.update_issue
-#      return
-#    end
-
-#    mail_list = [
-#      {
-#        :tracker_id => 1, 
-#        :subject => 'subject1',
-#        :status_id => 1,
-#        :project_id => 1,
-#        :description=> 'description1',
-#        :author_to_id => 1,
-#        :event_id => 1,
-#        :event_date => 1,
-#        :node_id => 1,
-#        :node_name => 1,
-#        :host_id => 1,
-#        :host_name => 1,
-#        :trigger_id => 1,
-#        :trigger_name => 1,
-#        :trigger_value => 1,
-#        :trigger_nseverity => 1
-#      } , 
-#      {
-#        :tracker_id => 1, 
-#        :subject => 'subject2',
-#        :status_id => 1,
-#        :project_id => 1,
-#        :description => 'description2',
-#        :author_to_id => 1,
-#        :event_id => 1,
-#        :event_date => 1,
-#        :node_id => 1,
-#        :node_name => 1,
-#        :host_id => 1,
-#        :host_name => 1,
-#        :trigger_id => 1,
-#        :trigger_name => 1,
-#        :trigger_value => 1,
-#        :trigger_nseverity => 1
-#      }
-#    ]
-
-# Issue model on the client side
-#################################################################
-# ↓↓リストのものをまとめて登録する場合
-#################################################################
-#    mail_list.each do |mail|
-#      custom_fields = {'5' => regist[:event_id],
-#                       '6' => regist[:event_date],
-#                       '7' => regist[:node_id],
-#                       '8' => regist[:node_name],
-#                       '9' => regist[:host_id],
-#                       '10' => regist[:hostname],
-#                       '11' => regist[:trigger_id],
-#                       '12' => regist[:trigger_name],
-#                       '13' => regist[:trigger_value],
-#                       '14' => regist[:trigger_nseverity]
-#                      }
-#
-#      issue = RedmineClient::Issue.new(
-#        :tracker_id => regist[:tracker_id], 
-#        :subject => regist[:subject],
-#        :status_id => regist[:status_id],
-#        :project_id => regist[:project_id],
-#        :description => regist[:description], 
-#        :custom_field_values => custom_fields
-#      )
-      custom_fields = {'5' => event_id,
-                       '6' => event_date,
-                       '7' => node_id,
-                       '8' => node_name,
-                       '9' => host_id,
-                       '10' => hostname,
-                       '11' => trigger_id,
-                       '12' => trigger_name,
-                       '13' => trigger_value,
-                       '14' => trigger_nseverity
-                      }
-
-      subject = trigger_name + '_' + node_name + '_' + hostname
-      p subject
-      p custom_fields
-      issue = RedmineClient::Issue.new(
-        :subject => subject,
-        :project_id => 1,
-        :custom_field_values => custom_fields
-      )
-      
-      if issue.save
-        puts issue.id
-      else
-        puts issue.errors.full_messages
-      end
-#    end
-
+    # Issue model on the client side
 #    mail_session.tmail_list.each_with_index do |t_mail, i|
 #      if MailPicker.target_mail?(t_mail, conf)
-#        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
-#
+        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
+
 #        $hinemosTracLog.puts_message "The Mail (#{t_mail.subject}) is target for creating ticket."
-#
+
 #        trac = Trac.new(conf[:trac_url] + TRAC_URL_SUFFIX,
-#       								conf[:trac_user_id], 
+#        								conf[:trac_user_id], 
 #        								conf[:trac_user_password])
-#
-#        option_field_list = conf[:option_fields_fix] == nil ?
-#                              Hash.new                      :
-#                              conf[:option_fields_fix]
-#
-#        mail_parser = MailParser.new( t_mail.body.to_s,
-#        															t_mail.date.to_s)
-#        
-#        ConfUtil.get_mapping_field_list(conf.keys).each do |mapping_field|
-#
-#          mapping_value =  mail_parser.get_trac_value(conf, 
-#          																						mapping_field)
-#
-#          next if mapping_value == nil
-#
-#          option_field_list.store(mapping_field, mapping_value)
-#
-#        end
-#        
-#        mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
-#        mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
-#
-#        begin
+
+        option_field_list = conf[:option_fields_fix] == nil ?
+                              Hash.new                      :
+                              conf[:option_fields_fix]
+
+        mail_parser = MailParser.new( t_mail.body.to_s,
+        															t_mail.date.to_s)
+
+        ConfUtil.get_mapping_field_list(conf.keys).each do |mapping_field|
+
+          mapping_value =  mail_parser.get_trac_value(conf, 
+          																						mapping_field)
+
+          next if mapping_value == nil
+
+          option_field_list.store(mapping_field, mapping_value)
+
+        end
+
+        mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
+        mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
+
+        custom_fields = {conf[custom_field_id_event_id] => event_id,
+                 conf[custom_field_id_event_date] => event_date,
+                 conf[custom_field_id_node_id] => node_id,
+                 conf[custom_field_id_node_name] => node_name,
+                 conf[custom_field_id_host_id] => host_id,
+                 conf[custom_field_id_hostname] => hostname,
+                 conf[custom_field_id_trigger_id] => trigger_id,
+                 conf[custom_field_id_trigger_name] => trigger_name,
+                 conf[custom_field_id_trigger_value] => trigger_value,
+                 conf[custom_field_id_trigger_nseverity] => trigger_nseverity
+        }
+
+        issue = RedmineClient::Issue.new(
+          :subject => mail_subject,
+          :project_id => conf[regist_project_id],
+          :custom_field_values => custom_fields
+        )
+
+        begin
 #          t_id = trac.tickets.create(mail_subject, 
 #          							 mail_body, 
 #          							 option_field_list)
-#        rescue
+      
+          if issue.save
+            puts issue.id
+          else
+            puts issue.errors.full_messages
+          end
+
+        rescue
 #          $hinemosTracLog.puts_message "Failure to create ticket to the trac server.Please Check trac server configuration."
-#          break
-#        else
-#          $hinemosTracLog.puts_message "Success to create ticket ( id = #{t_id} )"
-#        end
-#
+          break
+        else
+#          $hinemosTracLog.puts_message "Success to create ticket ( id = #{issue.id} )"
+        end
+
 #        if conf[:pop_mail_delete_enable] && mail_session.pop?
 #          mail_session.delete_pop_mail(i)
 #          $hinemosTracLog.puts_message "The mail was deleted in mail server."
-#
+
 #        else
-#          writted_success = mail_duplicate_checker.write_id(t_mail.message_id)
-#          if writted_success
+          writted_success = mail_duplicate_checker.write_id(t_mail.message_id)
+          if writted_success
 #            $hinemosTracLog.puts_message "Success to write the mail id to the file."
-#          else
+          else
 #            $hinemosTracLog.puts_message "Failure to write the mail id to the file."
-#            break
-#          end
+            break
+          end
 #        end
 #      end
 #    end
     
 #    mail_session.finalize
 
-#    $hinemosTracLog.puts_message "Finished accessing the mail server."
+#   $hinemosTracLog.puts_message "Finished accessing the mail server."
 
 #    $hinemosTracLog.finalize
   end
@@ -333,7 +264,7 @@ module MailPicker
 #
   def update_issue
     
-# アップデート用のスタブ
+# アップデート用のスタブ(仕様に応じてこの関数の引数を変える)
     regist = 
     {
       :tracker_id => 1, 
