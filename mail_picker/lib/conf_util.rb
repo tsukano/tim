@@ -9,10 +9,10 @@ class ConfUtil
     begin
     file = open(CONF_FILE)
     rescue
-      $hinemosTracLog.puts_message "Failure to open the conf file (#{CONF_FILE})"
+#      $hinemosTracLog.puts_message "Failure to open the conf file (#{CONF_FILE})"
       return
     else
-      $hinemosTracLog.puts_message "Success to open the conf file (#{CONF_FILE})"
+#      $hinemosTracLog.puts_message "Success to open the conf file (#{CONF_FILE})"
     end
     while line = file.gets do
       next if line =~ /^#.*/ || line.chomp == ''

@@ -68,7 +68,7 @@ module MailPicker
       self.password = 'admin'
     end
     
-    mail_content = 
+    mail_body = 
 "EVENT.ID = 1234
 EVENT.DATE = 20110622
 NODE.ID = 1111
@@ -146,15 +146,39 @@ TRIGGER.NSEVERITY = 5"
  
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
-    conf = ConfUtil.read_conf
-    return if conf.empty?
-    
-    MUST_WRITE_CONF.each do |conf_field|
-      if conf[conf_field] == nil || conf[conf_field].blank?
+#    conf = ConfUtil.read_conf
+#    return if conf.empty?
+    conf = {
+        :mapping_event_id => 'EVENT.ID',
+        :mapping_event_date => 'EVENT.DATE',
+        :mapping_node_id => 'NODE.ID',
+        :mapping_node_name => 'NODE.NAME',
+        :mapping_host_id => 'HOST.ID',
+        :mapping_hostname => 'HOSTNAME',
+        :mapping_trigger_id => 'TRIGGER.ID',
+        :mapping_trigger_name => 'TRIGGER.NAME',
+        :mapping_trigger_value => 'TRIGGER.VALUE',
+        :mapping_trigger_nseverity => 'TRIGGER.NSEVERITY',
+        
+        :regist_project_id => '1',
+        
+        :custom_field_id_event_id => '5',
+        :custom_field_id_event_date => '6',
+        :custom_field_id_node_id => '7',
+        :custom_field_id_node_name => '8',
+        :custom_field_id_host_id => '9',
+        :custom_field_id_hostname => '10',
+        :custom_field_id_trigger_id => '11',
+        :custom_field_id_trigger_name => '12',
+        :custom_field_id_trigger_value => '13',
+        :custom_field_id_trigger_nseverity => '14'
+    }
+#    MUST_WRITE_CONF.each do |conf_field|
+#      if conf[conf_field] == nil || conf[conf_field].blank?
 #        $hinemosTracLog.puts_message "Caution. You must write configuration about #{conf_field}."
-        return
-      end
-    end
+#        return
+#      end
+#    end
 
 #    mail_duplicate_checker = MailDuplicateChecker.new 
 #    return if mail_duplicate_checker.message_id_list == nil # not found the file
@@ -171,7 +195,7 @@ TRIGGER.NSEVERITY = 5"
     # Issue model on the client side
 #    mail_session.tmail_list.each_with_index do |t_mail, i|
 #      if MailPicker.target_mail?(t_mail, conf)
-        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
+#        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
 
 #        $hinemosTracLog.puts_message "The Mail (#{t_mail.subject}) is target for creating ticket."
 
@@ -179,42 +203,56 @@ TRIGGER.NSEVERITY = 5"
 #        								conf[:trac_user_id], 
 #        								conf[:trac_user_password])
 
-        option_field_list = conf[:option_fields_fix] == nil ?
+        custom_field_list = conf[:option_fields_fix] == nil ?
                               Hash.new                      :
                               conf[:option_fields_fix]
+        
+#        mail_parser = MailParser.new( t_mail.body.to_s,
+#        															t_mail.date.to_s)
 
-        mail_parser = MailParser.new( t_mail.body.to_s,
-        															t_mail.date.to_s)
+        mapping_fields = [
+                  'EVENT.ID',
+                  'EVENT.DATE',
+                  'NODE.ID',
+                  'NODE.NAME',
+                  'HOST.ID',
+                  'HOSTNAME',
+                  'TRIGGER.ID',
+                  'TRIGGER.NAME',
+                  'TRIGGER.VALUE',
+                  'TRIGGER.NSEVERITY'
+        ]
+#        ConfUtil.get_mapping_field_list(conf.keys).each do |mapping_field|
 
-        ConfUtil.get_mapping_field_list(conf.keys).each do |mapping_field|
+        mail_body.each_line do |line| 
+          mapping_fields.each do |mapping_field|
 
-          mapping_value =  mail_parser.get_trac_value(conf, 
-          																						mapping_field)
+            parse_mapping_value =  /#{mapping_field} = /.match(line)
 
-          next if mapping_value == nil
-
-          option_field_list.store(mapping_field, mapping_value)
-
+            next if parse_mapping_value == nil
+  
+            custom_field_list.store(mapping_field, parse_mapping_value.post_match.rstrip)
+          end
         end
 
-        mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
-        mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
+#        mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
+#        mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
 
-        custom_fields = {conf[custom_field_id_event_id] => event_id,
-                 conf[custom_field_id_event_date] => event_date,
-                 conf[custom_field_id_node_id] => node_id,
-                 conf[custom_field_id_node_name] => node_name,
-                 conf[custom_field_id_host_id] => host_id,
-                 conf[custom_field_id_hostname] => hostname,
-                 conf[custom_field_id_trigger_id] => trigger_id,
-                 conf[custom_field_id_trigger_name] => trigger_name,
-                 conf[custom_field_id_trigger_value] => trigger_value,
-                 conf[custom_field_id_trigger_nseverity] => trigger_nseverity
+        custom_fields = {conf[:custom_field_id_event_id] => custom_field_list[conf[:mapping_event_id]],
+                 conf[:custom_field_id_event_date] => custom_field_list[conf[:mapping_event_date]],
+                 conf[:custom_field_id_node_id] => custom_field_list[conf[:mapping_node_id]],
+                 conf[:custom_field_id_node_name] => custom_field_list[conf[:mapping_node_name]],
+                 conf[:custom_field_id_host_id] => custom_field_list[conf[:mapping_host_id]],
+                 conf[:custom_field_id_hostname] => custom_field_list[conf[:mapping_hostname]],
+                 conf[:custom_field_id_trigger_id] => custom_field_list[conf[:mapping_trigger_id]],
+                 conf[:custom_field_id_trigger_name] => custom_field_list[conf[:mapping_trigger_name]],
+                 conf[:custom_field_id_trigger_value] => custom_field_list[conf[:mapping_trigger_value]],
+                 conf[:custom_field_id_trigger_nseverity] => custom_field_list[conf[:mapping_trigger_nseverity]]
         }
-
+        mail_subject = "仕様が決まったら設定する"
         issue = RedmineClient::Issue.new(
           :subject => mail_subject,
-          :project_id => conf[regist_project_id],
+          :project_id => conf[:regist_project_id],
           :custom_field_values => custom_fields
         )
 
@@ -231,7 +269,7 @@ TRIGGER.NSEVERITY = 5"
 
         rescue
 #          $hinemosTracLog.puts_message "Failure to create ticket to the trac server.Please Check trac server configuration."
-          break
+#          break
         else
 #          $hinemosTracLog.puts_message "Success to create ticket ( id = #{issue.id} )"
         end
@@ -241,13 +279,13 @@ TRIGGER.NSEVERITY = 5"
 #          $hinemosTracLog.puts_message "The mail was deleted in mail server."
 
 #        else
-          writted_success = mail_duplicate_checker.write_id(t_mail.message_id)
-          if writted_success
+#          writted_success = mail_duplicate_checker.write_id(t_mail.message_id)
+#          if writted_success
 #            $hinemosTracLog.puts_message "Success to write the mail id to the file."
-          else
+#          else
 #            $hinemosTracLog.puts_message "Failure to write the mail id to the file."
-            break
-          end
+#            break
+#          end
 #        end
 #      end
 #    end
