@@ -53,7 +53,13 @@ MUST_WRITE_CONF = [ :mail_server_address,
                     :mail_server_password,
                     :trac_url,
                     :target_mail_from ]
-    
+
+RedmineClient::Base.configure do
+  self.site = 'http://172.17.1.206/redmine/'
+  self.user = 'admin'
+  self.password = 'admin'
+end
+
 #class HinemosTrac
 
 module MailPicker
@@ -62,11 +68,6 @@ module MailPicker
 # main procedure
 #
   def main
-    RedmineClient::Base.configure do
-      self.site = 'http://172.17.1.206/redmine/'
-      self.user = 'admin'
-      self.password = 'admin'
-    end
     
     mail_body = 
 "EVENT.ID = 1234
@@ -237,6 +238,7 @@ TRIGGER.NSEVERITY = 5"
 
 #        mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
 #        mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
+        
 
         custom_fields = {conf[:custom_field_id_event_id] => custom_field_list[conf[:mapping_event_id]],
                  conf[:custom_field_id_event_date] => custom_field_list[conf[:mapping_event_date]],
@@ -249,31 +251,31 @@ TRIGGER.NSEVERITY = 5"
                  conf[:custom_field_id_trigger_value] => custom_field_list[conf[:mapping_trigger_value]],
                  conf[:custom_field_id_trigger_nseverity] => custom_field_list[conf[:mapping_trigger_nseverity]]
         }
-        mail_subject = "仕様が決まったら設定する"
-        issue = RedmineClient::Issue.new(
-          :subject => mail_subject,
-          :project_id => conf[:regist_project_id],
-          :custom_field_values => custom_fields
-        )
-
-        begin
-#          t_id = trac.tickets.create(mail_subject, 
-#          							 mail_body, 
-#          							 option_field_list)
-      
-          if issue.save
-            puts issue.id
+        if !check_and_update(custom_fields)
+          mail_subject = "仕様が決まったら設定する"
+          issue = RedmineClient::Issue.new(
+            :subject => mail_subject,
+            :project_id => conf[:regist_project_id],
+            :custom_field_values => custom_fields
+          )
+  
+          begin
+  #          t_id = trac.tickets.create(mail_subject, 
+  #          							 mail_body, 
+  #          							 option_field_list)
+  
+            if issue.save
+              puts issue.id
+            else
+              puts issue.errors.full_messages
+            end
+          rescue
+#            $hinemosTracLog.puts_message "Failure to create ticket to the trac server.Please Check trac server configuration."
+#            break
           else
-            puts issue.errors.full_messages
+#            $hinemosTracLog.puts_message "Success to create ticket ( id = #{issue.id} )"
           end
-
-        rescue
-#          $hinemosTracLog.puts_message "Failure to create ticket to the trac server.Please Check trac server configuration."
-#          break
-        else
-#          $hinemosTracLog.puts_message "Success to create ticket ( id = #{issue.id} )"
         end
-
 #        if conf[:pop_mail_delete_enable] && mail_session.pop?
 #          mail_session.delete_pop_mail(i)
 #          $hinemosTracLog.puts_message "The mail was deleted in mail server."
@@ -300,36 +302,43 @@ TRIGGER.NSEVERITY = 5"
 #
 # update issue
 #
-  def update_issue
+  def check_and_update(custom_fields)
     
 # アップデート用のスタブ(仕様に応じてこの関数の引数を変える)
-    regist = 
-    {
-      :tracker_id => 1, 
-      :subject => 'update',
-      :status_id => 2,
-      :project_id => 2,
-      :description=> 'Hello',
-      :custom1 => 'customXXX',
-      :custom2 => '1212',
-      :custom3 => 'Sunday',
-      :custom4 => '2011-11-01'
-    }
-    
-    issue = RedmineClient::Issue.find(1)
-    
-    issue.tracker_id = regist[:tracker_id]
-    issue.subject = regist[:subject]
-    issue.status_id = regist[:status_id]
-    issue.project_id = regist[:project_id]
-    issue.description = regist[:description]
-    
-    set_custom_field(issue, 'custom_text', regist[:custom1])
-    set_custom_field(issue, 'custom_int', regist[:custom2])
-    set_custom_field(issue, 'custom_choice', regist[:custom3])
-    set_custom_field(issue, 'custom_day', regist[:custom4])
-    
-    return issue.save
+#    regist = 
+#    {
+#      :tracker_id => 1, 
+#      :subject => 'update',
+#      :status_id => 2,
+#      :project_id => 2,
+#      :description=> 'Hello',
+#      :custom1 => 'customXXX',
+#      :custom2 => '1212',
+#      :custom3 => 'Sunday',
+#      :custom4 => '2011-11-01'
+#    }
+    puts 'update in'
+
+    last_issue = RedmineClient::Issue.find(28)
+    puts last_issue
+    return
+    issues.each do |issue|
+      puts issue.id
+#      next if issue.custom_fields[:custom_field_id_event_id]  == custom_fields[:custom_field_id_event_id]
+#      issue.tracker_id = regist[:tracker_id]
+#      issue.subject = regist[:subject]
+#      issue.status_id = regist[:status_id]
+#      issue.project_id = regist[:project_id]
+#      issue.description = regist[:description]
+      
+#      set_custom_field(issue, 'custom_text', regist[:custom1])
+#      set_custom_field(issue, 'custom_int', regist[:custom2])
+#      set_custom_field(issue, 'custom_choice', regist[:custom3])
+#      set_custom_field(issue, 'custom_day', regist[:custom4])
+      
+#      return issue.save
+   end
+   return false
   end
   
   def set_custom_field(issue, name, value)
@@ -366,7 +375,7 @@ TRIGGER.NSEVERITY = 5"
     return false
   end
 
-  module_function :main, :update_issue, :set_custom_field, :target_mail?
+  module_function :main, :check_and_update, :set_custom_field, :target_mail?
 
 end
 
