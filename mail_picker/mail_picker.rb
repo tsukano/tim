@@ -58,6 +58,11 @@ RedmineClient::Base.configure do
   self.site = 'http://172.17.1.206/redmine/'
   self.user = 'admin'
   self.password = 'admin'
+  
+  def self.inherited(child)
+    child.headers['X-Redmine-Nometa'] = '1'
+  end
+
 end
 
 #class HinemosTrac
@@ -204,9 +209,7 @@ TRIGGER.NSEVERITY = 5"
 #        								conf[:trac_user_id], 
 #        								conf[:trac_user_password])
 
-        custom_field_list = conf[:option_fields_fix] == nil ?
-                              Hash.new                      :
-                              conf[:option_fields_fix]
+        custom_field_list = Hash.new
         
 #        mail_parser = MailParser.new( t_mail.body.to_s,
 #        															t_mail.date.to_s)
@@ -251,7 +254,9 @@ TRIGGER.NSEVERITY = 5"
                  conf[:custom_field_id_trigger_value] => custom_field_list[conf[:mapping_trigger_value]],
                  conf[:custom_field_id_trigger_nseverity] => custom_field_list[conf[:mapping_trigger_nseverity]]
         }
-        if !check_and_update(custom_fields)
+        if !check_and_update(custom_fields, conf)
+          puts 'update false'
+          return
           mail_subject = "仕様が決まったら設定する"
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
@@ -302,7 +307,7 @@ TRIGGER.NSEVERITY = 5"
 #
 # update issue
 #
-  def check_and_update(custom_fields)
+  def check_and_update(custom_fields, conf)
     
 # アップデート用のスタブ(仕様に応じてこの関数の引数を変える)
 #    regist = 
@@ -319,11 +324,15 @@ TRIGGER.NSEVERITY = 5"
 #    }
     puts 'update in'
 
-    last_issue = RedmineClient::Issue.find(28)
-    puts last_issue
-    return
-    issues.each do |issue|
-      puts issue.id
+    issues = RedmineClient::Issue.find(:all, )
+
+    issues.each do |issue|       
+        p issue
+        p conf[:custom_field_id_hostname]
+        p issue.custom_fields[conf[:custom_field_id_hostname].to_i]
+        p issue.custom_fields[conf[:custom_field_id_hostname].to_i].value
+#        if issue.custom_fields[conf[:custom_field_id_hostname].to_i].value == custom_fields[conf[:custom_field_id_hostname]]
+#          if issue.custom_fields[conf[:custom_field_id_trigger_id]].value == custom_fields[conf[:custom_field_id_trigger_id]]
 #      next if issue.custom_fields[:custom_field_id_event_id]  == custom_fields[:custom_field_id_event_id]
 #      issue.tracker_id = regist[:tracker_id]
 #      issue.subject = regist[:subject]
@@ -337,8 +346,10 @@ TRIGGER.NSEVERITY = 5"
 #      set_custom_field(issue, 'custom_day', regist[:custom4])
       
 #      return issue.save
-   end
-   return false
+        p issue
+      end
+    end
+    return false
   end
   
   def set_custom_field(issue, name, value)
