@@ -81,74 +81,10 @@ NODE.ID = 1111
 NODE.NAME = ibs
 HOST.ID = 2233
 HOSTNAME = ibs-portal
-TRIGGER.ID = 5963
+TRIGGER.ID = 9999
 TRIGGER.NAME = サーバダウン
 TRIGGER.VALUE = 2
 TRIGGER.NSEVERITY = 5"
-
-#########################################################################################
-# ↓↓　Zabbixapi関連
-#########################################################################################
-#    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/api_jsonrpc.php', 'admin', 'zabbix') 
-#    hostid = zbx.get_host_id('s-ibs-portal-stg01')
-#    p zbx
-#    p hostid
-
-#    message_get_alert = {
-#      :method => 'alert.get',
-#      :params => {
-#         :output => 'extend',
-#      },
-#      :auth => zbx.auth
-#    }
-#    alerts = zbx.do_request(message_get_alert) 
-#    p alerts
-
-#    message_get_event = {
-#      :method => 'event.get',
-#      :params => {
-#         :limit =>  10,
-#         :object => 0,
-#         :output => 'extend',
-#         :sortfield => 'clock',
-#         :sortorder => 'DESC'
-#        :time_from => '1284910040',
-#        :time_till => '1284991200'
-#      },
-#      :auth => zbx.auth
-#    }
-#    events = zbx.do_request(message_get_event) 
-#    p events
-    
-#    ev = events[1]
-#    message_get_host = {
-#      :method => 'host.get',
-#      :params => {
-#        :triggerids =>[ev["objectid"]],
-#        :output => 'extend'
-#      },
-#      :auth => zbx.auth
-#    }
-#    host = zbx.do_request(message_get_host) 
-#    p host
-    
-#    triggers = {}
-#    events.each_with_index do |event, idx|
-#      message_get_trigger = {
-#        :method => 'trigger.get',
-#        :params => {
-#          :triggerids =>[event["objectid"]],
-#          :output => 'extend'
-#        },
-#        :auth => zbx.auth
-#      }
-#      triggers[idx] = zbx.do_request(message_get_trigger) 
-#      p ev
-#      p triggers
-#   end
-###########################################################
-# ↑↑　Zabbixapi関連
-###########################################################
  
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
@@ -166,7 +102,7 @@ TRIGGER.NSEVERITY = 5"
         :mapping_trigger_value => 'TRIGGER.VALUE',
         :mapping_trigger_nseverity => 'TRIGGER.NSEVERITY',
         
-        :error_trigger_value =>'1',
+        :error_trigger_value =>'2',
         
         :regist_project_id => '1',
         
@@ -258,8 +194,8 @@ TRIGGER.NSEVERITY = 5"
         }
         if !check_and_update(custom_fields, conf)
           puts 'update false'
-return
-          mail_subject = get_subject_by_custom_fields(custom_fields, conf)
+return false
+          mail_subject = 'メールタイトル'
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
             :project_id => conf[:regist_project_id],
@@ -309,17 +245,20 @@ return
     
     puts 'update in'
     
-    search_subject = get_subject_by_custom_fields(custom_fields, conf)
+    search_hostname = 'cf_' + conf[:custom_field_id_hostname]
+    search_trigger_id = 'cf_' + conf[:custom_field_id_trigger_id]
+
     issues = RedmineClient::Issue.find(:all,
               :params => {
-                 :subject => search_subject
+                 search_hostname.to_s => custom_fields[conf[:custom_field_id_hostname]],
+                 search_trigger_id.to_s => custom_fields[conf[:custom_field_id_trigger_id]],
               })
-
     issues.each do |issue|
+      p issue
       custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
-      if custom_field_trigger_value[0].value == '2'
+      if custom_field_trigger_value[0].value == conf[:error_trigger_value]
         set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value]])
-
+        return false
         return issue.save
       end
     end
@@ -334,13 +273,6 @@ return
     end
   end
 
-  def get_subject_by_custom_fields(custom_fields, conf)
-    subject = custom_fields[conf[:custom_field_id_hostname]] +
-              '_' +
-              custom_fields[conf[:custom_field_id_trigger_id]]
-    p subject
-    return subject
-  end
 #
 # check the mail if it's target
 #
@@ -367,7 +299,7 @@ return
     return false
   end
 
-  module_function :main, :check_and_update, :set_custom_field, :get_subject_by_custom_fields, :target_mail?
+  module_function :main, :check_and_update, :set_custom_field, :target_mail?
 
 end
 
