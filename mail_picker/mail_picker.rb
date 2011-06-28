@@ -1,20 +1,15 @@
-#!ruby
 # -*- coding: utf-8 -*-
 
-#require 'net/pop'
+require 'net/pop'
 require 'rubygems'
 #require 'trac4r'
 require 'redmine_client'
-require 'json'
-require 'zabbixapi'
 
-# for windows.Because it's difficult for installing tmail in windows.
-#require 'action_mailer' unless ( RUBY_PLATFORM =~ /linux$/ )
-#require 'tmail'
-#require 'nkf'
-#require 'yaml'
-#require 'rexchange'
-#require 'savon'
+require 'action_mailer' 
+require 'tmail'
+require 'nkf'
+require 'yaml'
+require 'rexchange'
 
 
 ex_path = File.expand_path(File.dirname(__FILE__))
@@ -73,24 +68,18 @@ module MailPicker
 # main procedure
 #
   def main
-    
-    mail_body = 
-"EVENT.ID = 1234
-EVENT.DATE = 20110622
-NODE.ID = 1111
-NODE.NAME = ibs
-HOST.ID = 2233
-HOSTNAME = ibs-portal
-TRIGGER.ID = 9999
-TRIGGER.NAME = サーバダウン
-TRIGGER.VALUE = 2
-TRIGGER.NSEVERITY = 5"
- 
+
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
 #    conf = ConfUtil.read_conf
 #    return if conf.empty?
     conf = {
+        :mail_server_address => 'november-steps.net',
+        :pop_server_port => 110,
+        :mail_server_user => "admin",
+        :mail_server_password => "zaq12wsx",
+        :mail_receive_method => "pop",
+
         :mapping_event_id => 'EVENT.ID',
         :mapping_event_date => 'EVENT.DATE',
         :mapping_node_id => 'NODE.ID',
@@ -127,17 +116,27 @@ TRIGGER.NSEVERITY = 5"
 #    mail_duplicate_checker = MailDuplicateChecker.new 
 #    return if mail_duplicate_checker.message_id_list == nil # not found the file
 
-#	  begin
-#	  	mail_session = MailSession.new(conf)
-#	  rescue
+	  begin
+	  	mail_session = MailSession.new(conf)
+	  rescue
 #	    $hinemosTracLog.puts_message "Failure to access the mail server. Please check mail server configuration. "
-#	    return
-#	  else
+	    return
+	  else
 #	    $hinemosTracLog.puts_message "Success to access the mail server."
-#	  end
+	  end
 
     # Issue model on the client side
-#    mail_session.tmail_list.each_with_index do |t_mail, i|
+    mail_session.tmail_list.each_with_index do |t_mail, i|
+      break if i == 3
+      puts t_mail.class
+      puts t_mail.body.to_s
+#      mail_body = t_mail.body.to_s
+#      puts mail_body
+    end
+    mail_session.finalize
+    return
+
+
 #      if MailPicker.target_mail?(t_mail, conf)
 #        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
 
@@ -231,7 +230,7 @@ return false
 #      end
 #    end
     
-#    mail_session.finalize
+    mail_session.finalize
 
 #   $hinemosTracLog.puts_message "Finished accessing the mail server."
 
