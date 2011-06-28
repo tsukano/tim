@@ -69,20 +69,6 @@ module MailPicker
 #
   def main
 
-=begin
-    mail_body = 
-"EVENT.ID = 1234
-EVENT.DATE = 20110622
-NODE.ID = 1111
-NODE.NAME = ibs
-HOST.ID = 2233
-HOSTNAME = ibs-portal
-TRIGGER.ID = 5963
-TRIGGER.NAME = サーバダウン
-TRIGGER.VALUE = 2
-TRIGGER.NSEVERITY = 5"
-=end
-
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
 #    conf = ConfUtil.read_conf
@@ -105,7 +91,7 @@ TRIGGER.NSEVERITY = 5"
         :mapping_trigger_value => 'TRIGGER.VALUE',
         :mapping_trigger_nseverity => 'TRIGGER.NSEVERITY',
         
-        :error_trigger_value =>'1',
+        :error_trigger_value =>'2',
         
         :regist_project_id => '1',
         
@@ -201,8 +187,8 @@ TRIGGER.NSEVERITY = 5"
         }
         if !check_and_update(custom_fields, conf)
           puts 'update false'
-return
-          mail_subject = get_subject_by_custom_fields(custom_fields, conf)
+return false
+          mail_subject = 'メールタイトル'
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
             :project_id => conf[:regist_project_id],
@@ -252,17 +238,20 @@ return
     
     puts 'update in'
     
-    search_subject = get_subject_by_custom_fields(custom_fields, conf)
+    search_hostname = 'cf_' + conf[:custom_field_id_hostname]
+    search_trigger_id = 'cf_' + conf[:custom_field_id_trigger_id]
+
     issues = RedmineClient::Issue.find(:all,
               :params => {
-                 :subject => search_subject
+                 search_hostname.to_s => custom_fields[conf[:custom_field_id_hostname]],
+                 search_trigger_id.to_s => custom_fields[conf[:custom_field_id_trigger_id]],
               })
-
     issues.each do |issue|
+      p issue
       custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
-      if custom_field_trigger_value[0].value == '2'
+      if custom_field_trigger_value[0].value == conf[:error_trigger_value]
         set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value]])
-
+        return false
         return issue.save
       end
     end
@@ -277,13 +266,6 @@ return
     end
   end
 
-  def get_subject_by_custom_fields(custom_fields, conf)
-    subject = custom_fields[conf[:custom_field_id_hostname]] +
-              '_' +
-              custom_fields[conf[:custom_field_id_trigger_id]]
-    p subject
-    return subject
-  end
 #
 # check the mail if it's target
 #
@@ -310,7 +292,7 @@ return
     return false
   end
 
-  module_function :main, :check_and_update, :set_custom_field, :get_subject_by_custom_fields, :target_mail?
+  module_function :main, :check_and_update, :set_custom_field, :target_mail?
 
 end
 
