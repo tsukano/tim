@@ -80,7 +80,7 @@ EVENT.DATE = 20110622
 NODE.ID = 1111
 NODE.NAME = ibs
 HOST.ID = 2233
-HOSTNAME = ibs-potal
+HOSTNAME = ibs-portal
 TRIGGER.ID = 5963
 TRIGGER.NAME = サーバダウン
 TRIGGER.VALUE = 3
@@ -256,8 +256,8 @@ TRIGGER.NSEVERITY = 5"
         }
         if !check_and_update(custom_fields, conf)
           puts 'update false'
-          return
-          mail_subject = "仕様が決まったら設定する"
+
+          mail_subject = get_subject_by_custom_fields(custom_fields, conf)
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
             :project_id => conf[:regist_project_id],
@@ -265,10 +265,6 @@ TRIGGER.NSEVERITY = 5"
           )
   
           begin
-  #          t_id = trac.tickets.create(mail_subject, 
-  #          							 mail_body, 
-  #          							 option_field_list)
-  
             if issue.save
               puts issue.id
             else
@@ -309,45 +305,21 @@ TRIGGER.NSEVERITY = 5"
 #
   def check_and_update(custom_fields, conf)
     
-# アップデート用のスタブ(仕様に応じてこの関数の引数を変える)
-#    regist = 
-#    {
-#      :tracker_id => 1, 
-#      :subject => 'update',
-#      :status_id => 2,
-#      :project_id => 2,
-#      :description=> 'Hello',
-#      :custom1 => 'customXXX',
-#      :custom2 => '1212',
-#      :custom3 => 'Sunday',
-#      :custom4 => '2011-11-01'
-#    }
     puts 'update in'
 
-    issues = RedmineClient::Issue.find(:all, )
+    search_subject = get_subject_by_custom_fields(custom_fields, conf)
+    issues = RedmineClient::Issue.find(:all,
+              :params => {
+                 :subject => search_subject
+              })
 
-    issues.each do |issue|       
-        p issue
-        p conf[:custom_field_id_hostname]
-        p issue.custom_fields[conf[:custom_field_id_hostname].to_i]
-        p issue.custom_fields[conf[:custom_field_id_hostname].to_i].value
-#        if issue.custom_fields[conf[:custom_field_id_hostname].to_i].value == custom_fields[conf[:custom_field_id_hostname]]
-#          if issue.custom_fields[conf[:custom_field_id_trigger_id]].value == custom_fields[conf[:custom_field_id_trigger_id]]
-#      next if issue.custom_fields[:custom_field_id_event_id]  == custom_fields[:custom_field_id_event_id]
-#      issue.tracker_id = regist[:tracker_id]
-#      issue.subject = regist[:subject]
-#      issue.status_id = regist[:status_id]
-#      issue.project_id = regist[:project_id]
-#      issue.description = regist[:description]
+    issues.each do |issue|
+      p issue
+        return false
       
-#      set_custom_field(issue, 'custom_text', regist[:custom1])
-#      set_custom_field(issue, 'custom_int', regist[:custom2])
-#      set_custom_field(issue, 'custom_choice', regist[:custom3])
-#      set_custom_field(issue, 'custom_day', regist[:custom4])
-      
-#      return issue.save
-        p issue
-      end
+      set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:mapping_trigger_value]])
+
+      return issue.save
     end
     return false
   end
@@ -359,7 +331,10 @@ TRIGGER.NSEVERITY = 5"
       end
     end
   end
-  
+
+  def get_subject_by_custom_fields(custom_fields, conf)
+    return custom_fields[conf[:mapping_hostname]] + '_' + custom_fields[conf[:custom_field_id_trigger_id]]
+  end
 #
 # check the mail if it's target
 #
@@ -386,7 +361,7 @@ TRIGGER.NSEVERITY = 5"
     return false
   end
 
-  module_function :main, :check_and_update, :set_custom_field, :target_mail?
+  module_function :main, :check_and_update, :set_custom_field, :get_subject_by_custom_fields, :target_mail?
 
 end
 
