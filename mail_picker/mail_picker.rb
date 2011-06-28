@@ -91,7 +91,7 @@ TRIGGER.NSEVERITY = 5"
         :mail_server_address => 'november-steps.net',
         :pop_server_port => 110,
         :mail_server_user => "admin",
-        :mail_server_password => "zaq12wsx",
+        :mail_server_password => "",
         :mail_receive_method => "pop",
 
         :mapping_event_id => 'EVENT.ID',
@@ -141,15 +141,9 @@ TRIGGER.NSEVERITY = 5"
 
     # Issue model on the client side
     mail_session.tmail_list.each_with_index do |t_mail, i|
-      break if i == 3
-      puts t_mail.class
-      puts t_mail.body.to_s
-#      mail_body = t_mail.body.to_s
-#      puts mail_body
-    end
-    mail_session.finalize
-    return
-
+	  next unless t_mail.subject == "対象となるタイトル"
+      mail_body = t_mail.body.to_s
+      
 
 #      if MailPicker.target_mail?(t_mail, conf)
 #        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
@@ -242,7 +236,7 @@ return
 #          end
 #        end
 #      end
-#    end
+    end
     
     mail_session.finalize
 
