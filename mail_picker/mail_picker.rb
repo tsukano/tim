@@ -129,7 +129,13 @@ module MailPicker
     mail_session.tmail_list.each_with_index do |t_mail, i|
 	  next unless t_mail.subject == "対象となるタイトル"
       mail_body = t_mail.body.to_s
-      
+      # event id is registed
+      search_event_id = 'cf_' + conf[:custom_field_id_event_id]
+      issues = RedmineClient::Issue.find(:all,
+              :params => {
+                 search_event_id.to_s => custom_fields[conf[:custom_field_id_event_id]]
+              })
+      next if issues.size > 0
 
 #      if MailPicker.target_mail?(t_mail, conf)
 #        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
@@ -244,7 +250,7 @@ return false
     issues = RedmineClient::Issue.find(:all,
               :params => {
                  search_hostname.to_s => custom_fields[conf[:custom_field_id_hostname]],
-                 search_trigger_id.to_s => custom_fields[conf[:custom_field_id_trigger_id]],
+                 search_trigger_id.to_s => custom_fields[conf[:custom_field_id_trigger_id]]
               })
     issues.each do |issue|
       p issue
