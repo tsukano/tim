@@ -1,20 +1,15 @@
-#!ruby
 # -*- coding: utf-8 -*-
 
-#require 'net/pop'
+require 'net/pop'
 require 'rubygems'
 #require 'trac4r'
 require 'redmine_client'
-require 'json'
-require 'zabbixapi'
 
-# for windows.Because it's difficult for installing tmail in windows.
-#require 'action_mailer' unless ( RUBY_PLATFORM =~ /linux$/ )
-#require 'tmail'
-#require 'nkf'
-#require 'yaml'
-#require 'rexchange'
-#require 'savon'
+require 'action_mailer' 
+require 'tmail'
+require 'nkf'
+require 'yaml'
+require 'rexchange'
 
 
 ex_path = File.expand_path(File.dirname(__FILE__))
@@ -73,7 +68,8 @@ module MailPicker
 # main procedure
 #
   def main
-    
+
+=begin
     mail_body = 
 "EVENT.ID = 1234
 EVENT.DATE = 20110622
@@ -85,76 +81,19 @@ TRIGGER.ID = 5963
 TRIGGER.NAME = サーバダウン
 TRIGGER.VALUE = 3
 TRIGGER.NSEVERITY = 5"
+=end
 
-#########################################################################################
-# ↓↓　Zabbixapi関連
-#########################################################################################
-#    zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/api_jsonrpc.php', 'admin', 'zabbix') 
-#    hostid = zbx.get_host_id('s-ibs-portal-stg01')
-#    p zbx
-#    p hostid
-
-#    message_get_alert = {
-#      :method => 'alert.get',
-#      :params => {
-#         :output => 'extend',
-#      },
-#      :auth => zbx.auth
-#    }
-#    alerts = zbx.do_request(message_get_alert) 
-#    p alerts
-
-#    message_get_event = {
-#      :method => 'event.get',
-#      :params => {
-#         :limit =>  10,
-#         :object => 0,
-#         :output => 'extend',
-#         :sortfield => 'clock',
-#         :sortorder => 'DESC'
-#        :time_from => '1284910040',
-#        :time_till => '1284991200'
-#      },
-#      :auth => zbx.auth
-#    }
-#    events = zbx.do_request(message_get_event) 
-#    p events
-    
-#    ev = events[1]
-#    message_get_host = {
-#      :method => 'host.get',
-#      :params => {
-#        :triggerids =>[ev["objectid"]],
-#        :output => 'extend'
-#      },
-#      :auth => zbx.auth
-#    }
-#    host = zbx.do_request(message_get_host) 
-#    p host
-    
-#    triggers = {}
-#    events.each_with_index do |event, idx|
-#      message_get_trigger = {
-#        :method => 'trigger.get',
-#        :params => {
-#          :triggerids =>[event["objectid"]],
-#          :output => 'extend'
-#        },
-#        :auth => zbx.auth
-#      }
-#      triggers[idx] = zbx.do_request(message_get_trigger) 
-#      p ev
-#      p triggers
-#   end
-###########################################################
-# ↑↑　Zabbixapi関連
-###########################################################
- 
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
 #    conf = ConfUtil.read_conf
 #    return if conf.empty?
     conf = {
+        :mail_server_address => 'november-steps.net',
+        :pop_server_port => 110,
+        :mail_server_user => "admin",
+        :mail_server_password => "zaq12wsx",
+        :mail_receive_method => "pop",
+
         :mapping_event_id => 'EVENT.ID',
         :mapping_event_date => 'EVENT.DATE',
         :mapping_node_id => 'NODE.ID',
@@ -189,17 +128,27 @@ TRIGGER.NSEVERITY = 5"
 #    mail_duplicate_checker = MailDuplicateChecker.new 
 #    return if mail_duplicate_checker.message_id_list == nil # not found the file
 
-#	  begin
-#	  	mail_session = MailSession.new(conf)
-#	  rescue
+	  begin
+	  	mail_session = MailSession.new(conf)
+	  rescue
 #	    $hinemosTracLog.puts_message "Failure to access the mail server. Please check mail server configuration. "
-#	    return
-#	  else
+	    return
+	  else
 #	    $hinemosTracLog.puts_message "Success to access the mail server."
-#	  end
+	  end
 
     # Issue model on the client side
-#    mail_session.tmail_list.each_with_index do |t_mail, i|
+    mail_session.tmail_list.each_with_index do |t_mail, i|
+      break if i == 3
+      puts t_mail.class
+      puts t_mail.body.to_s
+#      mail_body = t_mail.body.to_s
+#      puts mail_body
+    end
+    mail_session.finalize
+    return
+
+
 #      if MailPicker.target_mail?(t_mail, conf)
 #        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
 
@@ -293,7 +242,7 @@ TRIGGER.NSEVERITY = 5"
 #      end
 #    end
     
-#    mail_session.finalize
+    mail_session.finalize
 
 #   $hinemosTracLog.puts_message "Finished accessing the mail server."
 
