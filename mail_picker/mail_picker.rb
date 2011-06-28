@@ -83,7 +83,7 @@ HOST.ID = 2233
 HOSTNAME = ibs-portal
 TRIGGER.ID = 5963
 TRIGGER.NAME = サーバダウン
-TRIGGER.VALUE = 3
+TRIGGER.VALUE = 2
 TRIGGER.NSEVERITY = 5"
 
 #########################################################################################
@@ -165,6 +165,8 @@ TRIGGER.NSEVERITY = 5"
         :mapping_trigger_name => 'TRIGGER.NAME',
         :mapping_trigger_value => 'TRIGGER.VALUE',
         :mapping_trigger_nseverity => 'TRIGGER.NSEVERITY',
+        
+        :error_trigger_value =>'1',
         
         :regist_project_id => '1',
         
@@ -256,7 +258,7 @@ TRIGGER.NSEVERITY = 5"
         }
         if !check_and_update(custom_fields, conf)
           puts 'update false'
-
+return
           mail_subject = get_subject_by_custom_fields(custom_fields, conf)
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
@@ -306,7 +308,7 @@ TRIGGER.NSEVERITY = 5"
   def check_and_update(custom_fields, conf)
     
     puts 'update in'
-
+    
     search_subject = get_subject_by_custom_fields(custom_fields, conf)
     issues = RedmineClient::Issue.find(:all,
               :params => {
@@ -314,12 +316,12 @@ TRIGGER.NSEVERITY = 5"
               })
 
     issues.each do |issue|
-      p issue
-        return false
-      
-      set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:mapping_trigger_value]])
+      custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
+      if custom_field_trigger_value[0].value == '2'
+        set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value]])
 
-      return issue.save
+        return issue.save
+      end
     end
     return false
   end
@@ -333,7 +335,11 @@ TRIGGER.NSEVERITY = 5"
   end
 
   def get_subject_by_custom_fields(custom_fields, conf)
-    return custom_fields[conf[:mapping_hostname]] + '_' + custom_fields[conf[:custom_field_id_trigger_id]]
+    subject = custom_fields[conf[:custom_field_id_hostname]] +
+              '_' +
+              custom_fields[conf[:custom_field_id_trigger_id]]
+    p subject
+    return subject
   end
 #
 # check the mail if it's target
