@@ -49,17 +49,6 @@ MUST_WRITE_CONF = [ :mail_server_address,
                     :trac_url,
                     :target_mail_from ]
 
-RedmineClient::Base.configure do
-  self.site = 'http://172.17.1.206/redmine/'
-  self.user = 'admin'
-  self.password = 'admin'
-  
-  def self.inherited(child)
-    child.headers['X-Redmine-Nometa'] = '1'
-  end
-
-end
-
 #class HinemosTrac
 
 module MailPicker
@@ -71,13 +60,15 @@ module MailPicker
 
 #    $hinemosTracLog = BatchLog.new(IS_NEED_LOG_FILE)
 
-#    conf = ConfUtil.read_conf
-#    return if conf.empty?
+    conf = ConfUtil.read_conf
+
+    return if conf.empty?
+=begin
     conf = {
         :mail_server_address => 'november-steps.net',
         :pop_server_port => 110,
         :mail_server_user => "admin",
-        :mail_server_password => "zaq12wsx",
+        :mail_server_password => "",
         :mail_receive_method => "pop",
 
         :mapping_event_id => 'EVENT.ID',
@@ -93,6 +84,8 @@ module MailPicker
         :mapping_off_event_id => 'OFF_EVENT.ID',
         
         :error_trigger_value =>'2',
+        
+        :target_mail_title => '[zabbix_mail]',
         
         :off_event => '1',
         
@@ -110,6 +103,12 @@ module MailPicker
         :custom_field_id_trigger_nseverity => '14',
         :custom_field_id_off_event_id => '15'
     }
+=end
+    RedmineClient::Base.configure do
+      self.site = conf[:zabbix_url]
+      self.user = conf[:zabbix_user_id]
+      self.password = conf[:zabbix_user_password]
+    end
 #    MUST_WRITE_CONF.each do |conf_field|
 #      if conf[conf_field] == nil || conf[conf_field].blank?
 #        $hinemosTracLog.puts_message "Caution. You must write configuration about #{conf_field}."
@@ -131,10 +130,10 @@ module MailPicker
 
     # Issue model on the client side
     mail_session.tmail_list.each_with_index do |t_mail, i|
-	  next unless t_mail.subject == "[zabbix_mail]"
-      mail_body = t_mail.body.to_s
-      p mail_bocy
-      return
+
+  	  next if t_mail.subject.index(conf[:target_mail_title]) != 0
+        mail_body = t_mail.body.to_s
+
 #      if MailPicker.target_mail?(t_mail, conf)
 #        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
 
@@ -161,8 +160,12 @@ module MailPicker
                   'TRIGGER.VALUE',
                   'TRIGGER.NSEVERITY'
         ]
-#        ConfUtil.get_mapping_field_list(conf.keys).each do |mapping_field|
 
+        p ConfUtil.get_mapping_field_list(conf.keys)
+#        ConfUtil.get_mapping_field_list(conf.keys).each do |mapping_field|
+          
+#        end
+        return
         mail_body.each_line do |line| 
           mapping_fields.each do |mapping_field|
 
@@ -256,8 +259,6 @@ module MailPicker
 #
   def check_and_update(custom_fields, conf)
     
-    puts 'update in'
-    
     search_hostname = 'cf_' + conf[:custom_field_id_hostname]
     search_trigger_id = 'cf_' + conf[:custom_field_id_trigger_id]
 
@@ -267,15 +268,16 @@ module MailPicker
                  search_trigger_id.to_s => custom_fields[conf[:custom_field_id_trigger_id]]
               })
     issues.each do |issue|
-      p issue
-      custom_field_triggefr_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
+      custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
       if custom_field_trigger_value[0].value == conf[:error_trigger_value]
-        set_custom_field(issue, conf[:mapping_event_id], custom_fields[conf[:custom_field_id_event_id]])
+        p 
+        set_custom_field(issue, conf[:mapping_off_event_id], custom_fields[conf[:custom_field_id_event_id]])
         set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value]])
 
         if issue.save
           puts 'UPDATE Issue ID=' +
                issue.id
+          return true
         end
       end
     end

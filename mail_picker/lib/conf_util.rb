@@ -66,7 +66,7 @@ class ConfUtil
     mapping_keys = Array.new
     conf_keys.each do |key|
       if key.to_s =~ /^#{CONF_MAPPING_HEADER}[^_]+$/
-        mapping_keys.push(key.to_s.sub(/^#{CONF_MAPPING_HEADER}/, "").to_sym)
+        mapping_keys.push(key.to_s.sub(/^#{CONF_MAPPING_HEADER}/, "").to_s)
       end
     end
     return mapping_keys
