@@ -77,7 +77,7 @@ module MailPicker
         :mail_server_address => 'november-steps.net',
         :pop_server_port => 110,
         :mail_server_user => "admin",
-        :mail_server_password => "",
+        :mail_server_password => "zaq12wsx",
         :mail_receive_method => "pop",
 
         :mapping_event_id => 'EVENT.ID',
@@ -90,8 +90,11 @@ module MailPicker
         :mapping_trigger_name => 'TRIGGER.NAME',
         :mapping_trigger_value => 'TRIGGER.VALUE',
         :mapping_trigger_nseverity => 'TRIGGER.NSEVERITY',
+        :mapping_off_event_id => 'OFF_EVENT.ID',
         
         :error_trigger_value =>'2',
+        
+        :off_event => '1',
         
         :regist_project_id => '1',
         
@@ -104,7 +107,8 @@ module MailPicker
         :custom_field_id_trigger_id => '11',
         :custom_field_id_trigger_name => '12',
         :custom_field_id_trigger_value => '13',
-        :custom_field_id_trigger_nseverity => '14'
+        :custom_field_id_trigger_nseverity => '14',
+        :custom_field_id_off_event_id => '15'
     }
 #    MUST_WRITE_CONF.each do |conf_field|
 #      if conf[conf_field] == nil || conf[conf_field].blank?
@@ -127,16 +131,10 @@ module MailPicker
 
     # Issue model on the client side
     mail_session.tmail_list.each_with_index do |t_mail, i|
-	  next unless t_mail.subject == "対象となるタイトル"
+	  next unless t_mail.subject == "[zabbix_mail]"
       mail_body = t_mail.body.to_s
-      # event id is registed
-      search_event_id = 'cf_' + conf[:custom_field_id_event_id]
-      issues = RedmineClient::Issue.find(:all,
-              :params => {
-                 search_event_id.to_s => custom_fields[conf[:custom_field_id_event_id]]
-              })
-      next if issues.size > 0
-
+      p mail_bocy
+      return
 #      if MailPicker.target_mail?(t_mail, conf)
 #        next if mail_duplicate_checker.has_created_ticket?(t_mail.message_id)
 
@@ -175,8 +173,7 @@ module MailPicker
             custom_field_list.store(mapping_field, parse_mapping_value.post_match.rstrip)
           end
         end
-
-#        mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
+        mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
 #        mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
         
 
@@ -191,19 +188,36 @@ module MailPicker
                  conf[:custom_field_id_trigger_value] => custom_field_list[conf[:mapping_trigger_value]],
                  conf[:custom_field_id_trigger_nseverity] => custom_field_list[conf[:mapping_trigger_nseverity]]
         }
+        
+        # event id is registed
+        search_event_id = 'cf_' + conf[:custom_field_id_event_id]
+        if custom_fields[conf[:custom_field_id_trigger_value]] == conf[:off_event]
+          search_event_id = 'cf_' + conf[:custom_field_id_off_event_id]
+        else
+          search_event_id = 'cf_' + conf[:custom_field_id_event_id]
+        end
+        issues = RedmineClient::Issue.find(:all,
+                  :params => {
+                     search_event_id.to_s => custom_fields[conf[:custom_field_id_event_id]]
+                  })
+        if issues.size > 0
+          puts "not covered EVENT.ID=" + custom_fields[conf[:custom_field_id_event_id]]
+          next
+        end
+#        next if issues.size > 0
+
         if !check_and_update(custom_fields, conf)
-          puts 'update false'
-return false
-          mail_subject = 'メールタイトル'
+
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
             :project_id => conf[:regist_project_id],
             :custom_field_values => custom_fields
           )
-  
+
           begin
             if issue.save
-              puts issue.id
+              puts 'POST Issue ID=' +
+                   issue.id
             else
               puts issue.errors.full_messages
             end
@@ -254,11 +268,15 @@ return false
               })
     issues.each do |issue|
       p issue
-      custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
+      custom_field_triggefr_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
       if custom_field_trigger_value[0].value == conf[:error_trigger_value]
+        set_custom_field(issue, conf[:mapping_event_id], custom_fields[conf[:custom_field_id_event_id]])
         set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value]])
-        return false
-        return issue.save
+
+        if issue.save
+          puts 'UPDATE Issue ID=' +
+               issue.id
+        end
       end
     end
     return false
