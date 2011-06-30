@@ -1,0 +1,1952 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://172.17.1.206/redmine/" />
+<title>input_custom_field</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">input_custom_field</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/redmine/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=ログイン</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=管理</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=カスタムフィールド</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>DATE</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>custom_field_field_format</td>
+	<td>label=日付</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ESC.HISTORY</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>EVENT.ACK.HISTORY</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>EVENT.ACK.STATUS</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>EVENT.AGE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>EVENT.DATE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>custom_field_field_format</td>
+	<td>label=日付</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>EVENT.ID</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_filter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_searchable</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>OFF_EVENT.ID</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_filter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_searchable</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>EVENT.TIME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>HOSTNAME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_filter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_searchable</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>HOST.CONN</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>HOST.DNS</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>IPADDRESS</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LASTVALUE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LOG.AGE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LOG.DATE</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>custom_field_field_format</td>
+	<td>label=日付</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LOG.EVENTID</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LOG.NSEVERITY</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LOG.SEVERITY</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LOG.SOURCE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LOG.TIME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.LOG.NAME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>ITEM.VALUE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>NODE.ID</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>NODE.NAME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.CONTACT</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.DEVICETYPE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.HARDWARE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.LOCATION</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.MACADDRESS</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.NAME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.NOTES</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.OS</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.SERIALNO</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.SOFTWARE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROFILE.TAG</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>PROXY.NAME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TIME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.COMMENT</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.EVENTS.UNACK</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.EVENTS.PROBLEM.UNACK</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.EVENTS.ACK</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.EVENTS.PROBLEM.ACK</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.ID</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.KEY</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.NAME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.NSEVERITY</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.SEVERITY</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.STATUS</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.URL</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=TRIGGER.URL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>TRIGGER.VALUE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_filter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_searchable</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=TRIGGER.ID</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_searchable</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_filter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=新しいカスタムフィールドを作成</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>host_key_func param</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
