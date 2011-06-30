@@ -65,8 +65,9 @@ class ConfUtil
   def self.get_mapping_field_list(conf_keys)
     mapping_keys = Array.new
     conf_keys.each do |key|
-      if key.to_s =~ /^#{CONF_MAPPING_HEADER}[^_]+$/
+      if key.to_s.index(CONF_MAPPING_HEADER) == 0
         mapping_keys.push(key.to_s.sub(/^#{CONF_MAPPING_HEADER}/, "").to_s)
+#        mapping_keys.push(key.to_s)
       end
     end
     return mapping_keys

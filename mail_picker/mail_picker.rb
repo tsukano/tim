@@ -29,6 +29,7 @@ ORIGINAL_MAIL_DATE = "original_mail_date"
 IS_NEED_LOG_FILE = false 
 
 CONF_MAPPING_HEADER = "mapping_"
+CONF_CUSTOM_FIELD_ID_HEADER = "custom_field_id_"
 
 MAIL_SEPARATOR = "\s+[:：]\s+"
 CONF_SEPARATOR = "\s?=\s?"
@@ -63,47 +64,7 @@ module MailPicker
     conf = ConfUtil.read_conf
 
     return if conf.empty?
-=begin
-    conf = {
-        :mail_server_address => 'november-steps.net',
-        :pop_server_port => 110,
-        :mail_server_user => "admin",
-        :mail_server_password => "",
-        :mail_receive_method => "pop",
 
-        :mapping_event_id => 'EVENT.ID',
-        :mapping_event_date => 'EVENT.DATE',
-        :mapping_node_id => 'NODE.ID',
-        :mapping_node_name => 'NODE.NAME',
-        :mapping_host_id => 'HOST.ID',
-        :mapping_hostname => 'HOSTNAME',
-        :mapping_trigger_id => 'TRIGGER.ID',
-        :mapping_trigger_name => 'TRIGGER.NAME',
-        :mapping_trigger_value => 'TRIGGER.VALUE',
-        :mapping_trigger_nseverity => 'TRIGGER.NSEVERITY',
-        :mapping_off_event_id => 'OFF_EVENT.ID',
-        
-        :error_trigger_value =>'2',
-        
-        :target_mail_title => '[zabbix_mail]',
-        
-        :off_event => '1',
-        
-        :regist_project_id => '1',
-        
-        :custom_field_id_event_id => '5',
-        :custom_field_id_event_date => '6',
-        :custom_field_id_node_id => '7',
-        :custom_field_id_node_name => '8',
-        :custom_field_id_host_id => '9',
-        :custom_field_id_hostname => '10',
-        :custom_field_id_trigger_id => '11',
-        :custom_field_id_trigger_name => '12',
-        :custom_field_id_trigger_value => '13',
-        :custom_field_id_trigger_nseverity => '14',
-        :custom_field_id_off_event_id => '15'
-    }
-=end
     RedmineClient::Base.configure do
       self.site = conf[:zabbix_url]
       self.user = conf[:zabbix_user_id]
@@ -143,86 +104,67 @@ module MailPicker
 #        								conf[:trac_user_id], 
 #        								conf[:trac_user_password])
 
-        custom_field_list = Hash.new
+        custom_fields = Hash.new
         
 #        mail_parser = MailParser.new( t_mail.body.to_s,
 #        															t_mail.date.to_s)
 
-        mapping_fields = [
-                  'EVENT.ID',
-                  'EVENT.DATE',
-                  'NODE.ID',
-                  'NODE.NAME',
-                  'HOST.ID',
-                  'HOSTNAME',
-                  'TRIGGER.ID',
-                  'TRIGGER.NAME',
-                  'TRIGGER.VALUE',
-                  'TRIGGER.NSEVERITY'
-        ]
+        mapping_fields = ConfUtil.get_mapping_field_list(conf.keys)
 
-        p ConfUtil.get_mapping_field_list(conf.keys)
-#        ConfUtil.get_mapping_field_list(conf.keys).each do |mapping_field|
-          
-#        end
-        return
         mail_body.each_line do |line| 
+
           mapping_fields.each do |mapping_field|
 
-            parse_mapping_value =  /#{mapping_field} = /.match(line)
-
+            parse_mapping_value =  /#{conf[(CONF_MAPPING_HEADER + mapping_field).to_sym]} = /.match(line)
+            
             next if parse_mapping_value == nil
-  
-            custom_field_list.store(mapping_field, parse_mapping_value.post_match.rstrip)
+#            custom_field_list.store(mapping_field.to_sym, parse_mapping_value.post_match.rstrip)
+            if mapping_field == 'trigger_value' then
+              custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
+                                  get_trigger_value_to_conf(parse_mapping_value.post_match.rstrip, conf))
+            elsif mapping_field == 'trigger_nseverity' then
+              custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
+                                  get_trigger_nseverity_to_conf(parse_mapping_value.post_match.rstrip, conf))
+            else
+              custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,parse_mapping_value.post_match.rstrip)
+            end
           end
         end
+
         mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
 #        mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
-        
 
-        custom_fields = {conf[:custom_field_id_event_id] => custom_field_list[conf[:mapping_event_id]],
-                 conf[:custom_field_id_event_date] => custom_field_list[conf[:mapping_event_date]],
-                 conf[:custom_field_id_node_id] => custom_field_list[conf[:mapping_node_id]],
-                 conf[:custom_field_id_node_name] => custom_field_list[conf[:mapping_node_name]],
-                 conf[:custom_field_id_host_id] => custom_field_list[conf[:mapping_host_id]],
-                 conf[:custom_field_id_hostname] => custom_field_list[conf[:mapping_hostname]],
-                 conf[:custom_field_id_trigger_id] => custom_field_list[conf[:mapping_trigger_id]],
-                 conf[:custom_field_id_trigger_name] => custom_field_list[conf[:mapping_trigger_name]],
-                 conf[:custom_field_id_trigger_value] => custom_field_list[conf[:mapping_trigger_value]],
-                 conf[:custom_field_id_trigger_nseverity] => custom_field_list[conf[:mapping_trigger_nseverity]]
-        }
-        
         # event id is registed
-        search_event_id = 'cf_' + conf[:custom_field_id_event_id]
-        if custom_fields[conf[:custom_field_id_trigger_value]] == conf[:off_event]
-          search_event_id = 'cf_' + conf[:custom_field_id_off_event_id]
+        if custom_fields[conf[:custom_field_id_trigger_value]].to_s == conf[:off_event].to_s
+          search_event_id = 'cf_' + conf[:custom_field_id_off_event_id].to_s
         else
-          search_event_id = 'cf_' + conf[:custom_field_id_event_id]
+          search_event_id = 'cf_' + conf[:custom_field_id_event_id].to_s
         end
         issues = RedmineClient::Issue.find(:all,
                   :params => {
-                     search_event_id.to_s => custom_fields[conf[:custom_field_id_event_id]]
+                     search_event_id.to_sym => custom_fields[conf[:custom_field_id_event_id].to_s]
                   })
         if issues.size > 0
-          puts "not covered EVENT.ID=" + custom_fields[conf[:custom_field_id_event_id]]
+          puts "not covered EVENT.ID=" + custom_fields[conf[:custom_field_id_event_id].to_s]
           next
         end
 #        next if issues.size > 0
 
         if !check_and_update(custom_fields, conf)
-
+p 'regist'
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
             :project_id => conf[:regist_project_id],
             :custom_field_values => custom_fields
           )
-
+p custom_fields
           begin
             if issue.save
               puts 'POST Issue ID=' +
                    issue.id
             else
-              puts issue.errors.full_messages
+              p 'out'
+#             puts issue.errors.full_messages
             end
           rescue
 #            $hinemosTracLog.puts_message "Failure to create ticket to the trac server.Please Check trac server configuration."
@@ -259,20 +201,20 @@ module MailPicker
 #
   def check_and_update(custom_fields, conf)
     
-    search_hostname = 'cf_' + conf[:custom_field_id_hostname]
-    search_trigger_id = 'cf_' + conf[:custom_field_id_trigger_id]
+    search_hostname = 'cf_' + conf[:custom_field_id_hostname].to_s
+    search_trigger_id = 'cf_' + conf[:custom_field_id_trigger_id].to_s
 
     issues = RedmineClient::Issue.find(:all,
               :params => {
-                 search_hostname.to_s => custom_fields[conf[:custom_field_id_hostname]],
-                 search_trigger_id.to_s => custom_fields[conf[:custom_field_id_trigger_id]]
+                 search_hostname.to_s => custom_fields[conf[:custom_field_id_hostname].to_s],
+                 search_trigger_id.to_s => custom_fields[conf[:custom_field_id_trigger_id].to_s]
               })
     issues.each do |issue|
       custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
       if custom_field_trigger_value[0].value == conf[:error_trigger_value]
-        p 
+
         set_custom_field(issue, conf[:mapping_off_event_id], custom_fields[conf[:custom_field_id_event_id]])
-        set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value]])
+#        set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value]])
 
         if issue.save
           puts 'UPDATE Issue ID=' +
@@ -318,7 +260,22 @@ module MailPicker
     return false
   end
 
-  module_function :main, :check_and_update, :set_custom_field, :target_mail?
+  def get_trigger_value_to_conf(value, conf)
+    str = conf[('trigger_value_' + value.to_s).to_sym]
+    if str == nil
+      return value
+    end
+    return str
+  end
+  
+  def get_trigger_nseverity_to_conf(value, conf)
+    str = conf[('trigger_nseverity_' + value.to_s).to_sym]
+    if str == nil
+      return value
+    end
+    return str
+  end
+  module_function :main, :check_and_update, :set_custom_field, :target_mail?, :get_trigger_value_to_conf, :get_trigger_nseverity_to_conf
 
 end
 
