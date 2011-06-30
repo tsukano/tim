@@ -135,9 +135,11 @@ module MailPicker
 #        mail_body = MAIL_ENCODER.call(t_mail.body.to_s)
 
         # event id is registed
-        if custom_fields[conf[:custom_field_id_trigger_value]].to_s == conf[:off_event].to_s
+        if custom_fields[conf[:custom_field_id_trigger_value].to_s].to_s == conf[:off_event].to_s
+          p 'update'
           search_event_id = 'cf_' + conf[:custom_field_id_off_event_id].to_s
         else
+          p 'post'
           search_event_id = 'cf_' + conf[:custom_field_id_event_id].to_s
         end
         issues = RedmineClient::Issue.find(:all,
@@ -151,20 +153,19 @@ module MailPicker
 #        next if issues.size > 0
 
         if !check_and_update(custom_fields, conf)
-p 'regist'
+
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
             :project_id => conf[:regist_project_id],
             :custom_field_values => custom_fields
           )
-p custom_fields
+          
           begin
             if issue.save
               puts 'POST Issue ID=' +
                    issue.id
             else
-              p 'out'
-#             puts issue.errors.full_messages
+             puts issue.errors.full_messages
             end
           rescue
 #            $hinemosTracLog.puts_message "Failure to create ticket to the trac server.Please Check trac server configuration."
@@ -206,15 +207,16 @@ p custom_fields
 
     issues = RedmineClient::Issue.find(:all,
               :params => {
-                 search_hostname.to_s => custom_fields[conf[:custom_field_id_hostname].to_s],
-                 search_trigger_id.to_s => custom_fields[conf[:custom_field_id_trigger_id].to_s]
+                 search_hostname.to_sym => custom_fields[conf[:custom_field_id_hostname].to_s],
+                 search_trigger_id.to_sym => custom_fields[conf[:custom_field_id_trigger_id].to_s]
               })
+
     issues.each do |issue|
       custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
-      if custom_field_trigger_value[0].value == conf[:error_trigger_value]
 
-        set_custom_field(issue, conf[:mapping_off_event_id], custom_fields[conf[:custom_field_id_event_id]])
-#        set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value]])
+      if custom_field_trigger_value[0].value != conf[:off_event].to_s
+        set_custom_field(issue, conf[:mapping_off_event_id], custom_fields[conf[:custom_field_id_event_id].to_s])
+        set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value].to_s])
 
         if issue.save
           puts 'UPDATE Issue ID=' +
