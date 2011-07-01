@@ -114,19 +114,26 @@ module MailPicker
         mail_body.each_line do |line| 
 
           mapping_fields.each do |mapping_field|
-
-            parse_mapping_value =  /#{conf[(CONF_MAPPING_HEADER + mapping_field).to_sym]} = /.match(line)
-            
-            next if parse_mapping_value == nil
-#            custom_field_list.store(mapping_field.to_sym, parse_mapping_value.post_match.rstrip)
-            if mapping_field == 'trigger_value' then
-              custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
-                                  get_trigger_value_to_conf(parse_mapping_value.post_match.rstrip, conf))
-            elsif mapping_field == 'trigger_nseverity' then
-              custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
-                                  get_trigger_nseverity_to_conf(parse_mapping_value.post_match.rstrip, conf))
-            else
-              custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,parse_mapping_value.post_match.rstrip)
+            if line.index(conf[(CONF_MAPPING_HEADER + mapping_field).to_sym]) == 0
+              parse_mapping_value =  /#{conf[(CONF_MAPPING_HEADER + mapping_field).to_sym]} = /.match(line)
+              
+              next if parse_mapping_value == nil
+#              custom_field_list.store(mapping_field.to_sym, parse_mapping_value.post_match.rstrip)
+              if mapping_field == 'trigger_value' then
+                custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
+                                    get_trigger_value_to_conf(parse_mapping_value.post_match.rstrip, conf))
+              elsif mapping_field == 'trigger_nseverity' then
+                custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
+                                    get_trigger_nseverity_to_conf(parse_mapping_value.post_match.rstrip, conf))
+              elsif mapping_field == 'date' then
+                date = parse_mapping_value.post_match.rstrip
+                custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s, date.gsub(/./, '-'))
+              elsif mapping_field == 'event_date' then
+                event_date = parse_mapping_value.post_match.rstrip                event_date.gsub(/./, '-')
+                custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s, event_date.gsub(/./, '-'))           
+              else
+                custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,parse_mapping_value.post_match.rstrip)
+              end
             end
           end
         end
@@ -217,6 +224,7 @@ module MailPicker
       if custom_field_trigger_value[0].value != conf[:off_event].to_s
         set_custom_field(issue, conf[:mapping_off_event_id], custom_fields[conf[:custom_field_id_event_id].to_s])
         set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value].to_s])
+        set_custom_field(issue, conf[:mapping_trigger_name], custom_fields[conf[:custom_field_id_trigger_name].to_s])
 
         if issue.save
           puts 'UPDATE Issue ID=' +
