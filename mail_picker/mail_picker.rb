@@ -70,6 +70,7 @@ module MailPicker
       self.user = conf[:zabbix_user_id]
       self.password = conf[:zabbix_user_password]
     end
+    mapping_fields = ConfUtil.get_mapping_field_list(conf.keys)
 #    MUST_WRITE_CONF.each do |conf_field|
 #      if conf[conf_field] == nil || conf[conf_field].blank?
 #        $hinemosTracLog.puts_message "Caution. You must write configuration about #{conf_field}."
@@ -109,7 +110,6 @@ module MailPicker
 #        mail_parser = MailParser.new( t_mail.body.to_s,
 #        															t_mail.date.to_s)
 
-        mapping_fields = ConfUtil.get_mapping_field_list(conf.keys)
 
         mail_body.each_line do |line| 
 
@@ -163,6 +163,7 @@ module MailPicker
 
           issue = RedmineClient::Issue.new(
             :subject => mail_subject,
+            :description => mail_body,
             :project_id => conf[:regist_project_id],
             :custom_field_values => custom_fields
           )
