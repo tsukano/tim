@@ -63,7 +63,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -78,7 +78,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -98,7 +103,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -108,12 +113,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -133,7 +143,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -143,12 +153,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -168,7 +183,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -183,7 +198,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -203,7 +223,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -218,7 +238,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -237,31 +262,36 @@
 	<td>EVENT.DATE</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_is_for_all</td>
-	<td></td>
-</tr>
-<tr>
 	<td>select</td>
 	<td>custom_field_field_format</td>
 	<td>label=日付</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>id=custom_field_tracker_ids_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>commit</td>
 	<td></td>
@@ -273,12 +303,17 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>custom_field_name</td>
+	<td>id=custom_field_name</td>
 	<td>EVENT.ID</td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=整数</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -293,22 +328,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_filter</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_searchable</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>commit</td>
+	<td>name=commit</td>
 	<td></td>
 </tr>
 <tr>
@@ -318,12 +348,17 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>custom_field_name</td>
+	<td>id=custom_field_name</td>
 	<td>OFF_EVENT.ID</td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=整数</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -338,22 +373,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_filter</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_searchable</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>commit</td>
+	<td>name=commit</td>
 	<td></td>
 </tr>
 <tr>
@@ -368,7 +398,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -383,7 +413,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -448,7 +483,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -463,7 +498,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -483,7 +523,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -498,7 +538,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -518,7 +563,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -533,7 +578,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -553,7 +603,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -568,7 +618,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -588,7 +643,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -603,7 +658,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -628,7 +688,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -643,7 +703,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -658,17 +723,22 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>custom_field_name</td>
+	<td>id=custom_field_name</td>
 	<td>ITEM.LOG.EVENTID</td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=整数</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
 	<td></td>
 </tr>
 <tr>
@@ -678,12 +748,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>commit</td>
+	<td>name=commit</td>
 	<td></td>
 </tr>
 <tr>
@@ -698,12 +773,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
 	<td></td>
 </tr>
 <tr>
@@ -713,7 +788,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -733,7 +813,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -748,7 +828,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -768,7 +853,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -783,7 +868,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -803,7 +893,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -818,7 +908,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -834,11 +929,11 @@
 <tr>
 	<td>type</td>
 	<td>custom_field_name</td>
-	<td>ITEM.LOG.NAME</td>
+	<td>ITEM.NAME</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -853,7 +948,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -873,7 +973,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -888,7 +988,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -902,8 +1007,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>id=custom_field_name</td>
+	<td>NODE.ID</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=整数</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -912,23 +1027,23 @@
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>custom_field_name</td>
-	<td>NODE.ID</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>commit</td>
+	<td>name=commit</td>
 	<td></td>
 </tr>
 <tr>
@@ -943,7 +1058,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -958,7 +1073,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -978,7 +1098,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -993,7 +1113,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1013,7 +1138,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1028,7 +1153,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1048,7 +1178,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1063,7 +1193,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1083,7 +1218,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1098,7 +1233,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1118,7 +1258,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1133,7 +1273,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1153,7 +1298,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1168,7 +1313,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1188,7 +1338,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1203,7 +1353,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1223,7 +1378,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1238,7 +1393,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1258,7 +1418,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1273,7 +1433,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1293,7 +1458,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1308,7 +1473,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1328,7 +1498,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1343,7 +1513,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1359,11 +1534,21 @@
 <tr>
 	<td>type</td>
 	<td>custom_field_name</td>
-	<td>PROXY.NAME</td>
+	<td>STATUS</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=リストから選択</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=custom_field[possible_values]</td>
+	<td>ON<br />OFF</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1378,7 +1563,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1398,7 +1588,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1413,7 +1603,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1433,7 +1628,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1448,7 +1643,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1468,42 +1668,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_is_for_all</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>commit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=新しいカスタムフィールドを作成</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>custom_field_name</td>
-	<td>TRIGGER.EVENTS.PROBLEM.UNACK</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1518,77 +1683,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>commit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=新しいカスタムフィールドを作成</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>custom_field_name</td>
-	<td>TRIGGER.EVENTS.ACK</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_is_for_all</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_is_for_all</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>commit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=新しいカスタムフィールドを作成</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>custom_field_name</td>
-	<td>TRIGGER.EVENTS.PROBLEM.ACK</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='2']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@id='custom_field_tracker_ids_' and @value='3']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1606,9 +1706,14 @@
 	<td>custom_field_name</td>
 	<td>TRIGGER.ID</td>
 </tr>
+<<tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=整数</td>
+</tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1623,7 +1728,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1643,7 +1753,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1658,7 +1768,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1678,7 +1793,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1693,7 +1808,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1712,8 +1832,18 @@
 	<td>TRIGGER.NSEVERITY</td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=リストから選択</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=custom_field[possible_values]</td>
+	<td>未分類<br />情報<br />警告<br />軽度の障害<br />重度の障害<br />致命的な障害</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1728,7 +1858,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_searchable</td>
 	<td></td>
 </tr>
 <tr>
@@ -1747,8 +1887,18 @@
 	<td>TRIGGER.SEVERITY</td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=リストから選択</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=custom_field[possible_values]</td>
+	<td>未分類<br />情報<br />警告<br />軽度の障害<br />重度の障害<br />致命的な障害<br />不明</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1763,7 +1913,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_searchable</td>
 	<td></td>
 </tr>
 <tr>
@@ -1782,8 +1942,18 @@
 	<td>TRIGGER.STATUS</td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=リストから選択</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=custom_field[possible_values]</td>
+	<td>ON<br />OFF</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1798,7 +1968,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
@@ -1818,7 +1993,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1833,17 +2008,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>commit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=TRIGGER.URL</td>
 	<td></td>
 </tr>
 <tr>
@@ -1857,8 +2032,18 @@
 	<td>TRIGGER.VALUE</td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>id=custom_field_field_format</td>
+	<td>label=リストから選択</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=custom_field[possible_values]</td>
+	<td>正常<br />障害<br />不明</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>custom_field_tracker_ids_</td>
+	<td>id=custom_field_tracker_ids_</td>
 	<td></td>
 </tr>
 <tr>
@@ -1873,37 +2058,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_for_all</td>
+	<td>id=custom_field_is_for_all</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_is_filter</td>
+	<td>id=custom_field_is_filter</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>custom_field_searchable</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>commit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=TRIGGER.ID</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_searchable</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>custom_field_is_filter</td>
+	<td>id=custom_field_searchable</td>
 	<td></td>
 </tr>
 <tr>
@@ -1917,6 +2082,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>custom_field_name</td>
+	<td>host_key_func param</td>
+</tr>
+<tr>
 	<td>click</td>
 	<td>custom_field_tracker_ids_</td>
 	<td></td>
@@ -1935,11 +2105,6 @@
 	<td>click</td>
 	<td>custom_field_is_for_all</td>
 	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>custom_field_name</td>
-	<td>host_key_func param</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
