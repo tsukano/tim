@@ -4,6 +4,8 @@ require 'net/pop'
 require 'rubygems'
 #require 'trac4r'
 require 'redmine_client'
+require 'zabbixapi'
+require 'json'
 
 require 'action_mailer' 
 require 'tmail'
@@ -66,11 +68,12 @@ module MailPicker
     return if conf.empty?
 
     RedmineClient::Base.configure do
-      self.site = conf[:zabbix_url]
-      self.user = conf[:zabbix_user_id]
-      self.password = conf[:zabbix_user_password]
+      self.site = conf[:redmine_url]
+      self.user = conf[:redmine_user_id]
+      self.password = conf[:redmine_user_password]
     end
     mapping_fields = ConfUtil.get_mapping_field_list(conf.keys)
+    p 'test'
 #    MUST_WRITE_CONF.each do |conf_field|
 #      if conf[conf_field] == nil || conf[conf_field].blank?
 #        $hinemosTracLog.puts_message "Caution. You must write configuration about #{conf_field}."
@@ -82,8 +85,14 @@ module MailPicker
 #    return if mail_duplicate_checker.message_id_list == nil # not found the file
 
 	  begin
-	  	mail_session = MailSession.new(conf)
-	  rescue
+	    p 'test2'
+	    get_event_from_zabbix(conf)
+
+	    return
+#	  	mail_session = MailSession.new(conf)ggggggggggggggggggsqruby
+	  rescue => e
+	    p e
+	    p e.message
 #	    $hinemosTracLog.puts_message "Failure to access the mail server. Please check mail server configuration. "
 	    return
 	  else
@@ -286,8 +295,35 @@ module MailPicker
     end
     return str
   end
-  module_function :main, :check_and_update, :set_custom_field, :target_mail?, :get_trigger_value_to_conf, :get_trigger_nseverity_to_conf
 
+  def get_event_from_zabbix(conf)
+    p 'test3'
+#    zbx = Zabbix::ZabbixApi.new(conf[:zabbix_url], conf[:zabbix_user_id], conf[:zabbix_user_password])
+zbx = Zabbix::ZabbixApi.new('http://172.17.1.207/zabbix/api_jsonrpc.php', 'admin','zabbix')
+
+    p zbx
+#    hostid = zbx.get_host_id('s-ibs-portal-stg01')
+    h = zbx.get_host_id('s-ibs-portal-stg01')
+
+    p hostid
+    message_get_host = { 
+       :method => 'host.get', 
+       :params => { 
+       :triggerids =>[ev["objectid"]], 
+       :output => 'extend' 
+      }#, 
+      #:auth => zbx.auth 
+    } 
+    p 'message_get_host'
+    host = zbx.do_request(message_get_host)  
+
+
+
+    p host 
+
+
+  end
+  module_function :main, :check_and_update, :set_custom_field, :target_mail?, :get_trigger_value_to_conf, :get_trigger_nseverity_to_conf, :get_event_from_zabbix
 end
 
 MailPicker.main
