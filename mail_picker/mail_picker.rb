@@ -7,6 +7,7 @@ require 'rubygems'
 require 'nkf'
 require 'yaml'
 require 'rexchange'
+require "thread"
 
 
 ex_path = File.expand_path(File.dirname(__FILE__))
@@ -85,14 +86,13 @@ module MailPicker
 	      p 'mail'
         require 'action_mailer' 
         require 'tmail'
+        
 	      mail_session = MailSession.new(conf)
-	      p mail_session.tmail_list
 	      mail_session.tmail_list.each_with_index do |t_mail, i|
-	        p 't1'
           next if t_mail.subject.index(conf[:target_mail_title]) != 0
           mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
           mail_body = t_mail.body.to_s
-        
+
           regist_issue(mail_subject, mail_body, conf, mapping_fields)
         end
         mail_session.finalize
@@ -108,17 +108,22 @@ module MailPicker
              :output => 'extend', 
           }, 
           :auth => zbx.auth 
-        } 
+        }
         alerts = zbx.do_request(message_get_alert)
 
+#################################################################################################################
         alerts.each_with_index do |alert, i|
-          
+          p alert
           mail_subject = alert["subject"].to_s
           next if mail_subject.index(conf[:target_mail_title]) != 0
           
           mail_body = alert["message"]
-          regist_issue(mail_subject, mail_body, conf, mapping_fields)
+
+            p 'thread'
+            regist_issue(mail_subject, mail_body, conf, mapping_fields)
+    
         end
+#################################################################################################################
 
 	    end
 #	    $hinemosTracLog.puts_message "Failure to access the mail server. Please check mail server configuration. "
@@ -129,7 +134,6 @@ module MailPicker
 	end
 
     # Issue model on the client side
-#################################################################################################################
 #    mail_session.tmail_list.each_with_index do |t_mail, i|
 
 #  	  next if t_mail.subject.index(conf[:target_mail_title]) != 0
@@ -189,11 +193,12 @@ module MailPicker
         p 'post'
         search_event_id = 'cf_' + conf[:custom_field_id_event_id].to_s
       end
-      issues = RedmineClient::Issue.find(:all,
+      issues = RedmineClient::Issue.find(:first,
                 :params => {
                    search_event_id.to_sym => custom_fields[conf[:custom_field_id_event_id].to_s].to_i
                 })
-      if issues.size > 0
+
+      if issues != nil
         puts "not covered EVENT.ID=" + custom_fields[conf[:custom_field_id_event_id].to_s]
         return
       end
@@ -237,7 +242,6 @@ module MailPicker
 #        end
 #      end
     end
-###############################################################################################
     
 
 #   $hinemosTracLog.puts_message "Finished accessing the mail server."
@@ -249,26 +253,28 @@ module MailPicker
 # update issue
 #
   def check_and_update(custom_fields, conf)
-    
-    search_hostname = 'cf_' + conf[:custom_field_id_hostname].to_s
-    search_trigger_id = 'cf_' + conf[:custom_field_id_trigger_id].to_s
-
-    issues = RedmineClient::Issue.find(:all,
-              :params => {
-                 search_hostname.to_sym => custom_fields[conf[:custom_field_id_hostname].to_s],
-                 search_trigger_id.to_sym => custom_fields[conf[:custom_field_id_trigger_id].to_s].to_i
-              })
-
-    issues.each do |issue|
-      custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
-      if custom_field_trigger_value[0].value != conf[:off_event].to_s
-        set_custom_field(issue, conf[:mapping_off_event_id], custom_fields[conf[:custom_field_id_event_id].to_s])
-        set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value].to_s])
-        set_custom_field(issue, conf[:mapping_trigger_name], custom_fields[conf[:custom_field_id_trigger_name].to_s])
-        if issue.save
-          puts 'UPDATE Issue ID=' +
-               issue.id
-          return true
+    if custom_fields[conf[:custom_field_id_trigger_value].to_s].to_s == conf[:off_event].to_s
+      search_hostname = 'cf_' + conf[:custom_field_id_hostname].to_s
+      search_trigger_id = 'cf_' + conf[:custom_field_id_trigger_id].to_s
+  
+      issues = RedmineClient::Issue.find(:all,
+                :params => {
+                   search_hostname.to_sym => custom_fields[conf[:custom_field_id_hostname].to_s],
+                   search_trigger_id.to_sym => custom_fields[conf[:custom_field_id_trigger_id].to_s].to_i
+                })
+  
+      issues.each do |issue|
+        custom_field_trigger_value = issue.custom_fields.select{|elem| elem.name == conf[:mapping_trigger_value]}
+        if custom_field_trigger_value[0].value != conf[:off_event].to_s
+          set_custom_field(issue, conf[:mapping_off_event_id], custom_fields[conf[:custom_field_id_event_id].to_s])
+          set_custom_field(issue, conf[:mapping_trigger_value], custom_fields[conf[:custom_field_id_trigger_value].to_s])
+          set_custom_field(issue, conf[:mapping_trigger_name], custom_fields[conf[:custom_field_id_trigger_name].to_s])
+  
+          if issue.save
+            puts 'UPDATE Issue ID=' +
+                 issue.id
+            return true
+          end
         end
       end
     end
