@@ -62,16 +62,6 @@ module MailPicker
 
     mapping_fields = ConfUtil.get_mapping_field_list(conf.keys)
 
-#    MUST_WRITE_CONF.each do |conf_field|
-#      if conf[conf_field] == nil || conf[conf_field].blank?
-#        $hinemosTracLog.puts_message "Caution. You must write configuration about #{conf_field}."
-#        return
-#      end
-#    end
-
-#    mail_duplicate_checker = MailDuplicateChecker.new 
-#    return if mail_duplicate_checker.message_id_list == nil # not found the file
-
 	  begin
 	    
 	    if conf[:information_get_mode] != 1
@@ -82,6 +72,9 @@ module MailPicker
 	      mail_session = MailSession.new(conf)
 	      tmail_list_and_custom_fields = Array.new
 	      mail_session.tmail_list.each_with_index do |t_mail, i|
+	        
+	        next if MAIL_ENCODER.call(t_mail.subject.to_s).index(conf[:target_mail_title]) != 0
+
 	        tmail_and_custom_fields = Hash.new
 	        tmail_and_custom_fields[:mail_subject] = MAIL_ENCODER.call(t_mail.subject.to_s)
 	        tmail_and_custom_fields[:mail_body] = t_mail.body.to_s
@@ -90,13 +83,7 @@ module MailPicker
 
 	        tmail_list_and_custom_fields.push(tmail_and_custom_fields)
 	      end
-=begin          next if t_mail.subject.index(conf[:target_mail_title]) != 0
-          mail_subject = MAIL_ENCODER.call(t_mail.subject.to_s)
-          mail_body = t_mail.body.to_s
 
-          regist_issue(mail_subject, mail_body, conf, mapping_fields)
-        end
-=end
         update_maching = Array.new
         tmail_list_and_custom_fields.each_with_index do |t_mail, i|
           next if t_mail[:mail_subject].index(conf[:target_mail_title]) != 0
@@ -115,9 +102,14 @@ module MailPicker
               if (t_mail[:custom_fields][conf[:custom_field_id_hostname].to_s].to_s == item[:custom_fields][conf[:custom_field_id_hostname].to_s].to_s &&
                 t_mail[:custom_fields][conf[:custom_field_id_trigger_id].to_s].to_i == item[:custom_fields][conf[:custom_field_id_trigger_id].to_s].to_i)
 
-                update_map = Hash.new
-                update_map[conf[:custom_field_id_event_id].to_s] = item[:custom_fields][conf[:custom_field_id_event_id].to_s].to_i
-                update_map[conf[:custom_field_id_running_event_id].to_s] = t_mail[:custom_fields][conf[:custom_field_id_event_id].to_s].to_i
+               update_map = Hash.new
+                if conf[:information_get_mode] == 0
+                  update_map[conf[:custom_field_id_event_id].to_s] = item[:custom_fields][conf[:custom_field_id_event_id].to_s].to_i
+                  update_map[conf[:custom_field_id_running_event_id].to_s] = t_mail[:custom_fields][conf[:custom_field_id_event_id].to_s].to_i
+                else
+                  update_map[conf[:custom_field_id_event_id].to_s] = item[:custom_fields][conf[:custom_field_id_message_id_mail_header].to_s].to_i
+                  update_map[conf[:custom_field_id_running_event_id].to_s] = t_mail[:custom_fields][conf[:custom_field_id_message_id_mail_header].to_s].to_i
+                end
                 update_map[conf[:custom_field_id_trigger_value].to_s] = t_mail[:custom_fields][conf[:custom_field_id_trigger_value].to_s]
                 update_map[conf[:custom_field_id_trigger_name].to_s] = t_mail[:custom_fields][conf[:custom_field_id_trigger_name].to_s]
                 
@@ -205,14 +197,16 @@ module MailPicker
     custom_fields = Hash.new
 
     if massage_id != nil
-      p massage_id
+      custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + "message_id_mail_header").to_sym].to_s, massage_id)
     end
     
-    mail_body.each_line do |line|b
+    mail_body.each_line do |line|
       mapping_fields.each do |mapping_field|
         if line.index(conf[(CONF_MAPPING_HEADER + mapping_field).to_sym]) == 0
-          parse_mapping_value =  /#{conf[(CONF_MAPPING_HEADER + mapping_field).to_sym]} = /.match(line)
-
+          parse_mapping_value =  /#{conf[(CONF_MAPPING_HEADER + mapping_field).to_sym]} : /.match(line)
+          p conf[(CONF_MAPPING_HEADER + mapping_field).to_sym]
+          p mapping_field
+          p parse_mapping_value
           next if parse_mapping_value == nil
           if mapping_field == 'trigger_value' then
                 custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
@@ -224,6 +218,8 @@ module MailPicker
                 custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
                                     get_trigger_severity_to_conf(parse_mapping_value.post_match.rstrip, conf))
           elsif mapping_field == 'priority_num' then
+            p conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s
+            p get_trigger_value_to_conf_for_hinemos(parse_mapping_value.post_match.rstrip, conf)
                 custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,
                                     get_priority_num_to_conf(parse_mapping_value.post_match.rstrip, conf))
                 custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + "trigger_value").to_sym].to_s,
@@ -240,10 +236,9 @@ module MailPicker
           elsif mapping_field == 'generation_date' then
                 generation_date = parse_mapping_value.post_match.rstrip
                 custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s, generation_date.gsub('.', '-'))
-                custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + "event_id").to_sym].to_s,
-                                    make_event_id(generation_date, conf))
           else
                 custom_fields.store(conf[(CONF_CUSTOM_FIELD_ID_HEADER + mapping_field).to_sym].to_s,parse_mapping_value.post_match.rstrip)
+                p parse_mapping_value.post_match.rstrip
           end
         end
       end
@@ -258,12 +253,16 @@ module MailPicker
       if !check_update_maching(custom_fields, conf, update_maching)
         p 'update'
         if conf[:information_get_mode] == 2
-          search_event_id = 'cf_' + conf[:custom_field_id_running_message_id_mail_header].to_s
+          search_running_message_id_mail_header = 'cf_' + conf[:custom_field_id_running_message_id_mail_header].to_s
           
           issues = RedmineClient::Issue.find(:first,
                 :params => {
-                   search_event_id.to_sym => custom_fields[conf[:custom_field_id_running_message_id_mail_header].to_s]
+                   search_running_message_id_mail_header.to_sym => custom_fields[conf[:custom_field_id_running_message_id_mail_header].to_s]
                 })
+          if issues != nil
+            puts "not covered Message ID=" + custom_fields[conf[:custom_field_id_running_message_id_mail_header].to_s]
+            return
+          end
         else
 
           search_event_id = 'cf_' + conf[:custom_field_id_running_event_id].to_s
@@ -272,11 +271,10 @@ module MailPicker
                 :params => {
                    search_event_id.to_sym => custom_fields[conf[:custom_field_id_event_id].to_s].to_i
                 })
-        end
-        
-        if issues != nil
-          puts "not covered EVENT.ID=" + custom_fields[conf[:custom_field_id_event_id].to_s]
-          return
+          if issues != nil
+            puts "not covered EVENT.ID=" + custom_fields[conf[:custom_field_id_event_id].to_s]
+            return
+          end
         end
         
         search_hostname = 'cf_' + conf[:custom_field_id_hostname].to_s
@@ -314,13 +312,15 @@ module MailPicker
       end
     else
       p 'post'
+      
       if conf[:information_get_mode] == 2
-        search_event_id = 'cf_' + conf[:custom_field_id__message_id_mail_header].to_s
+        search_message_id_mail_header = 'cf_' + conf[:custom_field_id_message_id_mail_header].to_s
         
         issues = RedmineClient::Issue.find(:first,
                   :params => {
-                     search_event_id.to_sym => custom_fields[conf[:custom_field_id__message_id_mail_header].to_s]
+                     search_message_id_mail_header.to_sym => custom_fields[conf[:custom_field_id_message_id_mail_header].to_s]
                   })
+        search_id = custom_fields[conf[:custom_field_id_message_id_mail_header].to_s]
       else
         search_event_id = 'cf_' + conf[:custom_field_id_event_id].to_s
         
@@ -328,9 +328,10 @@ module MailPicker
                   :params => {
                      search_event_id.to_sym => custom_fields[conf[:custom_field_id_event_id].to_s].to_i
                   })
+        search_id = custom_fields[conf[:custom_field_id_event_id].to_s].to_i
       end
       if issues != nil
-        puts "not covered EVENT.ID=" + custom_fields[conf[:custom_field_id_event_id].to_s]
+        puts "not covered EVENT.ID=" + search_id.to_s
       else
         issue = RedmineClient::Issue.new(
           :subject => mail_subject,
@@ -357,39 +358,82 @@ module MailPicker
       
       update_maching.each do |item|
         # 更新マッピングが存在する場合更新する
-        if item[conf[:custom_field_id_event_id].to_s].to_s == custom_fields[conf[:custom_field_id_event_id].to_s].to_s
-
-          search_event_id = 'cf_' + conf[:custom_field_id_running_event_id].to_s
-      
-          issues = RedmineClient::Issue.find(:first,
-                :params => {
-                   search_event_id.to_sym => item[conf[:custom_field_id_running_event_id].to_s].to_i
-                })
-
-          if issues != nil
-            puts "not covered EVENT.ID=" + item[conf[:custom_field_id_running_event_id].to_s].to_s
-            return
+        if conf[:information_get_mode] == 2
+          serch_map_event_id = custom_fields[conf[:custom_field_id_message_id_mail_header].to_s].to_s
+          
+          if item[conf[:custom_field_id_event_id].to_s].to_s == serch_map_event_id
+  
+            search_event_id = 'cf_' + conf[:custom_field_id_running_message_id_mail_header].to_s
+  
+            issues = RedmineClient::Issue.find(:first,
+                  :params => {
+                     search_event_id.to_sym => item[conf[:custom_field_id_running_event_id].to_s].to_i
+                  })
+  
+            if issues != nil
+              puts "not covered EVENT.ID=" + item[conf[:custom_field_id_running_event_id].to_s].to_s
+              return
+            end
+  
+            search_event_id = 'cf_' + conf[:custom_field_id_message_id_mail_header].to_s
+            update_issue = RedmineClient::Issue.find(:all,
+                  :params => {
+                     search_event_id.to_sym => item[conf[:custom_field_id_event_id].to_s].to_i
+                  })
+            update_issue.each do |issue|
+   
+              set_custom_field(issue, conf[:mapping_running_message_id_mail_header], item[conf[:custom_field_id_running_event_id].to_s].to_s)
+              set_custom_field(issue, conf[:mapping_trigger_value], item[conf[:custom_field_id_trigger_value].to_s])
+              set_custom_field(issue, conf[:mapping_trigger_name], item[conf[:custom_field_id_trigger_name].to_s])
+             
+              if issue.save
+#                  puts 'UPDATE Issue ID=' +
+#                       issue.id
+                break
+              else
+                p 'error'
+#                  puts issue.errors.full_messages
+                break
+              end
+            end
           end
-
-          search_event_id = 'cf_' + conf[:custom_field_id_event_id].to_s
-          update_issue = RedmineClient::Issue.find(:all,
-                :params => {
-                   search_event_id.to_sym => item[conf[:custom_field_id_event_id].to_s].to_i
-                })
-          update_issue.each do |issue|
- 
-            set_custom_field(issue, conf[:mapping_running_event_id], item[conf[:custom_field_id_running_event_id].to_s].to_s)
-            set_custom_field(issue, conf[:mapping_trigger_value], item[conf[:custom_field_id_trigger_value].to_s])
-            set_custom_field(issue, conf[:mapping_trigger_name], item[conf[:custom_field_id_trigger_name].to_s])
-           
-            if issue.save
-  #              puts 'UPDATE Issue ID=' +
-  #                   issue.id
-              break
-            else
-              p 'error'
-  #              puts issue.errors.full_messages
-              break
+        else
+          serch_map_event_id = custom_fields[conf[:custom_field_id_event_id].to_s].to_s
+          
+          if item[conf[:custom_field_id_event_id].to_s].to_s == serch_map_event_id
+  
+            search_event_id = 'cf_' + conf[:custom_field_id_running_event_id].to_s
+  
+            issues = RedmineClient::Issue.find(:first,
+                  :params => {
+                     search_event_id.to_sym => item[conf[:custom_field_id_running_event_id].to_s].to_i
+                  })
+  
+            if issues != nil
+              puts "not covered EVENT.ID=" + item[conf[:custom_field_id_running_event_id].to_s].to_s
+              return
+            end
+  
+            search_event_id = 'cf_' + conf[:custom_field_id_event_id].to_s
+            update_issue = RedmineClient::Issue.find(:all,
+                  :params => {
+                     search_event_id.to_sym => item[conf[:custom_field_id_event_id].to_s].to_i
+                  })
+            update_issue.each do |issue|
+   
+              set_custom_field(issue, conf[:mapping_running_event_id], item[conf[:custom_field_id_running_event_id].to_s].to_s)
+              set_custom_field(issue, conf[:mapping_trigger_value], item[conf[:custom_field_id_trigger_value].to_s])
+              set_custom_field(issue, conf[:mapping_trigger_name], item[conf[:custom_field_id_trigger_name].to_s])
+             
+              if issue.save
+#                  puts 'UPDATE Issue ID=' +
+#                       issue.id
+                break
+              else
+                p 'error'
+#                  puts issue.errors.full_messages
+                break
+              end
             end
           end
         end
