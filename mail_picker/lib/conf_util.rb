@@ -1,4 +1,7 @@
 class ConfUtil
+
+  ALERT_TYPE_MAIL = "mail"
+  ALERT_TYPE_ZABBIX_API = "zabbix_api"
 #
 # reading the configuration file
 #
@@ -72,6 +75,5 @@ class ConfUtil
     end
     return mapping_keys
   end
-
 
 end
