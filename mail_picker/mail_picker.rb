@@ -20,7 +20,7 @@ require ex_path + '/mail/mail_session'
 require ex_path + '/lib/conf_util'
 require ex_path + '/lib/redmine_controller'
 
-CONF_FILE = ex_path + '/mail_picker.conf'
+CONF_FILE = ex_path + '/../setting.conf'
 IDS_FILE  = ex_path + '/mail_picker.dat'
 LOG_FILE  = ex_path + '/mail_picker.log'
 
@@ -78,34 +78,41 @@ module MailPicker
                                        conf[:mail_server_password])
         tmail_list = mail_session.
                         get_recent_tmail_list(conf[:interval_seconds_before_now_for_checking_alert])
+        mail_session = nil
         
       when ConfUtil::ALERT_TYPE_ZABBIX_API
         # TODO:API 
+        # must start configured mail title
       end
 
 	    tmail_list.each_with_index do |t_mail, i|
 
-	      next if MailSession.target_mail?(t_mail,
-                                         conf[:target_mail_subject_header])
+	      next unless MailSession.
+                      target_mail?(t_mail,
+                                   conf[:target_mail_subject_header])
+        # check if redmine have been registered
+        next if redmine.have_registerd?(t_mail[MailSession::TMAIL_IM_ALERT_ID],
+                                        conf[:cf_id_im_alert_id],
+                                        conf[:cf_id_im_recovered_alert_id])
+        # issue instance making
 
-#	      tmail_and_custom_fields = Hash.new
-#	      tmail_and_custom_fields[:mail_subject] = MAIL_ENCODER.call(t_mail.subject.to_s)
-#	      tmail_and_custom_fields[:mail_body] = t_mail.body.to_s
-#	      tmail_and_custom_fields[:mail_message_id] = t_mail.message_id
-#	      tmail_and_custom_fields[:custom_fields] = Hash.new
-#
-#	      tmail_list_and_custom_fields.push(tmail_and_custom_fields)
+        # update checking
+        if is_recovered(t_mail.body)
+
+        end
+        # cf formating
+        
+        # redmine regist
 	    end
 
       update_maching = Array.new
       tmail_list_and_custom_fields.each_with_index do |t_mail, i|
-        next if t_mail[:mail_subject].index(conf[:target_mail_title]) != 0
 
-        if conf[:information_get_mode] == 0
-          t_mail[:custom_fields] = cutting_massage(t_mail[:mail_subject], t_mail[:mail_body], conf, mapping_fields)
-        else
-          t_mail[:custom_fields] = cutting_massage(t_mail[:mail_subject], t_mail[:mail_body], conf, mapping_fields, t_mail[:mail_message_id])
-        end
+#        if conf[:information_get_mode] == 0
+#          t_mail[:custom_fields] = cutting_massage(t_mail[:mail_subject], t_mail[:mail_body], conf, mapping_fields)
+#        else
+#          t_mail[:custom_fields] = cutting_massage(t_mail[:mail_subject], t_mail[:mail_body], conf, mapping_fields, t_mail[:mail_message_id])
+#        end
 
         if t_mail[:custom_fields][conf[:custom_field_id_trigger_value].to_s].to_s == conf[:running_event].to_s
           map_index = i - 1

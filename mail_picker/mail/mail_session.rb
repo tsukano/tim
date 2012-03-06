@@ -2,6 +2,7 @@ class MailSession
   # caution:this date is written by mail send client_side.so, must be exact time.
   MAIL_HEADER_DATE_LINE = "Date\s?\:\s?([^\r\n]+)\r\n	"
   MAIL_ENCODER = Proc.new{|string| NKF.nkf('-w',string)}
+  TMAIL_IM_ALERT_ID = 'im_alert_id'
 
 	attr_accessor :pop
 	
@@ -26,7 +27,9 @@ class MailSession
         mail_send_time = Time.parse(date_in_header[0])
       end
       if time_from < mail_send_time
-        tmail_list.unshift(self.change_to_tmail(mail.mail))
+        tmail = self.change_to_tmail(mail.mail)
+        tmail.store(TMAIL_IM_ALERT_ID, mail.unique_id)
+        tmail_list.unshift(tmail)
       else
         break
       end

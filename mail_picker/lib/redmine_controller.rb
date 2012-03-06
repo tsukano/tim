@@ -1,5 +1,7 @@
 class RedmineController
 
+  CUSTOM_FIELD_HEADER = 'cf_'
+
   def initialize(url, user, password)
     RedmineClient::Base.configure do
       self.site = url
@@ -7,15 +9,14 @@ class RedmineController
       self.password = password
     end
   end
-  # caution: there is a posibility ID is not the last.
-  def get_last_im_alert_id(defect_tracker, cf_name)
-    last_issue = 
-      RedmineClient::Issue.find(:first,
-                                :params => {:tracker_id => defect_tracker})
-    last_issue.custom_fields.each do |cf|
-      return cf.value if cf.name == cf_name
+  def have_registered?(im_alert_id, cf_id_alert, cf_id_recovered)
+    [cf_id_alert, cf_id_recovered].each do |cf_id|
+      issue = RedmineClient::Issue.
+                find(:first,
+                     :params =>
+                       {CUSTOM_FIELD_HEADER + cf_id => im_alert_id })
+      return true if issue != nil
     end
-    raise "not found #{cf_name} in ticket id = #{last_issue.id}"
+    return false
   end
-
 end
