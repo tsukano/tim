@@ -1,58 +1,52 @@
 class MailParser
 
-  attr_accessor :body_hash
+  ZABI_TRIGGER_VALUE_NORMAL = 0
+  attr_accessor :raw_body
+  attr_accessor :cf_values
 
-  def initialize(body, date)
-    @body_hash = Hash.new
+  def initialize(body, cf_mapping_id, cf_mapping_value)
+    self.raw_body = Hash.new
     parse(body)
-    @body_hash.store(ORIGINAL_MAIL_DATE, date)
+    self.cf_values = Hash.new
+    cf_convert(cf_mapping_id, cf_mapping_value)
   end
-  
-  def parse(body)
-    utf8_body = MAIL_ENCODER.call(body)
+
+  # only zabbix
+  def recovered?()
+    self.raw_body['TRIGGER.VALUE'] == ZABI_TRIGGER_VALUE_NORMAL
+  end
+
+  def get_cf(item_name)
+    return self.cf_values[item_name]
+  end
+
+  def add_cf(cf_id, cf_value)
+    self.cf_values.store(cf_id, cf_value)
+  end
+
+  private
+  def parse(utf8_body)
+    separator = Regexp.escape(MAIL_SEPARATOR)
     utf8_body.split(/[\r\n]{1,2}/).each do |line|
-      next unless line =~ /#{MAIL_SEPARATOR}/
-      raw_key = line.sub(/#{MAIL_SEPARATOR}.+$/, "").strip
-      raw_value = line.sub(/^.+#{MAIL_SEPARATOR}/, "").strip
-
-      next if raw_key.empty? || raw_value.empty?
-
-      @body_hash.store(raw_key, raw_value)
+      if line =~ /^([^#{separator}]+)[#{separator}](.+)$/
+        raw_key = $1.strip
+        raw_value = $2.strip
+        next if raw_key.empty? || raw_value.empty?
+        self.raw_body.store(raw_key, raw_value)
+      end
     end
-
   end
 
-  def get_trac_value(conf, trac_item_name)
-
-    conf_name = CONF_MAPPING_HEADER + trac_item_name.to_s
-
-    hinemos_item_name = conf[conf_name.to_sym]
-    raw_value = @body_hash[hinemos_item_name]
-
-    return nil if raw_value == nil
-
-    if conf["#{conf_name}_values".to_sym] == nil
-      parse_option = conf["#{conf_name}_parse".to_sym]
-      if parse_option == nil
-        return raw_value
-      else
-        return "" if raw_value.empty?
-
-	      REG_SIGN.keys.each do |sign|
-	        parse_option = parse_option.sub(/\$\{#{sign.to_s}\}/,REG_SIGN[sign])
-	      end
-        begin
-          parsed = DateTime.parse(raw_value)
-        rescue
-          $hinemosTracLog.puts_message("Failure to parse about #{raw_value}.Please check this date format.")
-        return nil
-      end
-	#return parsed.strftime(parse_pattern) 
-	return parsed.strftime(parse_option)
-      end
-    else
-      mapping_value = conf["#{conf_name}_values".to_sym].invert
-      return mapping_value[raw_value]
+  def cf_convert(conf_id, conf_value)
+    self.raw_body.each do |raw_key, raw_value|
+      # TODO: item name may not be same api item name. like japanese.
+      # rakuda
+      config_item_name = raw_key.downcase.gsub(/[\-\.\s]/, '_') 
+      cf_id = conf_id[config_item_name]
+      next if cf_id == nil
+      cf_value = conf_value[config_item_name] == nil ? raw_value :
+                                                       conf_value[config_item_name][raw_value]
+      self.cf_values.store(cf_id, cf_value)
     end
   end
 end

@@ -1,7 +1,6 @@
 class MailSession
   # caution:this date is written by mail send client_side.so, must be exact time.
-  MAIL_HEADER_DATE_LINE = "Date\s?\:\s?([^\r\n]+)\r\n	"
-  MAIL_ENCODER = Proc.new{|string| NKF.nkf('-w',string)}
+  MAIL_HEADER_DATE_LINE = /Date\s?\:\s?([^\r\n]+)\r\n/
   TMAIL_IM_ALERT_ID = 'im_alert_id'
 
 	attr_accessor :pop
@@ -21,31 +20,21 @@ class MailSession
     tmail_list = Array.new
     # reversing is for perfomance
     self.pop.mails.reverse.each do |mail|
-      puts "now is #{mail.unique_id}"
+      p "now checking mail id = " + mail.unique_id
       mail_send_time = time_from
-      mail.header.scan(/#{MAIL_HEADER_DATE_LINE}/) do |date_in_header|
+      mail.header.scan(MAIL_HEADER_DATE_LINE) do |date_in_header|
         mail_send_time = Time.parse(date_in_header[0])
+        p " Date :" + mail_send_time.to_s
       end
       if time_from < mail_send_time
-        tmail = self.change_to_tmail(mail.mail)
+        tmail = TMail::Mail.parse(mail.mail)
         tmail.store(TMAIL_IM_ALERT_ID, mail.unique_id)
         tmail_list.unshift(tmail)
       else
+        p "stop reading pop mail for over interval"
         break
       end
     end
     return tmail_list
   end
-#
-# check the mail if it's target
-#
-  def self.target_mail?(t_mail, subject_header)
-    MAIL_ENCODER.call(t_mail.subject).start_with(subject_header)
-  end
-
-  private
-  def self.change_to_tmail(mail_string)
-    return TMail::Mail.parse(mail_string)
-  end
-
 end

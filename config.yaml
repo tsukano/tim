@@ -1,0 +1,219 @@
+alert_type : mail
+#alert_type : zabbix_api
+
+monitoring_system : zabbix
+#monitoring_system : hinemos
+
+interval_sec_before_now_for_checking : 36000
+
+hosts:
+  mail:
+    address : pop.mail.yahoo.co.jp
+    port : 110
+    user : 
+    password : 
+
+  zabbix:
+    url : 
+    user : admin
+    password : 
+    host_id : 
+
+  redmine:
+    url : "http://"
+    user : 
+    password : 
+
+thread:
+  concurrency : 2
+  qsize : 0
+
+mail_condition:
+  subject_header : 【障害】
+
+redmine_mapping:
+  im_project_id: incident-manager
+  defect_tracker_id: 1
+  cf_id:
+    im_alert_id : 93
+    im_recovered_alert_id : 94
+  cf_id_zabbix:
+    date : 17
+    esc_history : 18
+    event_ack_history : 19
+    event_ack_status : 20
+    event_age : 21
+    event_date : 22
+    event_id : 75
+    running_event_id : 76
+    event_time : 25
+    hostname : 26
+    host_conn : 27
+    host_dns : 28
+    ipaddress : 29
+    item_lastvalue : 30
+    item_log_age : 31
+    item_log_date : 32
+    item_log_eventid : 79
+    item_log_nseverity : 34
+    item_log_severity : 35
+    item_log_source : 36
+    item_log_time : 37
+    item_name : 38
+    item_value : 39
+    node_id : 77
+    node_name : 41
+    profile_contact : 42
+    profile_devicetype : 43
+    profile_hardware : 44
+    profile_location : 45
+    profile_macaddress : 46
+    profile_name : 47
+    profile_notes : 48
+    profile_os : 49
+    profile_serialno : 50
+    profile_software : 51
+    profile_tag : 52
+    status : 85
+    time : 54
+    trigger_comment : 55
+    trigger_events_unack : 56
+    trigger_id : 78
+    trigger_key : 61
+    trigger_name : 62
+    trigger_nseverity : 81
+    trigger_severity : 86
+    trigger_status : 83
+    trigger_url : 66
+    trigger_value : 82
+    host_key_func_param : 68
+  cf_id_hinemos:
+    priority : 86
+    priority_jp : 86
+    priority_en : 86
+    priority_num : 86
+    generation_date : 22
+    plugin_id : 87
+    monitor_id : 78
+    facility_id : 26
+    scope : 88
+    aplication : 89
+    message_id : 90
+   #message : メール本文(説明に転記される）
+   #org_message : メール本文(説明に転記される）
+    ip_address : 29
+    node : 41
+    message_id_mail_header : 91
+    running_id_mail_header : 92
+  cf_value_zabbix:
+    trigger_nseverity:
+      0 : 未分類
+      1 : 情報
+      2 : 警告
+      3 : 軽度の障害
+      4 : 重度の障害
+      5 : 致命的な障害
+    trigger_severity:
+      0 : 未分類
+      1 : 情報
+      2 : 警告
+      3 : 軽度の障害
+      4 : 重度の障害
+      5 : 致命的な障害
+      6 : 不明
+    trigger_status:
+      0 : ON
+      1 : OFF
+    trigger_value:
+      0 : 正常
+      1 : 障害
+      2 : 不明
+  cf_value_hinemos:
+    priority_num:
+      0 : 危険
+      1 : 不明
+      2 : 警告
+      3 : 情報
+    priority_to_trigger_value:
+      0 : 障害
+      1 : 不明
+      2 : 障害
+      3 : 正常
+
+# Incident Manager  mapping from zabbix mail to redmine
+mapping_date : DATE
+mapping_esc_history : ESC.HISTORY
+mapping_event_ack_history : EVENT.ACK.HISTORY
+mapping_event_ack_status : EVENT.ACK.STATUS
+mapping_event_age : EVENT.AGE
+mapping_event_date : EVENT.DATE
+mapping_event_id : EVENT.ID
+mapping_running_event_id : RUNNING_EVENT.ID
+mapping_event_time : EVENT.TIME
+mapping_hostname : HOSTNAME
+mapping_host_conn : HOST.CONN
+mapping_host_dns : HOST.DNS
+mapping_ipaddress : IPADDRESS
+mapping_item_lastvalue : ITEM.LASTVALUE
+mapping_item_log_age : ITEM.LOG.AGE
+mapping_item_log_date : ITEM.LOG.DATE
+mapping_item_log_eventid : ITEM.LOG.EVENTID
+mapping_item_log_nseverity : ITEM.LOG.NSEVERITY
+mapping_item_log_severity : ITEM.LOG.SEVERITY
+mapping_item_log_source : ITEM.LOG.SOURCE
+mapping_item_log_time : ITEM.LOG.TIME
+mapping_item_name : ITEM.NAME
+mapping_item_value : ITEM.VALUE
+mapping_node_id : NODE.ID
+mapping_node_name : NODE.NAME
+mapping_profile_contact : PROFILE.CONTACT
+mapping_profile_devicetype : PROFILE.DEVICETYPE
+mapping_profile_hardware : PROFILE.HARDWARE
+mapping_profile_location : PROFILE.LOCATION
+mapping_profile_macaddress : PROFILE.MACADDRESS
+mapping_profile_name : PROFILE.NAME
+mapping_profile_notes : PROFILE.NOTES
+mapping_profile_os : PROFILE.OS
+mapping_profile_serialno : PROFILE.SERIALNO
+mapping_profile_software : PROFILE.SOFTWARE
+mapping_profile_tag : PROFILE.TAG
+mapping_status : STATUS
+mapping_time : TIME
+mapping_trigger_comment : TRIGGER.COMMENT
+mapping_trigger_events_unack : TRIGGER.EVENTS.UNACK
+mapping_trigger_id : TRIGGER.ID
+mapping_trigger_key : TRIGGER.KEY
+mapping_trigger_name : TRIGGER.NAME
+mapping_trigger_nseverity : TRIGGER.NSEVERITY
+mapping_trigger_severity : TRIGGER.SEVERITY
+mapping_trigger_status : TRIGGER.STATUS
+mapping_trigger_url : TRIGGER.URL
+mapping_trigger_value : TRIGGER.VALUE
+mapping_host_key_func_param : host_key_func param
+# Hinemos mail mapping
+mapping_priority : 重要度
+mapping_priority_jp : 重要度
+mapping_priority_en : 重要度
+mapping_priority_num : 重要度
+mapping_generation_date : 出力日時
+mapping_plugin_id : プラグインID
+mapping_monitor_id : モニター
+mapping_facility_id : ファシリティID
+mapping_scope : スコープ
+mapping_aplication : アプリケーション
+mapping_message_id : メッセージID
+#mapping_message : メッセージ
+#mapping_org_message : メッセージ
+mapping_ip_address : IPアドレス
+mapping_node : ノード
+mapping_message_id_mail_header : MESSAGE_ID（メールヘッダ）
+mapping_running_message_id_mail_header : RUNNING_MESSAGE_ID（メールヘッダ）
+
+running_event : 正常
+
+
+# zabbix trigger_value,trigger_nseverity conf
+status_0 : ON
+status_1 : OFF
+
+
