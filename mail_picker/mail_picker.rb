@@ -4,14 +4,12 @@ require 'net/pop'
 require 'rubygems'
 require 'nkf'
 require 'yaml'
-require 'rexchange'
 require 'thread'
 require 'time' 
 require 'tmail'
 require 'redmine_client'
 
 ex_path = File.expand_path(File.dirname(__FILE__))
-
 require ex_path + '/mail/mail_parser'
 require ex_path + '/mail/mail_session'
 require ex_path + '/lib/im_config'
@@ -22,31 +20,17 @@ CONF_FILE = ex_path + '/../config.yaml'
 MAIL_ENCODER = Proc.new{|string| NKF.nkf('-w',string)}
 MAIL_SEPARATOR = ":：=＝"
 
-REG_SIGN = {:year   => '%Y',
-            :month  => '%m', 
-            :day    => '%d', 
-            :hour   => '%H', 
-            :minute => '%M', 
-            :second => '%S'}
-
 class MailPicker
 
   def initialize
     @conf = ImConfig.new(CONF_FILE)
-    @redmine = RedmineController.new(@conf.get("hosts.redmine.url"),
-                                     @conf.get("hosts.redmine.user"),
-                                     @conf.get("hosts.redmine.password"))
-    if @conf.mail? 
-      @mail_session = MailSession.new(@conf.get("hosts.mail.address"), 
-                                      @conf.get("hosts.mail.port"),
-                                      @conf.get("hosts.mail.user"), 
-                                      @conf.get("hosts.mail.password"))
-    end 
+    @redmine = RedmineController.new(@conf.get("hosts.redmine"))
+    @mail_session = MailSession.new(@conf.get("hosts.mail")) if @conf.mail?
   end
 
   def main
     tmail_list = Array.new
-    if @conf.mail? 
+    if @conf.mail?
       tmail_list = @mail_session.get_recent_tmail_list(
                      @conf.get("interval_sec_before_now_for_checking"))
       @mail_session.finalize
@@ -77,7 +61,6 @@ class MailPicker
         end
         issue = @redmine.get_defected_ticket(@conf.get("redmine_mapping.defect_tracker_id"),
                                             cf_id_and_value_list)
-        
         # TODO:
         # set recoverd id / trigger value / trigger name
         #redmine.set_custom_field(issue, )

@@ -2,11 +2,11 @@ class RedmineController
 
   CUSTOM_FIELD_HEADER = 'cf_'
 
-  def initialize(url, user, password)
+  def initialize(conf)
     RedmineClient::Base.configure do
-      self.site = url
-      self.user = user
-      self.password = password
+      self.site = conf["url"]
+      self.user = conf["user"]
+      self.password = conf["password"]
     end
   end
   def have_registered?(im_alert_id, cf_id_alert, cf_id_recovered)

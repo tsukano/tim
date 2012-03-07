@@ -5,10 +5,12 @@ class MailSession
 
 	attr_accessor :pop
 	
-	def initialize(address, port, user, password)
-    self.pop = Net::POP3.new(address, port)	
+	def initialize(conf)
+    self.pop = Net::POP3.new(conf["address"], 
+                             conf["port"])
 
-    self.pop.start(user, password)
+    self.pop.start(conf["user"], 
+                   conf["password"])
 	end
 
 	def finalize
