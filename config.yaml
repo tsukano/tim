@@ -14,13 +14,13 @@ hosts:
     password : 
 
   zabbix:
-    url : 
+    url : "http://"
     user : admin
     password : 
     host_id : 
 
   redmine:
-    url : "http://"
+    url : "http:"
     user : 
     password : 
 
@@ -29,116 +29,117 @@ thread:
   qsize : 0
 
 mail_condition:
-  subject_header : 【障害】
+  subject_header : "【障害】"
 
 redmine_mapping:
   im_project_id: incident-manager
-  defect_tracker_id: 1
+  defect_tracker_id: "1"
   cf_id:
-    im_alert_id : 93
-    im_recovered_alert_id : 94
+    im_alert_id : "93"
+    im_recovered_alert_id : "94"
   cf_id_zabbix:
-    date : 17
-    esc_history : 18
-    event_ack_history : 19
-    event_ack_status : 20
-    event_age : 21
-    event_date : 22
-    event_id : 75
-    running_event_id : 76
-    event_time : 25
-    hostname : 26
-    host_conn : 27
-    host_dns : 28
-    ipaddress : 29
-    item_lastvalue : 30
-    item_log_age : 31
-    item_log_date : 32
-    item_log_eventid : 79
-    item_log_nseverity : 34
-    item_log_severity : 35
-    item_log_source : 36
-    item_log_time : 37
-    item_name : 38
-    item_value : 39
-    node_id : 77
-    node_name : 41
-    profile_contact : 42
-    profile_devicetype : 43
-    profile_hardware : 44
-    profile_location : 45
-    profile_macaddress : 46
-    profile_name : 47
-    profile_notes : 48
-    profile_os : 49
-    profile_serialno : 50
-    profile_software : 51
-    profile_tag : 52
-    status : 85
-    time : 54
-    trigger_comment : 55
-    trigger_events_unack : 56
-    trigger_id : 78
-    trigger_key : 61
-    trigger_name : 62
-    trigger_nseverity : 81
-    trigger_severity : 86
-    trigger_status : 83
-    trigger_url : 66
-    trigger_value : 82
-    host_key_func_param : 68
+    date : "17"
+    esc_history : "18"
+    event_ack_history : "19"
+    event_ack_status : "20"
+    event_age : "21"
+    event_date : "22"
+    event_id : "75"
+    running_event_id : "76"
+    event_time : "25"
+    hostname : "26"
+    host_conn : "27"
+    host_dns : "28"
+    ipaddress : "29"
+    item_lastvalue : "30"
+    item_log_age : "31"
+    item_log_date : "32"
+    item_log_eventid : "79"
+    item_log_nseverity : "34"
+    item_log_severity : "35"
+    item_log_source : "36"
+    item_log_time : "37"
+    item_name : "38"
+    item_value : "39"
+    node_id : "77"
+    node_name : "41"
+    profile_contact : "42"
+    profile_devicetype : "43"
+    profile_hardware : "44"
+    profile_location : "45"
+    profile_macaddress : "46"
+    profile_name : "47"
+    profile_notes : "48"
+    profile_os : "49"
+    profile_serialno : "50"
+    profile_software : "51"
+    profile_tag : "52"
+    status : "85"
+    time : "54"
+    trigger_comment : "55"
+    trigger_events_unack : "56"
+    trigger_id : "78"
+    trigger_key : "61"
+    trigger_name : "62"
+    trigger_nseverity : "81"
+    trigger_severity : "86"
+    trigger_status : "83"
+    trigger_url : "66"
+    trigger_value : "82"
+    host_key_func_param : "68"
   cf_id_hinemos:
-    priority : 86
-    priority_jp : 86
-    priority_en : 86
-    priority_num : 86
-    generation_date : 22
-    plugin_id : 87
-    monitor_id : 78
-    facility_id : 26
-    scope : 88
-    aplication : 89
-    message_id : 90
-   #message : メール本文(説明に転記される）
-   #org_message : メール本文(説明に転記される）
-    ip_address : 29
-    node : 41
-    message_id_mail_header : 91
-    running_id_mail_header : 92
+    priority : "86"
+    priority_jp : "86"
+    priority_en : "86"
+    priority_num : "86"
+    generation_date : "22"
+    plugin_id : "87"
+    monitor_id : "78"
+    facility_id : "26"
+    scope : "88"
+    aplication : "89"
+    message_id : "90"
+    ip_address : "29"
+    node : "41"
+    message_id_mail_header : "91"
+    running_id_mail_header : "92"
   cf_value_zabbix:
     trigger_nseverity:
-      0 : 未分類
-      1 : 情報
-      2 : 警告
-      3 : 軽度の障害
-      4 : 重度の障害
-      5 : 致命的な障害
+      "0" : 未分類
+      "1" : 情報
+      "2" : 警告
+      "3" : 軽度の障害
+      "4" : 重度の障害
+      "5" : 致命的な障害
     trigger_severity:
-      0 : 未分類
-      1 : 情報
-      2 : 警告
-      3 : 軽度の障害
-      4 : 重度の障害
-      5 : 致命的な障害
-      6 : 不明
+      "0" : 未分類
+      "1" : 情報
+      "2" : 警告
+      "3" : 軽度の障害
+      "4" : 重度の障害
+      "5" : 致命的な障害
+      "6" : 不明
     trigger_status:
-      0 : ON
-      1 : OFF
+      "0" : "ON"
+      "1" : "OFF"
+    status:
+      "0" : "ON"
+      "1" : "OFF"
     trigger_value:
-      0 : 正常
-      1 : 障害
-      2 : 不明
+      "0" : 正常
+      "1" : 障害
+      "2" : 不明
   cf_value_hinemos:
     priority_num:
-      0 : 危険
-      1 : 不明
-      2 : 警告
-      3 : 情報
+      "0" : 危険
+      "1" : 不明
+      "2" : 警告
+      "3" : 情報
     priority_to_trigger_value:
-      0 : 障害
-      1 : 不明
-      2 : 障害
-      3 : 正常
+      "0" : 障害
+      "1" : 不明
+      "2" : 障害
+      "3" : 正常
 
 # Incident Manager  mapping from zabbix mail to redmine
 mapping_date : DATE

@@ -1,13 +1,8 @@
 # -*- coding: utf-8 -*-
-
-require 'net/pop'
-require 'rubygems'
 require 'nkf'
-require 'yaml'
 require 'thread'
-require 'time' 
-require 'tmail'
-require 'redmine_client'
+require 'rubygems'
+require 'ruby-debug'
 
 ex_path = File.expand_path(File.dirname(__FILE__))
 require ex_path + '/mail/mail_parser'
@@ -40,32 +35,49 @@ class MailPicker
     end
 
     tmail_list.each do |t_mail|
-      p 'tmail id =' + t_mail[MailSession::TMAIL_IM_ALERT_ID].to_s
+      p "tmail id =#{t_mail[MailSession::TMAIL_IM_ALERT_ID].to_s}"
       next unless MAIL_ENCODER.call(t_mail.subject).start_with?(
                                 @conf.get("mail_condition.subject_header"))
 
-      p 'checked conditions'
+      p ' - checked conditions'
       next if @redmine.have_registered?(t_mail[MailSession::TMAIL_IM_ALERT_ID],
                                        @conf.get("redmine_mapping.cf_id.im_alert_id"),
                                        @conf.get("redmine_mapping.cf_id.im_recovered_alert_id"))
-      p 'have not registered'
+      p ' - have not registered'
+      p "t_mail body = #{t_mail.body}"
 
       m_body = MailParser.new(MAIL_ENCODER.call(t_mail.body),
                               @conf.cf_mapping_id,
                               @conf.cf_mapping_value)
-
-      if @conf.zabbix? && m_body.recovered?
-        # update ticket
-        cf_id_and_value_list = ["hostname","trigger_id"].map do |item|
-          {@conf.get("redmine_mapping.cf_id_zabbix.#{item}") => m_body.get_cf(item)}
+      if @conf.hinemos? && m_body.recovered_hinemos?
+        next
+      elsif @conf.zabbix? && 
+            m_body.recovered_zabbix?(ImConfig::LIST_ZABI_RECOVER,
+                                     @conf.get("redmine_mapping.cf_id_zabbix"),
+                                     @conf.get("redmine_mapping.cf_value_zabbix"))
+        p " - will update ticket"
+        cf_conditions = Hash.new
+        ImConfig::LIST_SAME_TRIGGER.each do |item|
+          next if m_body.get_cf(item) == nil
+          cf_conditions.store(@conf.get("redmine_mapping.cf_id_zabbix.#{item}"),
+                            m_body.get_cf(item))
         end
         issue = @redmine.get_defected_ticket(@conf.get("redmine_mapping.defect_tracker_id"),
-                                            cf_id_and_value_list)
-        # TODO:
-        # set recoverd id / trigger value / trigger name
-        #redmine.set_custom_field(issue, )
-      # new ticket
+                                             cf_conditions)
+        next if issue == nil
+        p " - target issue id =#{issue.id}"
+
+        cf_updated = {@conf.get("redmine_mapping.cf_id.im_recovered_alert_id") =>
+                      t_mail[MailSession::TMAIL_IM_ALERT_ID]}
+        ImConfig::LIST_ZABI_RECOVER.each do |conf_name|
+          cf_id = @conf.get("redmine_mapping.cf_id_zabbix." + conf_name)
+          next if m_body.get_cf(cf_id) == nil
+          cf_updated.store(cf_id, m_body.get_cf(cf_id))
+        end
+        @redmine.modify_cf(issue, cf_updated)
       else
+        # TODO: is defect ticket zabi/hihne
+        p " - will create ticket"
         m_body.add_cf(@conf.get("redmine_mapping.cf_id.im_alert_id"),
                       t_mail[MailSession::TMAIL_IM_ALERT_ID])
         issue = @redmine.new_ticket(MAIL_ENCODER.call(t_mail.subject),
@@ -74,7 +86,8 @@ class MailPicker
                                    m_body.cf_values)
       end
       @redmine.save(issue)
-      p "save issue id = #{issue.id}"
+      p " >>> have saved issue id = #{issue.id}"
+      #p "now commented saving"
     end
 	end
 end

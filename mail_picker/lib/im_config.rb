@@ -1,3 +1,5 @@
+require 'yaml'
+
 class ImConfig
 
   attr_accessor :conf
@@ -6,6 +8,12 @@ class ImConfig
 
   MONITORING_SYSTEM_ZABBIX = "zabbix"
   MONITORING_SYSTEM_HINEMOS = 'hinemos'
+
+  LIST_ZABI_RECOVER = ["trigger_value",
+                       "trigger_status",
+                       "status"]
+  LIST_SAME_TRIGGER = ["hostname",
+                       "trigger_id"]
 
   def initialize(conf_file)
     self.conf = YAML.load_file(conf_file)
