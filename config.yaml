@@ -1,5 +1,5 @@
-alert_type : mail
-#alert_type : zabbix_api
+#alert_type : mail
+alert_type : zabbix_api
 
 monitoring_system : zabbix
 #monitoring_system : hinemos
@@ -15,9 +15,8 @@ hosts:
 
   zabbix:
     url : "http://"
-    user : admin
+    user : 
     password : 
-    host_id : 
 
   redmine:
     url : "http://"
@@ -28,16 +27,17 @@ thread:
   concurrency : 2
   qsize : 0
 
-mail_condition:
+mail:
   subject_header : "【障害】"
+  separator_character : ":="
 
 redmine_mapping:
   im_project_id: incident-manager
-  defect_tracker_id: "1"
   cf_id:
     im_alert_id : "93"
     im_recovered_alert_id : "94"
   zabbix:
+    defect_tracker_id: "1"
     cf_id:
       date : "17"
       esc_history : "18"
@@ -165,22 +165,23 @@ redmine_mapping:
       trigger_url : トリガーURL
       trigger_value : トリガーの値
   hinemos:
+    defect_tracker_id: "4"
     cf_id:
-      priority : "86"
-      priority_jp : "86"
-      priority_en : "86"
-      priority_num : "86"
-      generation_date : "22"
+      priority : "97"
+      priority_jp : "97"
+      priority_en : "97"
+      priority_num : "97"
+      generation_date : "103"
       plugin_id : "87"
-      monitor_id : "78"
-      facility_id : "26"
+      monitor_id : "99"
+      facility_id : "100"
       scope : "88"
       aplication : "89"
-      message_id : "90"
-      ip_address : "29"
-      node : "41"
-      message_id_mail_header : "91"
-      running_id_mail_header : "92"
+      message_id : "106"
+      message : "104"
+      org_message : "105"
+      ip_address : "101"
+      node : "102"
     cf_value:
       priority_num:
         "0" : 危険
@@ -194,9 +195,9 @@ redmine_mapping:
         "3" : 正常
     cf_translated:
       priority : 重要度
-      priority_jp : 重要度
-      priority_en : 重要度
-      priority_num : 重要度
+      priority_jp : 重要度（日本語）
+      priority_en : 重要度（英語）
+      priority_num : 重要度（数値）
       generation_date : 出力日時
       plugin_id : プラグインID
       monitor_id : モニター
@@ -204,6 +205,8 @@ redmine_mapping:
       scope : スコープ
       aplication : アプリケーション
       message_id : メッセージID
+      message : メッセージ
+      org_message : オリジナルメッセージ
       ip_address : IPアドレス
-      node : ノード
+      node : ノード名
 

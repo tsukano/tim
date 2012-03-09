@@ -6,8 +6,6 @@ require 'tmail'
 class MailSession
 
   MAIL_ENCODER = Proc.new{|string| NKF.nkf('-w',string)}
-  # caution:this date is written by mail send client_side.so, must be exact time.
-  MAIL_HEADER_DATE_LINE = /Date\s?\:\s?([^\r\n]+)\r\n/
   TMAIL_IM_ALERT_ID = 'im_alert_id'
 
   attr_accessor :pop
@@ -24,7 +22,7 @@ class MailSession
     self.pop.finish
   end
 
-  def get_recent_tmail_list(interval_seconds, subject_header)
+  def get_recent_list(interval_seconds, subject_header)
     time_from = Time.now - interval_seconds
     tmail_list = Array.new
     # reversing is for perfomance reason
@@ -43,6 +41,12 @@ class MailSession
       end
     end
     return tmail_list
+  end
+  def self.convert_faked_tmail(alert_message, alert_id)
+    tmail = TMail.new
+    tmail.body = alert_message
+    tmail.store(TMAIL_IM_ALERT_ID, alert_id)
+    return tmail
   end
   private
   def recent_date?(mail_date, time_from)

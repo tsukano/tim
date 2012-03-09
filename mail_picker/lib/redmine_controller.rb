@@ -13,15 +13,12 @@ class RedmineController
     end
   end
 
-  def have_registered?(im_alert_id, cf_id_alert, cf_id_recovered)
-    [cf_id_alert, cf_id_recovered].each do |cf_id|
-      issue = RedmineClient::Issue.
-                find(:first,
-                     :params =>
-                       {CUSTOM_FIELD_HEADER + cf_id.to_s => im_alert_id })
-      return true if issue != nil
-    end
-    return false
+  def have_registered?(im_alert_id_value, cf_id_alert_or_recovered)
+    cf_name_for_param = CUSTOM_FIELD_HEADER + cf_id_alert_or_recovered
+    issue = RedmineClient::Issue.find(:first,
+                                      :params => {cf_name_for_param => 
+                                                    im_alert_id_value })
+    return issue != nil
   end
   
   def get_defected_ticket(defect_tracker_id, cf_id_value)
@@ -32,10 +29,11 @@ class RedmineController
     return RedmineClient::Issue.find(:first, :params => params)
   end
   
-  def new_ticket(subject, body, project_id, cf_values)
+  def new_ticket(subject, body, project_id, tracker_id, cf_values)
     return RedmineClient::Issue.new(:subject             => subject,
                                     :description         => body,
                                     :project_id          => project_id,
+                                    :tracker_id          => tracker_id,
                                     :custom_field_values => cf_values)
   end
 

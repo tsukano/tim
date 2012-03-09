@@ -56,12 +56,23 @@ class ImConfig
 
   def cf_mapping
     return get( "redmine_mapping." + 
-                "#{self.conf['monitoring_system']}")
+                "#{get('monitoring_system')}")
   end
   def interval
     return get("interval_sec_before_now_for_checking")
   end
+  def separator
+    return get("mail.separator_character")
+  end
   def subject_header
-    return get("mail_condition.subject_header")
+    return get("mail.subject_header")
+  end
+  def defect_tracker_id
+    return get("redmine_mapping." + 
+                self.conf["monitoring_system"] +
+                ".defect_tracker_id")
+  end
+  def im_prj_id
+    return get("redmine_mapping.im_project_id")
   end
 end
