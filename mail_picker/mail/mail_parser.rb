@@ -7,11 +7,13 @@ class MailParser
   attr_accessor :raw_body
   attr_accessor :cf_values
 
-  def initialize(utf8_body, cf_mapping_id, cf_mapping_value)
+  def initialize(utf8_body, cf_mapping)
     self.raw_body = Hash.new
     parse(utf8_body)
     self.cf_values = Hash.new
-    cf_convert(cf_mapping_id, cf_mapping_value)
+    cf_convert(cf_mapping["cf_id"], 
+               cf_mapping["cf_value"],
+               cf_mapping["cf_tlanslated"])
   end
 
   def recovered_hinemos?
@@ -19,7 +21,9 @@ class MailParser
   end
 
   # only zabbix
-  def recovered_zabbix?(conf_item_list_zabi_recover, conf_id, conf_value)
+  def recovered_zabbix?(conf_item_list_zabi_recover, conf)
+    conf_id = conf['cf_id']
+    conf_value = conf['cf_value']
     item_is_normal = lambda do |item|
                   value_in_mail = self.cf_values[conf_id[item].to_s]
                   return false if value_in_mail == nil
@@ -55,11 +59,12 @@ class MailParser
     end
   end
 
-  def cf_convert(conf_id, conf_value)
+  def cf_convert(conf_id, conf_value, conf_tlanslated)
+    tlanslation = conf_tlanslated.invert
     self.raw_body.each do |raw_key, raw_value|
-      # TODO: item name may not be same api item name. like japanese.
-      # rakuda
-      config_item_name = raw_key.downcase.gsub(/[\-\.\s]/, '_') 
+      config_item_name = tlanslation[raw_key] == nil ?
+                           raw_key.downcase.gsub(/[\-\.\s]/, '_') :
+                           tlanslation[raw_key] 
       cf_id = conf_id[config_item_name]
       next if cf_id == nil
       cf_value = conf_value[config_item_name] == nil ? raw_value :

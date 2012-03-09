@@ -47,17 +47,21 @@ class ImConfig
   def zabbix_api?
     self.conf["alert_type"] == ALERT_TYPE_ZABBIX_API
   end
-  def cf_mapping_id
-    get_cf("id")
+  def im_alert_id
+    return get('redmine_mapping.cf_id.im_alert_id')
   end
-  def cf_mapping_value
-    get_cf("value")
+  def im_recovered_id
+    return get("redmine_mapping.cf_id.im_recovered_alert_id")
   end
 
-  private
-  
-  def get_cf(id_or_value)
+  def cf_mapping
     return get( "redmine_mapping." + 
-                "cf_#{id_or_value}_#{self.conf['monitoring_system']}")
+                "#{self.conf['monitoring_system']}")
+  end
+  def interval
+    return get("interval_sec_before_now_for_checking")
+  end
+  def subject_header
+    return get("mail_condition.subject_header")
   end
 end
