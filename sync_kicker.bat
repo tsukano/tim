@@ -5,6 +5,6 @@ exit /b %RC%
 
 :main
 
-ruby "%~d0%~p0mail_picker\mail_picker.rb"
+ruby "%~d0%~p0src\redmine_syncer.rb"
 
 set RC=0
