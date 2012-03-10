@@ -27,7 +27,7 @@ class MailSession
     tmail_list = Array.new
     # reversing is for perfomance reason
     self.pop.mails.reverse.each do |mail|
-      p "* now checking mail id = " + mail.unique_id
+      $logger.info "* now checking mail id = " + mail.unique_id
       tmail_header = TMail::Mail.parse(MAIL_ENCODER.call(mail.header))
       if recent_date?(tmail_header.date, time_from)
         if tmail_header.subject.start_with?(subject_header)
@@ -36,7 +36,7 @@ class MailSession
           tmail_list.unshift(tmail)
         end
       else
-        p " >>> stop reading pop mail for over interval"
+        $logger.info " >>> stop reading pop mail for over interval"
         break
       end
     end
