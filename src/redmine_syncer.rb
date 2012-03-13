@@ -46,6 +46,7 @@ class RedmineSyncer
       return
     end
 
+    @repo.set_count("TMail Candidate", tmail_list.size)
     @thread.start
     $logger.info "===== Start thread for saving issue"
     updating_target = Hash.new
@@ -85,15 +86,16 @@ class RedmineSyncer
         $logger.info " >>> set queue for saving"
       end
     end
-    @repo.set_count('Create',@thread.count_sum)
+    @repo.set_count('Ticket - Create',@thread.count_sum)
     @thread.wait_for_finishing
     $logger.info "have finished creating ticket"
     if updating_target.size > 0
       update_ticket(updating_target) 
       @thread.wait_for_finishing
       $logger.info "have finished updating ticket"
-      @repo.set_count('Update',
-                      @thread.count_sum - @repo.get_count('Create'))
+      @repo.set_count('Ticket - Update',
+                      @thread.count_sum - @repo.get_count('Ticket - Create'))
+      @repo.set_count('Ticket - ALL', @thread.count_sum)
     end
     $logger.info "===== have finished"
     $logger.info @repo.report
@@ -115,7 +117,9 @@ class RedmineSyncer
       $logger.info " - have set conditions for finding defected ticket."
       issue = @redmine.get_defected_ticket(@conf.tracker_id,
                                            cf_conditions,
-                                           avoid_issue_id_list)
+                                           avoid_issue_id_list,
+                                           @conf.im_alert_id,
+                                           im_alert_id_value)
       next if issue == nil
       $logger.info " - target issue id =#{issue.id}"
       # for avoiding conflict to save each threads

@@ -42,13 +42,15 @@ class MailParser
     item_name_list.each do |item|
       cf_id = conf_id[item]
       raise "you must write id of #{item} in config file" if cf_id == nil
-      next if get_cf(cf_id) == nil
-      cf_conditions.store(cf_id, get_cf(cf_id))
+      cf_value = get_cf(cf_id)
+      next if cf_value == nil
+      cf_conditions.store(cf_id, cf_value)
     end
     return cf_conditions
   end
-
+  
   private
+
   def parse(utf8_body, separator)
     separator = Regexp.escape(separator)
     utf8_body.split(/[\r\n]{1,2}/).each do |line|
@@ -73,7 +75,7 @@ class MailParser
       if conf_value[config_item_name] != nil
         cf_value = conf_value[config_item_name][raw_value]
       else
-        if is_change_type && config_item_name.end_with?('id')
+        if is_change_type && config_item_name.end_with?('_id')
           cf_value = raw_value.to_i
         elsif is_change_type && config_item_name.end_with?('date')
           cf_value = raw_value.gsub('.','-')

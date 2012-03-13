@@ -22,19 +22,18 @@ class RedmineController
     return issue != nil
   end
   
-  def get_defected_ticket(defect_tracker_id, cf_id_value, avoid_issue_id_list)
+  def get_defected_ticket(defect_tracker_id, cf_id_value, avoid_issue_id_list, im_alert_id, im_alert_id_value)
     params = {:tracker_id => defect_tracker_id.to_i}
     cf_id_value.each do |id, value|
       params.store(CONVERT_CF_NAME.call(id), value)
     end
     issue_list = RedmineClient::Issue.find(:all, :params => params)
-    debugger
-    # TODO:May be cast date!!
-    # reverse is for getting most old issue
-    issue_list.reverse.each do |issue|
+    issue_list.each do |issue|
       next if avoid_issue_id_list.include?(issue.id)
+      next unless issue_is_old(issue.custom_fields, im_alert_id, im_alert_id_value)
       return issue
     end
+    return nil
   end
   
   def new_ticket(subject, body, project_id, tracker_id, cf_values)
@@ -50,5 +49,18 @@ class RedmineController
       next if cf_updated[cf.id] == nil
       cf.value = cf_updated[cf.id]
     end
+  end
+
+  private
+
+  def issue_is_old(issue_cf, im_alert_id, im_recovered_id)
+    issue_cf.each do |cf|
+      if cf.id == im_alert_id
+        if cf.value.to_i < im_recovered_id.to_i
+          return true
+        end
+      end
+    end
+    return false
   end
 end
