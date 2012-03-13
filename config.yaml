@@ -3,8 +3,18 @@ alert_type : zabbix_api
 
 monitoring_system : zabbix
 #monitoring_system : hinemos
+#monitoring_system : custom
 
 interval_sec_before_now_for_checking : 36000
+
+thread:
+  num : 8
+  timeout_sec_for_waiting_save : 60
+
+log:
+  mode: stdout
+#  mode: file
+  filepath: '/'
 
 hosts:
   mail:
@@ -23,10 +33,6 @@ hosts:
     user : 
     password : 
 
-thread:
-  concurrency : 2
-  qsize : 0
-
 mail:
   subject_header : "【障害】"
   separator_character : ":="
@@ -37,7 +43,8 @@ redmine_mapping:
     im_alert_id : "93"
     im_recovered_alert_id : "94"
   zabbix:
-    defect_tracker_id: "1"
+    tracker_id: "1"
+    null_value : "*UNKNOWN*"
     cf_id:
       date : "17"
       esc_history : "18"
@@ -97,19 +104,18 @@ redmine_mapping:
         "4" : 重度の障害
         "5" : 致命的な障害
       trigger_severity:
-        "0" : 未分類
-        "1" : 情報
-        "2" : 警告
-        "3" : 軽度の障害
-        "4" : 重度の障害
-        "5" : 致命的な障害
-        "6" : 不明
+        "Not classified" : 未分類
+        "Information"    : 情報
+        "Warning"        : 警告
+        "Average"        : 軽度の障害
+        "High"           : 重度の障害
+        "Disaster"       : 致命的な障害
       trigger_status:
-        "0" : "ON"
-        "1" : "OFF"
+        "ON"  : "PROBLEM"
+        "OFF" : "OK"
       status:
-        "0" : "ON"
-        "1" : "OFF"
+        "ON"  : "PROBLEM"
+        "OFF" : "OK"
       trigger_value:
         "0" : 正常
         "1" : 障害
@@ -165,7 +171,7 @@ redmine_mapping:
       trigger_url : トリガーURL
       trigger_value : トリガーの値
   hinemos:
-    defect_tracker_id: "4"
+    tracker_id: "4"
     cf_id:
       priority : "97"
       priority_jp : "97"
@@ -209,4 +215,8 @@ redmine_mapping:
       org_message : オリジナルメッセージ
       ip_address : IPアドレス
       node : ノード名
-
+  custom:
+    tracker_id:
+    cf_id:
+    cf_value:
+    cf_tramslated:

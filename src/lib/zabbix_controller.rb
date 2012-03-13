@@ -12,7 +12,9 @@ class ZabbixController
   def get_recent_alert(interval_before_now)
     time_from = Time.now - interval_before_now
     return @zabi.do_request({:method => 'alert.get',
-                             :params => {:output    => 'extend',
+                             :params => {:output    => ["alertid",
+                                                        "subject",
+                                                        "message"],
                                          :time_from => time_from.to_i},
                              :auth   => @zabi.auth })
   end

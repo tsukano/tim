@@ -1,36 +1,63 @@
 require 'thread'
-class SaveThreadIssue
-  attr_accessor :save_issue_q
-  attr_accessor :thread_num
-  attr_accessor :group
-  def new(thread_num)
-    self.save_issue_q = Queue.new
-    self.thread_num = thread_num
-    self.group = ThreadGroup.new
+
+class SaveIssueThread
+  
+  attr_accessor :count_sum
+
+  PRIORITY = 1
+  def initialize(thread_num, timeout)
+    @save_issue_q = Queue.new
+    @thread_num = thread_num
+    @timeout = timeout
+    @group = ThreadGroup.new
+
+    @lock = Mutex.new
+    self.count_sum = 0
+    @count_finished = 0
   end
+
+  def enq(issue)
+    @save_issue_q.push(issue)
+    self.count_sum += 1
+  end
+
   def start
-    self.thread_num.times do |thread_index|
-      self.group.add Thread.start(thread_index) do |index|
-        loop do
-          issue = save_issue_q.pop
+    @thread_num.times do |thread_index|
+      thread =  Thread.start(thread_index) do |index|
+        thread_name = "Thread-" + index.to_s
+        while issue = @save_issue_q.pop
+          $logger.info "<#{thread_name}>[Start]"
           if issue.save
-            $logger.info "[SUCCESS] have saved issue id = #{issue.id}"
+            $logger.info "<#{thread_name}>[SUCCESS] have saved issue id = #{issue.id}"
           else
-            $logger.info "[FAILURE] can't save issue."
-            $logger.info issue.errors, issue.errors.full_messages if issue.errors != nil
+            if issue.errors != nil
+              $logger.info "<#{thread_name}>[FAILURE] can't save issue." +
+                            issue.inspect +
+                            issue.errors.to_a.join(',') + 
+                            issue.errors.full_messages.join(',')
+            else
+              $logger.info "<#{thread_name}>[FAILURE] can't save issue." +
+                            issue.inspect
+            end
           end
-          #$logger.info "now commented saving"
+          @lock.synchronize{
+            @count_finished += 1
+          }
         end
       end
-    end
-  end
-  def wait_until_stopping
-    while is_all_stop == false
+      thread.priority = PRIORITY
+      @group.add(thread)
     end
   end
 
-  private
-  def is_all_stop
-    return self.group.list.map {|t| t.stop?}.uniq == [true]
+  def wait_for_finishing
+    start_time = Time.now
+    while self.count_sum != @count_finished
+      raise "waiting timeout!" if Time.now > start_time + @timeout
+      count_remain = self.count_sum - @count_finished
+      $logger.info "now waiting - #{count_remain} issues remains"
+      Thread.pass
+      sleep 1
+    end
   end
 end

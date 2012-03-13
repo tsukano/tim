@@ -9,6 +9,9 @@ class ImConfig
   MONITORING_SYSTEM_ZABBIX = "zabbix"
   MONITORING_SYSTEM_HINEMOS = 'hinemos'
 
+  LOG_MODE_STDOUT = "stdout"
+  LOG_MODE_FILE = "file"
+
   LIST_ZABI_RECOVER = ["trigger_value",
                        "trigger_status",
                        "status"]
@@ -35,29 +38,30 @@ class ImConfig
     return item_value
   end
 
+  #
+  # checker
+  #
   def zabbix?
-    self.conf["monitoring_system"] == MONITORING_SYSTEM_ZABBIX
+    get("monitoring_system") == MONITORING_SYSTEM_ZABBIX
   end
   def hinemos?
-    self.conf["monitoring_system"] == MONITORING_SYSTEM_HINEMOS
+    get("monitoring_system") == MONITORING_SYSTEM_HINEMOS
   end
   def mail?
-    self.conf["alert_type"] == ALERT_TYPE_MAIL
+    get("alert_type") == ALERT_TYPE_MAIL
   end
   def zabbix_api?
-    self.conf["alert_type"] == ALERT_TYPE_ZABBIX_API
+    get("alert_type") == ALERT_TYPE_ZABBIX_API
   end
-  def im_alert_id
-    return get('redmine_mapping.cf_id.im_alert_id')
+  def log_stdout?
+    get("log.mode") == LOG_MODE_STDOUT
   end
-  def im_recovered_id
-    return get("redmine_mapping.cf_id.im_recovered_alert_id")
+  def log_file?
+    get("log.mode") == LOG_MODE_FILE
   end
-
-  def cf_mapping
-    return get( "redmine_mapping." + 
-                "#{get('monitoring_system')}")
-  end
+  #
+  # getter (general)
+  #
   def interval
     return get("interval_sec_before_now_for_checking")
   end
@@ -67,10 +71,32 @@ class ImConfig
   def subject_header
     return get("mail.subject_header")
   end
-  def defect_tracker_id
-    return get("redmine_mapping." + 
-                self.conf["monitoring_system"] +
-                ".defect_tracker_id")
+  def thread_num
+    return get("thread.num")
+  end
+  def thread_timeout
+    return get("thread.timeout_sec_for_waiting_save")
+  end
+  def log_filepath
+    return get("log.filepath")
+  end
+  #
+  # getter (redmine custom field)
+  #
+  def im_alert_id
+    return get('redmine_mapping.cf_id.im_alert_id')
+  end
+  def im_recovered_id
+    return get("redmine_mapping.cf_id.im_recovered_alert_id")
+  end
+  def cf_mapping
+    return get("redmine_mapping.#{get('monitoring_system')}")
+  end
+  def tracker_id
+    return get("redmine_mapping.#{get('monitoring_system')}.tracker_id")
+  end
+  def null_value
+    return get("redmine_mapping.#{get('monitoring_system')}.null_value")
   end
   def im_prj_id
     return get("redmine_mapping.im_project_id")

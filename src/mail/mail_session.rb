@@ -34,6 +34,7 @@ class MailSession
           tmail = TMail::Mail.parse(MAIL_ENCODER.call(mail.mail))
           tmail.store(TMAIL_IM_ALERT_ID, mail.unique_id)
           tmail_list.unshift(tmail)
+          $logger.info " >>> have set target tmail list"
         end
       else
         $logger.info " >>> stop reading pop mail for over interval"
@@ -42,9 +43,10 @@ class MailSession
     end
     return tmail_list
   end
-  def self.convert_faked_tmail(alert_message, alert_id)
-    tmail = TMail.new
-    tmail.body = alert_message
+  def self.convert_faked_tmail(alert_id, subject, message)
+    tmail = TMail::Mail.new
+    tmail.subject = subject
+    tmail.body = message
     tmail.store(TMAIL_IM_ALERT_ID, alert_id)
     return tmail
   end

@@ -3,7 +3,8 @@ require "redmine_client"
 
 class RedmineController
 
-  CUSTOM_FIELD_HEADER = 'cf_'
+  CONVERT_CF_NAME = lambda {|cf_id| 'cf_' + cf_id.to_s}
+  NO_RECOVER = 'none'
 
   def initialize(conf)
     RedmineClient::Base.configure do
@@ -14,19 +15,26 @@ class RedmineController
   end
 
   def have_registered?(im_alert_id_value, cf_id_alert_or_recovered)
-    cf_name_for_param = CUSTOM_FIELD_HEADER + cf_id_alert_or_recovered
+    cf_name_for_param = CONVERT_CF_NAME.call(cf_id_alert_or_recovered)
     issue = RedmineClient::Issue.find(:first,
                                       :params => {cf_name_for_param => 
                                                     im_alert_id_value })
     return issue != nil
   end
   
-  def get_defected_ticket(defect_tracker_id, cf_id_value)
-    params = {:tracker_id => defect_tracker_id}
+  def get_defected_ticket(defect_tracker_id, cf_id_value, avoid_issue_id_list)
+    params = {:tracker_id => defect_tracker_id.to_i}
     cf_id_value.each do |id, value|
-      params.store(CUSTOM_FIELD_HEADER + id.to_s, value)
+      params.store(CONVERT_CF_NAME.call(id), value)
     end
-    return RedmineClient::Issue.find(:first, :params => params)
+    issue_list = RedmineClient::Issue.find(:all, :params => params)
+    debugger
+    # TODO:May be cast date!!
+    # reverse is for getting most old issue
+    issue_list.reverse.each do |issue|
+      next if avoid_issue_id_list.include?(issue.id)
+      return issue
+    end
   end
   
   def new_ticket(subject, body, project_id, tracker_id, cf_values)
@@ -42,9 +50,5 @@ class RedmineController
       next if cf_updated[cf.id] == nil
       cf.value = cf_updated[cf.id]
     end
-  end
-  
-  def save(issue)
-    issue.save
   end
 end
