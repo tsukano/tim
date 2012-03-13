@@ -27,7 +27,7 @@ class Report
     @count_name.each_with_index do |name, i|
       add_line " - #{name} : #{@count[i]} "
     end
-    add_line " * Time"
+    add_line "* Time"
     add_line " - Start : #{@start_time}"
     add_line " - End   : #{end_time}"
     add_line " >>> #{(end_time - @start_time).to_i} seconds"

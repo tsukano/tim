@@ -6,6 +6,8 @@ class RedmineController
   CONVERT_CF_NAME = lambda {|cf_id| 'cf_' + cf_id.to_s}
   NO_RECOVER = 'none'
 
+  DESCRIPTION_LINE = "\r\n\r\n---\r\n\r\n"
+
   def initialize(conf)
     RedmineClient::Base.configure do
       self.site = conf["url"]
@@ -22,15 +24,22 @@ class RedmineController
     return issue != nil
   end
   
-  def get_defected_ticket(defect_tracker_id, cf_id_value, avoid_issue_id_list, im_alert_id, im_alert_id_value)
+  def get_defected_ticket(defect_tracker_id, cf_id_value, avoid_issue_id_list, order_id, order_value)
     params = {:tracker_id => defect_tracker_id.to_i}
     cf_id_value.each do |id, value|
       params.store(CONVERT_CF_NAME.call(id), value)
     end
     issue_list = RedmineClient::Issue.find(:all, :params => params)
+    issue_list = issue_list.select do |issue|
+      !(avoid_issue_id_list.include?(issue.id))
+    end
+    # sort desc
+    issue_list.sort! do |issue_a, issue_b|
+      (issue_b.custom_fields.select{|cf| cf.id == order_id})[0].value.to_i -
+      (issue_a.custom_fields.select{|cf| cf.id == order_id})[0].value.to_i
+    end
     issue_list.each do |issue|
-      next if avoid_issue_id_list.include?(issue.id)
-      next unless issue_is_old(issue.custom_fields, im_alert_id, im_alert_id_value)
+      next unless issue_is_old(issue.custom_fields, order_id, order_value)
       return issue
     end
     return nil
@@ -51,12 +60,19 @@ class RedmineController
     end
   end
 
+  def add_description(issue, body_str)
+    issue.description += DESCRIPTION_LINE
+    issue.description += body_str
+  end
+
   private
 
-  def issue_is_old(issue_cf, im_alert_id, im_recovered_id)
+  def issue_is_old(issue_cf, order_id, order_value)
     issue_cf.each do |cf|
-      if cf.id == im_alert_id
-        if cf.value.to_i < im_recovered_id.to_i
+      if cf.id == order_id
+        if cf.value.to_i < order_value.to_i
+          $logger.info( "Issue order : #{cf.value.to_s}" + " < " + 
+                        "Mail order : #{order_value.to_s}")
           return true
         end
       end

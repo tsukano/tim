@@ -4,10 +4,12 @@ class MailParser
   ZABBIX_NORMAL_TRIGGER_STATUS = "1"
   ZABBIX_NORMAL_STATUS = "1"
 
+  attr_accessor :raw_str
   attr_accessor :raw_body
   attr_accessor :cf_id_values
 
   def initialize(utf8_body, separator, cf_mapping, null_value, is_change_type)
+    self.raw_str = utf8_body
     self.raw_body = Hash.new
     parse(utf8_body, separator)
     self.cf_id_values = Hash.new
@@ -74,6 +76,7 @@ class MailParser
       next if cf_id == nil
       if conf_value[config_item_name] != nil
         cf_value = conf_value[config_item_name][raw_value]
+        cf_value = raw_value if cf_value == nil
       else
         if is_change_type && config_item_name.end_with?('_id')
           cf_value = raw_value.to_i

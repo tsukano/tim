@@ -5,8 +5,10 @@ require 'tmail'
 
 class MailSession
 
-  MAIL_ENCODER = Proc.new{|string| NKF.nkf('-w',string)}
+  MAIL_ENCODER = lambda {|string| NKF.nkf('-w',string)}
   TMAIL_IM_ALERT_ID = 'im_alert_id'
+  TMAIL_IM_ORDER = "im_order"
+  ESCAPE_HTML = lambda {|str| str.sub(/<\s?HTML.+\/\s?HTML\s?>/, '')}
 
   attr_accessor :pop
 	
@@ -31,8 +33,10 @@ class MailSession
       tmail_header = TMail::Mail.parse(MAIL_ENCODER.call(mail.header))
       if recent_date?(tmail_header.date, time_from)
         if tmail_header.subject.start_with?(subject_header)
-          tmail = TMail::Mail.parse(MAIL_ENCODER.call(mail.mail))
+          escaped_mail = ESCAPE_HTML.call(mail.mail)
+          tmail = TMail::Mail.parse(MAIL_ENCODER.call(escaped_mail))
           tmail.store(TMAIL_IM_ALERT_ID, mail.unique_id)
+          tmail.store(TMAIL_IM_ORDER, mail.number)
           tmail_list.unshift(tmail)
           $logger.info " >>> have set target tmail list"
         end
@@ -48,6 +52,7 @@ class MailSession
     tmail.subject = subject
     tmail.body = message
     tmail.store(TMAIL_IM_ALERT_ID, alert_id)
+    tmail.store(TMAIL_IM_ORDER, alert_id)
     return tmail
   end
   private

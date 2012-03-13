@@ -101,4 +101,7 @@ class ImConfig
   def im_prj_id
     return get("redmine_mapping.im_project_id")
   end
+  def order
+    return get("redmine_mapping.zabbix.cf_id.im_order")
+  end
 end

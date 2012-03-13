@@ -5,10 +5,10 @@ monitoring_system : zabbix
 #monitoring_system : hinemos
 #monitoring_system : custom
 
-interval_sec_before_now_for_checking : 36000
+interval_sec_before_now_for_checking : 80000
 
 thread:
-  num : 8
+  num : 4
   timeout_sec_for_waiting_save : 60
 
 log:
@@ -34,7 +34,7 @@ hosts:
     password : 
 
 mail:
-  subject_header : "【障害】"
+  subject_header : "CHUMOKU"
   separator_character : ":="
 
 redmine_mapping:
@@ -95,6 +95,7 @@ redmine_mapping:
       trigger_url : "66"
       trigger_value : "82"
       host_key_func_param : "68"
+      im_order : "107"
     cf_value:
       trigger_nseverity:
         "0" : 未分類
