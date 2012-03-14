@@ -14,7 +14,7 @@ thread:
 log:
   mode: stdout
 #  mode: file
-  filepath: '/home/ryuma/rails_work/tim/log/im.log'
+  filepath: '/home/batchuser/im_log/im.log'
 
 hosts:
   mail:
@@ -34,7 +34,7 @@ hosts:
     password : 
 
 mail:
-  subject_header : "CHUMOKU"
+  subject_header : "INCIDENT:"
   separator_character : ":="
 
 redmine_mapping:
