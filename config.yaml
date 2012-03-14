@@ -168,7 +168,7 @@ redmine_mapping:
       trigger_name : トリガー名
       trigger_nseverity : トリガー深刻度（数値）
       trigger_severity : トリガー深刻度
-      trigger_status : トリガー状態
+      trigger_status : トリガーステータス
       trigger_url : トリガーURL
       trigger_value : トリガーの値
   hinemos:
