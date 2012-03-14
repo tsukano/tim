@@ -5,11 +5,15 @@ monitoring_system : zabbix
 #monitoring_system : hinemos
 #monitoring_system : custom
 
-interval_sec_before_now_for_checking : 120
+interval_sec_before_now_for_checking : 300
 
 thread:
   num : 4
   timeout_sec_for_waiting_save : 60
+
+mail:
+  subject_header : "INCIDENT:"
+  separator_character : ":="
 
 log:
   mode: stdout
@@ -17,8 +21,13 @@ log:
   filepath: '/home/batchuser/im_log/im.log'
 
 hosts:
+  redmine:
+    url : "http://"
+    user : 
+    password : 
+
   mail:
-    address : 
+    address : ""
     port : 110
     user : 
     password : 
@@ -27,15 +36,6 @@ hosts:
     url : "http://"
     user : 
     password : 
-
-  redmine:
-    url : "http://"
-    user : 
-    password : 
-
-mail:
-  subject_header : "INCIDENT:"
-  separator_character : ":="
 
 redmine_mapping:
   im_project_id: incident-manager
@@ -46,6 +46,7 @@ redmine_mapping:
     tracker_id: "1"
     null_value : "*UNKNOWN*"
     cf_id:
+      im_order : "107"
       date : "17"
       esc_history : "18"
       event_ack_history : "19"
@@ -95,7 +96,6 @@ redmine_mapping:
       trigger_url : "66"
       trigger_value : "82"
       host_key_func_param : "68"
-      im_order : "107"
     cf_value:
       trigger_nseverity:
         "0" : 未分類
@@ -162,7 +162,6 @@ redmine_mapping:
       trigger_comment : トリガーコメント
       trigger_events_unack : 未応答イベント数
       trigger_events_problem_unack: 状態無視未応答障害イベント数
-      trigger_problem_events_problem_unack: 障害トリガー未応答障害イベント数
       trigger_id : トリガーID
       trigger_key : トリガーアイテムキー
       trigger_name : トリガー名
@@ -173,6 +172,7 @@ redmine_mapping:
       trigger_value : トリガーの値
   hinemos:
     tracker_id: "4"
+    null_value : ""
     cf_id:
       priority : "97"
       priority_jp : "97"
@@ -195,11 +195,6 @@ redmine_mapping:
         "1" : 不明
         "2" : 警告
         "3" : 情報
-      priority_to_trigger_value:
-        "0" : 障害
-        "1" : 不明
-        "2" : 障害
-        "3" : 正常
     cf_translated:
       priority : 重要度
       priority_jp : 重要度（日本語）
@@ -209,15 +204,17 @@ redmine_mapping:
       plugin_id : プラグインID
       monitor_id : モニター
       facility_id : ファシリティID
-      scope : スコープ
+      scope : スコープID
       aplication : アプリケーション
       message_id : メッセージID
       message : メッセージ
       org_message : オリジナルメッセージ
       ip_address : IPアドレス
       node : ノード名
-  custom:
-    tracker_id:
-    cf_id:
-    cf_value:
-    cf_tramslated:
+  custom :
+    tracker_id :
+    null_value : ""
+    cf_id :
+    cf_value :
+    cf_translated :
+

@@ -66,6 +66,7 @@ class MailParser
   end
 
   def cf_convert(conf_id, conf_value, conf_translated, null_value, is_change_type)
+    return if conf_id == nil
     translation = conf_translated.invert
     self.raw_body.each do |raw_key, raw_value|
       next if null_value != nil && raw_value == null_value
@@ -74,7 +75,7 @@ class MailParser
                            translation[raw_key] 
       cf_id = conf_id[config_item_name]
       next if cf_id == nil
-      if conf_value[config_item_name] != nil
+      if conf_value != nil && conf_value[config_item_name] != nil
         cf_value = conf_value[config_item_name][raw_value]
         cf_value = raw_value if cf_value == nil
       else

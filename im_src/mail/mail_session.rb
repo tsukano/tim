@@ -8,7 +8,7 @@ class MailSession
   MAIL_ENCODER = lambda {|string| NKF.nkf('-w',string)}
   TMAIL_IM_ALERT_ID = 'im_alert_id'
   TMAIL_IM_ORDER = "im_order"
-  ESCAPE_HTML = lambda {|str| str.sub(/<\s?HTML.+\/\s?HTML\s?>/, '')}
+  ESCAPE_HTML = lambda {|str| str.sub(/<\s?HTML.+\/\s?HTML\s?>/m, '')}
 
   attr_accessor :pop
 	
