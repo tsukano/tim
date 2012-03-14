@@ -1,5 +1,5 @@
-alert_type : mail
-#alert_type : zabbix_api
+#alert_type : mail
+alert_type : zabbix_api
 
 monitoring_system : zabbix
 #monitoring_system : hinemos
@@ -18,7 +18,7 @@ mail:
 log:
   mode: stdout
 #  mode: file
-  filepath: '/home/batchuser/im_log/im.log'
+  filepath: '/home/batchuser/im/log/im.log'
 
 hosts:
   redmine:
