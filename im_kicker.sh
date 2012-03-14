@@ -7,7 +7,7 @@ trap "rm $sem; exit" 2 3 15
 
 
 
-ruby $dir"/src/redmine_syncer.rb"
+ruby $dir"/im_src/redmine_syncer.rb"
 
 
 

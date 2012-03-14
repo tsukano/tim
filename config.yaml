@@ -1,11 +1,11 @@
-#alert_type : mail
-alert_type : zabbix_api
+alert_type : mail
+#alert_type : zabbix_api
 
 monitoring_system : zabbix
 #monitoring_system : hinemos
 #monitoring_system : custom
 
-interval_sec_before_now_for_checking : 80000
+interval_sec_before_now_for_checking : 120
 
 thread:
   num : 4
@@ -14,11 +14,11 @@ thread:
 log:
   mode: stdout
 #  mode: file
-  filepath: '/'
+  filepath: '/home/ryuma/rails_work/tim/log/im.log'
 
 hosts:
   mail:
-    address : pop.mail.yahoo.co.jp
+    address : 
     port : 110
     user : 
     password : 

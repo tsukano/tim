@@ -5,6 +5,6 @@ exit /b %RC%
 
 :main
 
-ruby "%~d0%~p0src\redmine_syncer.rb"
+ruby "%~d0%~p0im_src\redmine_syncer.rb"
 
 set RC=0
