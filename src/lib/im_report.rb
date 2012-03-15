@@ -1,4 +1,4 @@
-class Report
+class ImReport
 
   CRLF = "\r\n"
 

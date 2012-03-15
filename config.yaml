@@ -1,5 +1,5 @@
-#alert_type : mail
-alert_type : zabbix_api
+alert_type : mail
+#alert_type : zabbix_api
 
 monitoring_system : zabbix
 #monitoring_system : hinemos

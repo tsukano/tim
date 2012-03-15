@@ -7,9 +7,9 @@ require ex_path + '/mail/mail_parser'
 require ex_path + '/mail/mail_session'
 require ex_path + '/lib/im_config'
 require ex_path + '/lib/im_log'
-require ex_path + '/lib/report'
-require ex_path + '/lib/redmine_controller'
-require ex_path + '/lib/zabbix_controller'
+require ex_path + '/lib/im_report'
+require ex_path + '/controller/redmine_controller'
+require ex_path + '/controller/zabbix_controller'
 require ex_path + '/lib/save_issue_thread'
 
 CONF_FILE = ex_path + '/../config.yaml'
@@ -17,7 +17,7 @@ CONF_FILE = ex_path + '/../config.yaml'
 class RedmineSyncer
 
   def initialize
-    @repo = Report.new
+    @repo = ImReport.new
 
     @conf = ImConfig.new(CONF_FILE)
     $logger = ImLog.logger(@conf.log_stdout?, @conf.log_file?,@conf.log_filepath)
