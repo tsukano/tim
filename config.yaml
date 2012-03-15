@@ -22,9 +22,9 @@ log:
 
 hosts:
   redmine:
-    url : "http://"
-    user : 
-    password : 
+    url : "http://localhost/redmine/"
+    user : admin
+    password : admin
 
   mail:
     address : ""

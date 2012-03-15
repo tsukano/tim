@@ -16,6 +16,10 @@ class RedmineController
     end
   end
 
+  # TODO: performance
+  # for improving performance, before running this method, 
+  # should prepare all issue(same trigger id)
+  # So ,this method dont have to access api.
   def have_registered?(im_alert_id_value, cf_id_alert_or_recovered)
     cf_name_for_param = CONVERT_CF_NAME.call(cf_id_alert_or_recovered)
     issue = RedmineClient::Issue.find(:first,
